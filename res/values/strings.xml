@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GsmNotify</string>
+    <string name="home_notification">Home notification</string>
+    <string name="notify_enable">Enable notify</string>
+    <string name="notify_disable">DIsable notify</string>
+    <string name="Relay_1">Relay 1</string>
+    <string name="Relay_1_disable">Relay 1 disable</string>
+    <string name="Relay_1_enable">Relay 1 enable</string>
+    <string name="Relay_2_disable">Relay 2 disable</string>
+    <string name="Relay_2_enable">Relay 2 enable</string>
+    <string name="get_data">Get data</string>
+    <string name="get_temperature">Get temperature</string>
+    <string name="settings">Settings</string>
+    <string name="add_device">Add new device</string>
+    <string name="edit_device">Edit current device</string>
+    <string name="grad">°C</string>
+    <string name="temper_limit">Temperature limit</string>
+    <string name="mode_1">Mode 1</string>
+    <string name="mode_2">Mode 2</string><string name="temperature_limit_settings">Set limit temperature and mode</string><string name="tmin_hint">Tmin °C</string><string name="tmax_hint">Tmax °C</string><string name="apply">Apply</string><string name="device_name">Device name</string><string name="device_number">Device GSM number</string><string name="password">Password</string>
+</resources>
