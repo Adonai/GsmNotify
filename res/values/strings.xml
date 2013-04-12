@@ -18,4 +18,15 @@
     <string name="temper_limit">Temperature limit</string>
     <string name="mode_1">Mode 1</string>
     <string name="mode_2">Mode 2</string><string name="temperature_limit_settings">Set limit temperature and mode</string><string name="tmin_hint">Tmin °C</string><string name="tmax_hint">Tmax °C</string><string name="apply">Apply</string><string name="device_name">Device name</string><string name="device_number">Device GSM number</string><string name="password">Password</string>
+    <string name="first_launch">First launch! Please add device.</string>
+    <string name="wait_please">Please wait...</string>
+    <string name="querying_device">Querying device...</string>
+    <string name="sms_sent_success">SMS sent successfully</string>
+    <string name="generic_failure">Generic failure</string>
+    <string name="no_service">No service</string>
+    <string name="null_message">No message</string>
+    <string name="radio_off">Radio is off</string>
+    <string name="sms_deliver_success">SMS delivered successfully</string>
+    <string name="result_canceled">SMS result canceled</string>
+    <string name="setting_mode">Setting device mode...</string>
 </resources>
