@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GsmNotify</string>
+    <string name="app_name">Signal</string>
     <string name="home_notification">Home notification</string>
     <string name="notify_enable">Enable notify</string>
     <string name="notify_disable">DIsable notify</string>
@@ -16,8 +16,8 @@
     <string name="edit_device">Edit current device</string>
     <string name="grad">°C</string>
     <string name="temper_limit">Temperature limit</string>
-    <string name="mode_1">Mode 1</string>
-    <string name="mode_2">Mode 2</string><string name="temperature_limit_settings">Set limit temperature and mode</string><string name="tmin_hint">Tmin °C</string><string name="tmax_hint">Tmax °C</string><string name="apply">Apply</string><string name="device_name">Device name</string><string name="device_number">Device GSM number</string><string name="password">Password</string>
+    <string name="mode_0">Mode 0</string>
+    <string name="mode_1">Mode 1</string><string name="temperature_limit_settings">Set limit temperature and mode</string><string name="tmin_hint">Tmin °C</string><string name="tmax_hint">Tmax °C</string><string name="apply">Apply</string><string name="device_name">Device name</string><string name="device_number">Device GSM number</string><string name="password">Password</string>
     <string name="first_launch">First launch! Please add device.</string>
     <string name="wait_please">Please wait...</string>
     <string name="querying_device">Querying device...</string>
@@ -29,4 +29,7 @@
     <string name="sms_deliver_success">SMS delivered successfully</string>
     <string name="result_canceled">SMS result canceled</string>
     <string name="setting_mode">Setting device mode...</string>
+    <string name="resetting_device">Restarting device...</string>
+    <string name="data_not_full">Fill all values, please</string>
+    <string name="remove_device">Remove device</string>
 </resources>

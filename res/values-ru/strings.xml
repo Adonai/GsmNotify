@@ -14,8 +14,8 @@
     <string name="edit_device">Редактировать текущее устройство</string>
     <string name="grad">°C</string>
     <string name="temper_limit">Порог Т</string>
+    <string name="mode_0">Режим 0</string>
     <string name="mode_1">Режим 1</string>
-    <string name="mode_2">Режим 2</string>
     <string name="temperature_limit_settings">Установка температурного лимита и режима</string>
     <string name="tmin_hint">Tmin °C</string>
     <string name="tmax_hint">Tmax °C</string>
@@ -24,14 +24,17 @@
     <string name="device_number">Номер SIM устройства</string>
     <string name="password">Пароль</string>
     <string name="first_launch">Первый запуск. Пожалуйста, создайте устройство.</string>
-    <string name="wait_please">Please wait...</string>
-    <string name="querying_device">Querying device...</string>
-    <string name="sms_sent_success">SMS sent successfully</string>
-    <string name="generic_failure">Generic failure</string>
-    <string name="no_service">No service</string>
-    <string name="null_message">No message</string>
-    <string name="radio_off">Radio is off</string>
-    <string name="sms_deliver_success">SMS delivered successfully</string>
-    <string name="result_canceled">SMS result canceled</string>
-    <string name="setting_mode">Setting device mode...</string>
+    <string name="wait_please">Пожалуйста, подождите…</string>
+    <string name="querying_device">Опрашиваю устройство…</string>
+    <string name="sms_sent_success">SMS отправлено успешно</string>
+    <string name="generic_failure">Общий сбой</string>
+    <string name="no_service">Нет сети</string>
+    <string name="null_message">Нет сообщения</string>
+    <string name="radio_off">Антенна отключена</string>
+    <string name="sms_deliver_success">SMS доставлено успешно</string>
+    <string name="result_canceled">SMS доставка отменена</string>
+    <string name="setting_mode">Установка режима устройства…</string>
+    <string name="resetting_device">Перезагружаю устройство…</string>
+    <string name="data_not_full">Пожалуйста, заполните все поля верно</string>
+    <string name="remove_device">Удалить устройство</string>
 </resources>

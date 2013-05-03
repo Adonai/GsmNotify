@@ -15,13 +15,16 @@ public class IncomingSmsBroadcastReceiver extends BroadcastReceiver
     {
         String action = intent.getAction();
 
-        if (action.equals(ACTION_SMS_RECEIVED))
+        if (action.equalsIgnoreCase(ACTION_SMS_RECEIVED))
         {
             SmsMessage[] msgs = getMessagesFromIntent(intent);
+            String texts = "";
+            for(SmsMessage msg : msgs)
+                texts += msg.getMessageBody();
 
             Intent broadcastIntent = new Intent(context, SMSReceiveService.class);
             broadcastIntent.putExtra("number", msgs[0].getOriginatingAddress());
-            broadcastIntent.putExtra("text", msgs[0].getMessageBody());
+            broadcastIntent.putExtra("text", texts);
 
             context.startService(broadcastIntent);
         }

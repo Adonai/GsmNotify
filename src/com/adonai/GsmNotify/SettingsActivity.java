@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -27,6 +26,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     String SENT = "SMS_SENT_NOTIFY";
     String DELIVERED = "SMS_DELIVERED_NOTIFY";
 
+    BroadcastReceiver sentReceiver, deliveryReceiver;
     SharedPreferences mPrefs;
     ProgressDialog pd;
     EditText mName, mNumber, mPassword;
@@ -35,7 +35,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     Button mApply;
     Handler mHandler;
 
-    BroadcastReceiver sentReceiver = new BroadcastReceiver()
+
+    public  class sentConfirmReceiver extends BroadcastReceiver
     {
         @Override
         public void onReceive(Context arg0, Intent arg1)
@@ -48,11 +49,16 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 case SmsManager.RESULT_ERROR_NULL_PDU: Toast.makeText(SettingsActivity.this, getString(R.string.null_message), Toast.LENGTH_SHORT).show(); break;
                 case SmsManager.RESULT_ERROR_RADIO_OFF: Toast.makeText(getBaseContext(), getString(R.string.radio_off), Toast.LENGTH_SHORT).show(); break;
             }
-            unregisterReceiver(this);
-        }
-    };
 
-    BroadcastReceiver deliveryReceiver = new BroadcastReceiver()
+            if(getResultCode() != Activity.RESULT_OK)
+            {
+                mHandler.removeCallbacksAndMessages(null);
+                pd.dismiss();
+            }
+        }
+    }
+
+    public  class deliveryConfirmReceiver extends BroadcastReceiver
     {
         @Override
         public void onReceive(Context arg0, Intent arg1)
@@ -60,11 +66,14 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             switch (getResultCode())
             {
                 case Activity.RESULT_OK: Toast.makeText(SettingsActivity.this, getString(R.string.sms_deliver_success), Toast.LENGTH_SHORT).show(); break;
-                case Activity.RESULT_CANCELED: Toast.makeText(SettingsActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show(); break;
+                case Activity.RESULT_CANCELED:
+                    Toast.makeText(SettingsActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show();
+                    mHandler.removeCallbacksAndMessages(null);
+                    pd.dismiss();
+                    break;
             }
-            unregisterReceiver(this);
         }
-    };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,6 +82,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         setContentView(R.layout.device_settings);
 
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
+        sentReceiver = new sentConfirmReceiver();
+        deliveryReceiver = new deliveryConfirmReceiver();
 
         mName = (EditText) findViewById(R.id.device_name);
         mNumber = (EditText) findViewById(R.id.device_number);
@@ -99,7 +110,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mName.setText(dev.name);
         mPassword.setText(dev.password);
         mTempLimit.setText(dev.tempLimit);
-        mMode.check(dev.mode.equals("1") ? R.id.mode1_radio : R.id.mode2_radio);
+        mMode.check(dev.mode.equals("1") ? R.id.mode1_radio : R.id.mode0_radio);
         mtMin.setText(dev.tMin);
         mtMax.setText(dev.tMax);
     }
@@ -108,21 +119,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     protected void onStart()
     {
         super.onStart();
-        sConn = new ServiceConnection()
-        {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service)
-            {
-                ((SMSReceiveService.LocalBinder) service).setListener(SettingsActivity.this);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name)
-            {
-            }
-        };
-        bindService(new Intent(this, SMSReceiveService.class), sConn, 0);
-
         //--- When the SMS has been sent ---
         registerReceiver(sentReceiver, new IntentFilter(SENT));
         //--- When the SMS has been delivered. ---
@@ -133,7 +129,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     protected void onStop()
     {
         super.onStop();
-        unbindService(sConn);
         unregisterReceiver(sentReceiver);
         unregisterReceiver(deliveryReceiver);
     }
@@ -144,6 +139,19 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         switch (v.getId())
         {
             case R.id.device_apply:
+                try
+                {
+                    Double.parseDouble(mTempLimit.getText().toString());
+                    Double.parseDouble(mtMin.getText().toString());
+                    Double.parseDouble(mtMax.getText().toString());
+                    Long.parseLong(mNumber.getText().toString());
+                }
+                catch (NumberFormatException nfe)
+                {
+                    Toast.makeText(SettingsActivity.this, getString(R.string.data_not_full), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
 
                 PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
@@ -157,12 +165,16 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 toSave.name = mName.getText().toString();
                 toSave.password = mPassword.getText().toString();
                 toSave.tempLimit = mTempLimit.getText().toString();
-                toSave.mode = mMode.getCheckedRadioButtonId() == R.id.mode1_radio ? "1" : "2";
+                toSave.mode = mMode.getCheckedRadioButtonId() == R.id.mode1_radio ? "1" : "0";
                 toSave.tMin = mtMin.getText().toString();
                 toSave.tMax = mtMax.getText().toString();
 
+                String IDStrings = mPrefs.getString("IDs", "");
+                if(!IDStrings.contains(mNumber.getText().toString()))
+                    IDStrings = IDStrings + mNumber.getText().toString() + ";";
+
                 SharedPreferences.Editor edit = mPrefs.edit();
-                edit.putString("IDs", mPrefs.getString("IDs", "") + mNumber.getText().toString() + ";");
+                edit.putString("IDs", IDStrings);
                 edit.putString(mNumber.getText().toString(), new Gson().toJson(toSave));
                 edit.commit();
                 break;
@@ -171,11 +183,12 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
     private String composeMessage()
     {
+        // *1928#_sp_*1_5=1_8=1#*5_1=1_2=50000_3=1_5=1_6=25000_7=30000#
         String res = "*";
         res += mPassword.getText().toString();
-        res += "#_sp_*1_5=1_8=1#*5=";
+        res += "#_sp_*1_5=1_8=1#*5_1=1_2=";
         String tmp = String.format("%05.0f", Double.parseDouble(mTempLimit.getText().toString()) * 1000).substring(0, 5);
-        res += tmp + "_6=";
+        res += tmp + "_3=1_5=1_6=";
         tmp = String.format("%05.0f", Double.parseDouble(mtMin.getText().toString()) * 1000).substring(0, 5);
         res += tmp + "_7=";
         tmp = String.format("%05.0f", Double.parseDouble(mtMax.getText().toString()) * 1000).substring(0, 5);
@@ -189,25 +202,35 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         switch (msg.what)
         {
             case HANDLE_STEP_1:
+            {
                 pd.setMessage(getString(R.string.setting_mode));
                 mHandler.sendEmptyMessageDelayed(HANDLE_STEP_2, 10000);
 
                 PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                 PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                 SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(mNumber.getText().toString(), null, "*" + mPassword.getText().toString() + "#" +  + "#", sentPI, deliveredPI);
-            case HANDLE_INCOMING:
+                sms.sendTextMessage(mNumber.getText().toString(), null, "*" + mPassword.getText().toString() + "#" + (mMode.getCheckedRadioButtonId() == R.id.mode0_radio ? "_tb" : "_th") + "#", sentPI, deliveredPI);
+                break;
+            }
+            case HANDLE_STEP_2:
+            {
+                pd.setMessage(getString(R.string.resetting_device));
+                mHandler.sendEmptyMessageDelayed(HANDLE_STEP_3, 10000);
+
+                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(mNumber.getText().toString(), null, "*" + mPassword.getText().toString() + "#_fullrst#", sentPI, deliveredPI);
+                break;
+            }
+            case HANDLE_STEP_3:
                 pd.dismiss();
 
                 Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNumber.getText().toString());
                 startActivity(editNow);
+                finish();
                 break;
         }
         return true;
-    }
-
-    public void updateActivity(int msg, Object obj)
-    {
-        mHandler.sendMessage(mHandler.obtainMessage(msg, obj));
     }
 }
