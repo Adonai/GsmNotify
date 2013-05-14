@@ -9,10 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.gson.Gson;
 
 public class SettingsActivity extends Activity implements View.OnClickListener, Handler.Callback
@@ -33,6 +30,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     EditText mTempLimit, mtMin, mtMax;
     RadioGroup mMode;
     Button mApply;
+    ToggleButton mSendSMS;
     Handler mHandler;
 
 
@@ -94,6 +92,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mtMax = (EditText) findViewById(R.id.device_tmax);
 
         mMode = (RadioGroup) findViewById(R.id.device_mode);
+        mSendSMS = (ToggleButton) findViewById(R.id.sms_send_toggle);
         mApply = (Button) findViewById(R.id.device_apply);
         mApply.setOnClickListener(this);
 
@@ -113,6 +112,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mMode.check(dev.mode.equals("1") ? R.id.mode1_radio : R.id.mode0_radio);
         mtMin.setText(dev.tMin);
         mtMax.setText(dev.tMax);
+        mSendSMS.setChecked(dev.sendSMS);
     }
 
     @Override
@@ -168,6 +168,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 toSave.mode = mMode.getCheckedRadioButtonId() == R.id.mode1_radio ? "1" : "0";
                 toSave.tMin = mtMin.getText().toString();
                 toSave.tMax = mtMax.getText().toString();
+                toSave.sendSMS = mSendSMS.isChecked();
 
                 String IDStrings = mPrefs.getString("IDs", "");
                 if(!IDStrings.contains(mNumber.getText().toString()))
@@ -186,7 +187,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         // *1928#_sp_*1_5=1_8=1#*5_1=1_2=50000_3=1_5=1_6=25000_7=30000#
         String res = "*";
         res += mPassword.getText().toString();
-        res += "#_sp_*1_5=1_8=1#*5_1=1_2=";
+        res += "#_sp_*1_5=" + (mSendSMS.isChecked() ? "1" : "+") + "_8=" + (mSendSMS.isChecked() ? "1" : "+") + "#*5_1=1_2=";
         String tmp = String.format("%05.0f", Double.parseDouble(mTempLimit.getText().toString()) * 1000).substring(0, 5);
         res += tmp + "_3=1_5=1_6=";
         tmp = String.format("%05.0f", Double.parseDouble(mtMin.getText().toString()) * 1000).substring(0, 5);

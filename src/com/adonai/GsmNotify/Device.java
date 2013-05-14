@@ -13,4 +13,5 @@ public class Device
     public String tempLimit;
     public String tMin, tMax;
     public String mode;
+    public boolean sendSMS;
 }

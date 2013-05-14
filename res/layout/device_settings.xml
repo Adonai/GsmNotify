@@ -131,6 +131,15 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ToggleButton
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sms_send_toggle"
+        android:textOn="@string/send_notify_sms"
+        android:textOff="@string/not_send_notify_sms"
+        android:singleLine="false"
+        android:checked="true"/>
+
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -37,4 +37,6 @@
     <string name="resetting_device">Перезагружаю устройство…</string>
     <string name="data_not_full">Пожалуйста, заполните все поля верно</string>
     <string name="remove_device">Удалить устройство</string>
+    <string name="send_notify_sms">Отсылать СМС</string>
+    <string name="not_send_notify_sms">Не отсылать СМС</string>
 </resources>

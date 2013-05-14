@@ -9,7 +9,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_marginBottom="5dp">
 
         <ImageButton
             android:layout_width="0dp"
@@ -17,7 +17,7 @@
             android:id="@+id/signal_on_button"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:src="@drawable/guard"
+            android:src="@drawable/arm"
             android:scaleType="fitEnd"
             android:background="@null"
             android:adjustViewBounds="true"
@@ -30,66 +30,109 @@
             android:id="@+id/signal_off_button"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:src="@drawable/disarm"
+            android:src="@drawable/unarm"
             android:scaleType="fitEnd"
             android:background="@null"
             android:adjustViewBounds="true"
             android:layout_marginLeft="5dp"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="true">
 
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/Relay_1_enable"
             android:id="@+id/relay1_on_button"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:scaleType="fitEnd"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/relay1enable"
+            />
 
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/Relay_1_disable"
-            android:id="@+id/relay1_off_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/Relay_2_enable"
             android:id="@+id/relay2_on_button"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:scaleType="fitEnd"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:src="@drawable/relay1enable"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
 
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Relay_1_disable"
+            android:id="@+id/relay1_off_button"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:scaleType="fitEnd"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:src="@drawable/relay1disable"
+            android:layout_marginRight="5dp"/>
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/Relay_2_disable"
             android:id="@+id/relay2_off_button"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
-
+            android:layout_gravity="center"
+            android:scaleType="fitEnd"
+            android:background="@null"
+            android:adjustViewBounds="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/relay2disable"
+            />
     </LinearLayout>
+
 
     <ImageButton
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/get_data"
         android:id="@+id/get_data_button"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:scaleType="fitEnd"
+        android:background="@null"
+        android:adjustViewBounds="true"
+        android:src="@drawable/getstatus"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
     <ImageButton
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/get_temperature"
         android:id="@+id/get_temperature_button"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:scaleType="fitEnd"
+        android:background="@null"
+        android:adjustViewBounds="true"
+        android:src="@drawable/temperature"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
     <ScrollView
         android:layout_width="match_parent"

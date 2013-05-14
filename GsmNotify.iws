@@ -3,7 +3,7 @@
   <component name="AndroidDesignerProfile">
     <option name="fullProfile">
       <profile>
-        <option name="device" value="3.2in HVGA slider (ADP1)" />
+        <option name="device" value="4in WVGA (Nexus S)" />
         <option name="deviceConfiguration" value="Portrait" />
         <option name="localeLanguage" value="ru" />
         <option name="targetHashString" value="android-17" />
@@ -29,28 +29,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6cf6f7a7-2271-483b-b6ea-d04437551cbf" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/getstatus.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay1disable.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay2disable.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay2enable.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/temperature.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GsmNotify.iws" afterPath="$PROJECT_DIR$/GsmNotify.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/device_settings.xml" afterPath="$PROJECT_DIR$/res/layout/device_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-ru/strings.xml" afterPath="$PROJECT_DIR$/res/values-ru/strings.xml" />
     </list>
     <ignored path="GsmNotify.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1367563894315" ignored="false" />
+    <file path="/Dummy.txt" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368540831446" ignored="false" />
     <file path="/main.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1367563976323" ignored="false" />
     <file path="/Main.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365430459826" ignored="false" />
     <file path="/main_menu.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365247596432" ignored="false" />
     <file path="$PROJECT_DIR$/gen/com/example/GsmNotify/Manifest.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365248817609" ignored="false" />
-    <file path="/AndroidManifest.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1366032358389" ignored="false" />
-    <file path="/fragment.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1366102301894" ignored="false" />
-    <file path="/SettingsActivity.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365960055851" ignored="false" />
-    <file path="/strings.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365959353001" ignored="false" />
+    <file path="/AndroidManifest.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368542727560" ignored="false" />
+    <file path="/fragment.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368539875009" ignored="false" />
+    <file path="/SettingsActivity.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368541643496" ignored="false" />
+    <file path="/strings.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368539360651" ignored="false" />
     <file path="/IncomingSmsBroadcastReceiver.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365804009842" ignored="false" />
     <file path="/SMSReceiveService.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365947675119" ignored="false" />
     <file path="/SelectorActivity.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365948915519" ignored="false" />
-    <file path="/MainActivity.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1366215769113" ignored="false" />
-    <file path="/Device.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365429136608" ignored="false" />
+    <file path="/MainActivity.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368538694672" ignored="false" />
+    <file path="/Device.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368541113266" ignored="false" />
     <file path="/a.dummy" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365429912557" ignored="false" />
     <file path="$PROJECT_DIR$/../Diary Browser/src/adonai/diary_browser/DiaryList.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365765751557" ignored="false" />
     <file path="/DiaryList.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365765748235" ignored="false" />
     <file path="/MessageQueue.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1366031464384" ignored="false" />
+    <file path="/temperature.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1367853542143" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,36 +79,7 @@
   </component>
   <component name="DebuggerManager">
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" line="143" class="com.adonai.GsmNotify.SettingsActivity" package="com.adonai.GsmNotify">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java" line="17" class="com.adonai.GsmNotify.MessageQueue" package="com.adonai.GsmNotify">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -139,67 +123,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="53" selection-start="1639" selection-end="1639" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SelectorActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="42" selection-start="1400" selection-end="1400" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="294" column="83" selection-start="12000" selection-end="12000" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
-          <provider selected="true" editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state line="28" column="26" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageQueue.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="60" selection-start="1016" selection-end="1016" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SettingsActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="177" column="34" selection-start="7089" selection-end="7089" vertical-scroll-proportion="0.0">
+            <state line="128" column="19" selection-start="4848" selection-end="4848" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SMSReceiveService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SMSReceiveService.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0">
+            <state line="18" column="43" selection-start="905" selection-end="905" vertical-scroll-proportion="0.4856115">
               <folding />
             </state>
           </provider>
@@ -208,7 +144,73 @@
       <file leaf-file-name="IncomingSmsBroadcastReceiver.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/IncomingSmsBroadcastReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="0" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0">
+            <state line="8" column="13" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SMSReceiveService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SMSReceiveService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="13" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SelectorActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="13" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="153" column="61" selection-start="5869" selection-end="5869" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageQueue.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Device.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="18" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="device_settings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/device_settings.xml">
+          <provider editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="arm.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/drawable/arm.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="86" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -237,22 +239,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/menu/main_menu.xml" />
-        <option value="$PROJECT_DIR$/src/com/example/GsmNotify/Main.java" />
-        <option value="$PROJECT_DIR$/res/layout/settings.xml" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/Main.java" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/IncomingSmsBroadcastReceiver.java" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/SMSReceiveService.java" />
-        <option value="$PROJECT_DIR$/res/layout/device_settings.xml" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/res/layout/main.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/arm.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/getstatus.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/relay1disable.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/relay1enable.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/relay2disable.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/relay2enable.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/temperature.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/unarm.xml" />
         <option value="$PROJECT_DIR$/res/values-ru/strings.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java" />
+        <option value="$PROJECT_DIR$/res/layout/device_settings.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -278,7 +280,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="Scope" currentSubView="All" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -290,7 +292,106 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="All">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/adonai/GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="res">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="values-ru">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="res">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="values">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="res">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="res">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="layout">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -413,6 +514,10 @@
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -432,18 +537,21 @@
     <property name="AndroidLayoutSelectedEditor" value="android-designer" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="192.168.1.82:5555" />
-    <property name="DEBUGGABLE_DEVICE" value="192.168.1.82:5555" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="DEBUGGABLE_DEVICE" value="192.168.1.82:5555" />
     <property name="DEBUGGABLE_PROCESS" value="com.adonai.GsmNotify" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="New" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Old" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/res/drawable" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.adonai" />
     </key>
@@ -480,19 +588,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -519,6 +614,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -577,8 +685,8 @@
       <option name="ACTIVITY_CLASS" value="com.adonai.GsmNotify.MainActivity" />
       <option name="MODE" value="specific_activity" />
       <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="PREFERRED_AVD" value="New" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
       <option name="COMMAND_LINE" value="" />
       <option name="WIPE_USER_DATA" value="false" />
       <option name="DISABLE_BOOT_ANIMATION" value="false" />
@@ -650,14 +758,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-2" width="1928" height="1051" extended-state="6" />
+    <frame x="-4" y="-2" width="1928" height="1051" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924226" sideWeight="0.36655593" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.310032" sideWeight="0.6714761" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977098" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -667,19 +772,22 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32852387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293718" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32924226" sideWeight="0.6256921" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19263607" sideWeight="0.6714761" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17502668" sideWeight="0.6714761" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17502668" sideWeight="0.6714761" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924226" sideWeight="0.15205327" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.310032" sideWeight="0.73140955" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977098" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -744,114 +852,113 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/java/util/Locale.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/unarm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="356" column="25" selection-start="14202" selection-end="14202" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/device_settings.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="44" selection-start="1047" selection-end="1047" vertical-scroll-proportion="0.54347825">
+        <state line="6" column="58" selection-start="344" selection-end="344" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/java/util/AbstractCollection.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/relay2enable.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="371" column="18" selection-start="15253" selection-end="15253" vertical-scroll-proportion="0.47716346" />
+        <state line="3" column="94" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/res/drawable/relay2disable.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="43" selection-start="478" selection-end="478" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="3" column="95" selection-start="298" selection-end="298" vertical-scroll-proportion="0.07785467" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-ru/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="51" selection-start="2234" selection-end="2234" vertical-scroll-proportion="0.0">
+        <state line="39" column="43" selection-start="2287" selection-end="2287" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/android/content/Intent.java">
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4111" column="0" selection-start="183263" selection-end="183263" vertical-scroll-proportion="0.0">
+        <state line="18" column="78" selection-start="955" selection-end="955" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/android/app/Instrumentation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1153" column="0" selection-start="44282" selection-end="44282" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/android/app/Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="765" column="16" selection-start="36647" selection-end="36647" vertical-scroll-proportion="0.33194155">
+    <entry file="file://$PROJECT_DIR$/res/layout/device_settings.xml">
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/IncomingSmsBroadcastReceiver.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/arm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="427" selection-end="427" vertical-scroll-proportion="0.0">
+        <state line="3" column="86" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="60" selection-start="1016" selection-end="1016" vertical-scroll-proportion="0.0">
+        <state line="17" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java">
+    <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/android/graphics/PorterDuff.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="177" column="34" selection-start="7089" selection-end="7089" vertical-scroll-proportion="0.0">
+        <state line="18" column="13" selection-start="661" selection-end="661" vertical-scroll-proportion="0.07042254">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/IncomingSmsBroadcastReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="13" selection-start="188" selection-end="188" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SMSReceiveService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0">
+        <state line="8" column="13" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="53" selection-start="1639" selection-end="1639" vertical-scroll-proportion="0.0">
+        <state line="128" column="19" selection-start="4848" selection-end="4848" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="42" selection-start="1400" selection-end="1400" vertical-scroll-proportion="0.0">
+        <state line="15" column="18" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="294" column="83" selection-start="12000" selection-end="12000" vertical-scroll-proportion="0.0">
+        <state line="153" column="61" selection-start="5869" selection-end="5869" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="13" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
-      <provider editor-type-id="text-editor">
-        <state line="28" column="26" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0">
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="43" selection-start="905" selection-end="905" vertical-scroll-proportion="0.4856115">
           <folding />
         </state>
       </provider>
