@@ -3,7 +3,7 @@
   <component name="AndroidDesignerProfile">
     <option name="fullProfile">
       <profile>
-        <option name="device" value="4in WVGA (Nexus S)" />
+        <option name="device" value="5.4in FWVGA" />
         <option name="deviceConfiguration" value="Portrait" />
         <option name="localeLanguage" value="ru" />
         <option name="targetHashString" value="android-17" />
@@ -29,23 +29,69 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6cf6f7a7-2271-483b-b6ea-d04437551cbf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/getstatus.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay1disable.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay2disable.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/relay2enable.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/temperature.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/arm.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/disarm_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/getstatus.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/guard_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_disable_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1_enable_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1disable.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay1enable.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_disable_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2_enable_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2disable.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/relay2enable.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/status_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp_portrait.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp_portrait_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp_portrait_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temp_selected.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/temperature.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/unarm.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GsmNotify.iws" afterPath="$PROJECT_DIR$/GsmNotify.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/device_settings.xml" afterPath="$PROJECT_DIR$/res/layout/device_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-ru/strings.xml" afterPath="$PROJECT_DIR$/res/values-ru/strings.xml" />
     </list>
     <ignored path="GsmNotify.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368540831446" ignored="false" />
+    <file path="/Dummy.txt" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1368788682625" ignored="false" />
     <file path="/main.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1367563976323" ignored="false" />
     <file path="/Main.java" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365430459826" ignored="false" />
     <file path="/main_menu.xml" changelist="6cf6f7a7-2271-483b-b6ea-d04437551cbf" time="1365247596432" ignored="false" />
@@ -78,8 +124,8 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -132,12 +178,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="43" selection-start="905" selection-end="905" vertical-scroll-proportion="0.4856115">
+            <state line="49" column="75" selection-start="2231" selection-end="2231" vertical-scroll-proportion="0.0">
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+          <provider editor-type-id="text-editor">
+            <state line="74" column="78" selection-start="2553" selection-end="2553" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -168,10 +226,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="153" column="61" selection-start="5869" selection-end="5869" vertical-scroll-proportion="0.0">
+            <state line="43" column="30" selection-start="1819" selection-end="1819" vertical-scroll-proportion="0.15845071">
               <folding />
             </state>
           </provider>
@@ -207,15 +265,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="arm.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/arm.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="86" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -239,7 +288,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/res/drawable/arm.xml" />
         <option value="$PROJECT_DIR$/res/drawable/getstatus.xml" />
         <option value="$PROJECT_DIR$/res/drawable/relay1disable.xml" />
@@ -253,8 +301,9 @@
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/res/layout/main.xml" />
+        <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" />
       </list>
     </option>
   </component>
@@ -292,6 +341,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="All">
           <PATH>
@@ -390,9 +440,26 @@
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GsmNotify">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="res">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="drawable">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -758,7 +825,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-2" width="1928" height="1051" extended-state="7" />
+    <frame x="-4" y="-2" width="1928" height="1051" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -773,7 +840,7 @@
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32852387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293718" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19263607" sideWeight="0.6714761" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -852,21 +919,28 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/drawable/unarm.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="58" selection-start="344" selection-end="344" vertical-scroll-proportion="0.0">
+        <state line="17" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/relay2enable.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="94" selection-start="296" selection-end="296" vertical-scroll-proportion="0.0" />
+        <state line="15" column="18" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/relay2disable.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="95" selection-start="298" selection-end="298" vertical-scroll-proportion="0.07785467" />
+    <entry file="file://$PROJECT_DIR$/res/layout/device_settings.xml">
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values-ru/strings.xml">
@@ -893,13 +967,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/arm.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="86" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MessageQueue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="0" selection-start="484" selection-end="484" vertical-scroll-proportion="0.0">
@@ -909,9 +976,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../android-sdk-linux/sources/android-16/android/graphics/PorterDuff.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="13" selection-start="661" selection-end="661" vertical-scroll-proportion="0.07042254">
-          <folding />
-        </state>
+        <state line="18" column="13" selection-start="661" selection-end="661" vertical-scroll-proportion="0.07042254" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/IncomingSmsBroadcastReceiver.java">
@@ -942,13 +1007,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="61" selection-start="5869" selection-end="5869" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SelectorActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="13" selection-start="294" selection-end="294" vertical-scroll-proportion="0.0">
@@ -958,7 +1016,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="43" selection-start="905" selection-end="905" vertical-scroll-proportion="0.4856115">
+        <state line="49" column="75" selection-start="2231" selection-end="2231" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+      <provider editor-type-id="text-editor">
+        <state line="74" column="78" selection-start="2553" selection-end="2553" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="30" selection-start="1819" selection-end="1819" vertical-scroll-proportion="0.15845071">
           <folding />
         </state>
       </provider>

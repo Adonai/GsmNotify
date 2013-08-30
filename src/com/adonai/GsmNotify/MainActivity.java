@@ -10,8 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import com.google.gson.Gson;
 
@@ -26,8 +26,8 @@ public class MainActivity extends Activity implements View.OnClickListener
     BroadcastReceiver sentReceiver, deliveryReceiver;
     Device mDevice;
 
-    ImageButton mNotifyEnable, mNotifyDisable, mRelay1Enable, mRelay1Disable, mRelay2Enable, mRelay2Disable;
-    ImageButton mGetData, mGetTemperature;
+    Button mNotifyEnable, mNotifyDisable, mRelay1Enable, mRelay1Disable, mRelay2Enable, mRelay2Disable;
+    Button mGetData, mGetTemperature;
     EditText mResultText;
 
     public  class sentConfirmReceiver extends BroadcastReceiver
@@ -71,12 +71,12 @@ public class MainActivity extends Activity implements View.OnClickListener
         deliveryReceiver = new deliveryConfirmReceiver();
 
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
-        mNotifyEnable = (ImageButton) findViewById(R.id.signal_on_button);
-        mNotifyDisable = (ImageButton) findViewById(R.id.signal_off_button);
-        mRelay1Enable = (ImageButton) findViewById(R.id.relay1_on_button);
-        mRelay1Disable = (ImageButton) findViewById(R.id.relay1_off_button);
-        mRelay2Enable = (ImageButton) findViewById(R.id.relay2_on_button);
-        mRelay2Disable = (ImageButton) findViewById(R.id.relay2_off_button);
+        mNotifyEnable = (Button) findViewById(R.id.signal_on_button);
+        mNotifyDisable = (Button) findViewById(R.id.signal_off_button);
+        mRelay1Enable = (Button) findViewById(R.id.relay1_on_button);
+        mRelay1Disable = (Button) findViewById(R.id.relay1_off_button);
+        mRelay2Enable = (Button) findViewById(R.id.relay2_on_button);
+        mRelay2Disable = (Button) findViewById(R.id.relay2_off_button);
 
         mNotifyEnable.setOnClickListener(this);
         mNotifyDisable.setOnClickListener(this);
@@ -85,9 +85,9 @@ public class MainActivity extends Activity implements View.OnClickListener
         mRelay2Enable.setOnClickListener(this);
         mRelay2Disable.setOnClickListener(this);
 
-        mGetData = (ImageButton) findViewById(R.id.get_data_button);
+        mGetData = (Button) findViewById(R.id.get_data_button);
         mGetData.setOnClickListener(this);
-        mGetTemperature = (ImageButton) findViewById(R.id.get_temperature_button);
+        mGetTemperature = (Button) findViewById(R.id.get_temperature_button);
         mGetTemperature.setOnClickListener(this);
 
         mResultText = (EditText) findViewById(R.id.result_text);
