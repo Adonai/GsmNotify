@@ -32,4 +32,35 @@
     <string name="resetting_device">Restarting device…</string>
     <string name="data_not_full">Fill all values, please</string>
     <string name="remove_device">Remove device</string><string name="send_notify_sms">Send SMS on alert</string><string name="not_send_notify_sms">Do not send SMS</string>
+    <string name="time_to_arm">Time to arm in seconds</string>
+    <string name="manage_input">Вход управления</string>
+    <string name="ibutton">I-Button</string>
+    <string name="button">Кнопка</string>
+    <string name="tumbler">Тумблер</string>
+    <string name="on_power_loss">При потере питания 220V</string>
+    <string name="send_sms">Отсылать СМС</string>
+    <string name="time_to_send">Время ожидания до отсылки</string>
+    <string name="from_0_to_255">От 0 до 255</string>
+    <string name="sms_at_arm">СМС при постановке</string>
+    <string name="sms_on_disarm">СМС при снятии</string>
+    <string name="sms_on_wrong_key">СМС - чужой ключ</string>
+    <string name="new_password">Пароль (4 цифры)</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="info">Инфо</string>
+    <string name="manage">Упр</string>
+    <string name="confirm">Под</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="recall_cycles">Циклы дозвона (1…15)</string>
+    <string name="call_length">Длительность посылки вызова (30…60)</string>
+    <string name="balance_number">Номер проверки баланса</string>
+    <string name="temper_control">Включить Т.К.?</string>
+    <string name="tc_limit">Порог температуры</string>
+    <string name="tc_growing">Режим 0 - рост температуры</string>
+    <string name="tc_fading">Режим 1 - падение температуры</string>
+    <string name="activate_sound">Активировать сирену</string>
+    <string name="activate_inner_sound">Активировать внутр. сигн.</string><string name="tc_on_limit">При достижении лимита</string><string name="termostat">Термостат (Реле 1)</string>
 </resources>
