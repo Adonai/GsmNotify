@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <EditText
-        android:layout_width="fill_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/device_name"
-        android:hint="@string/device_name"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/output_number"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"/>
 
-    <EditText
-        android:layout_width="fill_parent"
+    <RadioGroup
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/device_number"
-        android:hint="@string/device_number"
-        android:inputType="number"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/output_selector">
 
-    <EditText
-        android:layout_width="fill_parent"
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioButton"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/output_2_radio"/>
+
+    </RadioGroup>
+
+    <include
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/device_password"
-        android:hint="@string/password"
-        android:inputType="textPassword"/>
-
-
+        layout="@layout/output_setting"/>
 </LinearLayout>

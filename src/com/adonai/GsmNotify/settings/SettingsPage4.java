@@ -10,11 +10,14 @@ import com.adonai.GsmNotify.R;
 
 public class SettingsPage4 extends Fragment
 {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.settings_fragment_4, container, false);
+        View layout = inflater.inflate(R.layout.settings_fragment_4, container, false);
+        assert layout != null;
+
+        return layout;
     }
 }

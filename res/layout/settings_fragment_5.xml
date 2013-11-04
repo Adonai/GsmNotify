@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAacppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/tc_limit"
                     android:id="@+id/tc_limit_label"
                     android:gravity="center" />
@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAacppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/tmin_hint"
                     android:id="@+id/tmin_label"
                     android:gravity="center" />
@@ -127,7 +127,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAacppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/tmax_hint"
                     android:id="@+id/tmax_label"
                     android:gravity="center"

@@ -17,7 +17,14 @@
     <string name="grad">°C</string>
     <string name="temper_limit">Temperature limit</string>
     <string name="mode_0">Mode 0</string>
-    <string name="mode_1">Mode 1</string><string name="temperature_limit_settings">Set limit temperature and mode</string><string name="tmin_hint">Tmin °C</string><string name="tmax_hint">Tmax °C</string><string name="apply">Apply</string><string name="device_name">Device name</string><string name="device_number">Device GSM number</string><string name="password">Password</string>
+    <string name="mode_1">Mode 1</string>
+    <string name="temperature_limit_settings">Set limit temperature and mode</string>
+    <string name="tmin_hint">Tmin °C</string>
+    <string name="tmax_hint">Tmax °C</string>
+    <string name="apply">Apply</string>
+    <string name="device_name">Device name</string>
+    <string name="device_number">Device GSM number</string>
+    <string name="password">Password</string>
     <string name="first_launch">First launch! Please add device.</string>
     <string name="wait_please">Please wait…</string>
     <string name="querying_device">Querying device…</string>
@@ -31,7 +38,9 @@
     <string name="setting_mode">Setting device mode…</string>
     <string name="resetting_device">Restarting device…</string>
     <string name="data_not_full">Fill all values, please</string>
-    <string name="remove_device">Remove device</string><string name="send_notify_sms">Send SMS on alert</string><string name="not_send_notify_sms">Do not send SMS</string>
+    <string name="remove_device">Remove device</string>
+    <string name="send_notify_sms">Send SMS on alert</string>
+    <string name="not_send_notify_sms">Do not send SMS</string>
     <string name="time_to_arm">Time to arm in seconds</string>
     <string name="manage_input">Вход управления</string>
     <string name="ibutton">I-Button</string>
@@ -54,13 +63,35 @@
     <string name="three">3</string>
     <string name="four">4</string>
     <string name="five">5</string>
-    <string name="recall_cycles">Циклы дозвона (1…15)</string>
-    <string name="call_length">Длительность посылки вызова (30…60)</string>
+    <string name="recall_cycles">Циклы дозвона</string>
+    <string name="from_1_to_15">1…15</string>
+    <string name="call_length">Длительность посылки вызова</string>
+    <string name="from_30_to_60">30…60</string>
     <string name="balance_number">Номер проверки баланса</string>
     <string name="temper_control">Включить Т.К.?</string>
     <string name="tc_limit">Порог температуры</string>
     <string name="tc_growing">Режим 0 - рост температуры</string>
     <string name="tc_fading">Режим 1 - падение температуры</string>
     <string name="activate_sound">Активировать сирену</string>
-    <string name="activate_inner_sound">Активировать внутр. сигн.</string><string name="tc_on_limit">При достижении лимита</string><string name="termostat">Термостат (Реле 1)</string>
+    <string name="activate_inner_sound">Активировать внутр. сигн.</string>
+    <string name="tc_on_limit">При достижении лимита</string>
+    <string name="termostat">Термостат (Реле 1)</string>
+    <string name="temperature">Температуры</string>
+    <string name="outputs">Выходы</string>
+    <string name="inputs">Входы</string>
+    <string name="phones">Телефоны</string>
+    <string name="common">Общие</string>
+    <string name="time_to_wait_before_call">Время до начала дозвона или СМС</string>
+    <string name="time_to_rearm">Время до восстановления наблюдения</string>
+    <string name="constant_control">Постоянный контроль</string>
+    <string name="inner_sound">Внутренний сигнализатор</string>
+    <string name="phone_id">ID телефона</string>
+    <string name="call">Дозвон</string>
+    <string name="sms">СМС</string>
+    <string name="sms_text">Текст СМС (до 40 символов)</string>
+    <string name="pcn">ПЦН</string>
+    <string name="enable_on_arm_disable_on_unarm">Вкл при постановке, откл при снятии</string>
+    <string name="enable_on_unarm">Вкл. при снятии</string>
+    <string name="enable_on_alarm">Вкл при тревоге</string>
+    <string name="from_0_to_1500">От 0 до 1500</string><string name="output_number">Номер выхода</string><string name="input_number">Номер входа</string>
 </resources>
