@@ -11,7 +11,8 @@
         <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -30,21 +31,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/info"
                     android:id="@+id/textView2"
-                    android:layout_column="2" />
+                    android:layout_column="2"
+                    android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manage"
                     android:id="@+id/textView3"
-                    android:layout_column="3" />
+                    android:layout_column="3"
+                    android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/confirm"
                     android:id="@+id/textView4"
-                    android:layout_column="4" />
+                    android:layout_column="4"
+                    android:layout_gravity="center_horizontal"/>
             </TableRow>
 
             <TableRow
@@ -228,7 +232,9 @@
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/border"
+            android:layout_margin="10dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -242,10 +248,11 @@
                     android:inputType="number"
                     android:ems="4"
                     android:id="@+id/recall_cycles_edit"
-                    android:hint="@string/from_1_to_15"/>
+                    android:hint="@string/from_1_to_15"
+                    android:layout_marginRight="30dp"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/recall_cycles"
@@ -265,10 +272,11 @@
                     android:inputType="number"
                     android:ems="4"
                     android:id="@+id/call_length_edit"
-                    android:hint="@string/from_30_to_60"/>
+                    android:hint="@string/from_30_to_60"
+                    android:layout_marginRight="30dp"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/call_length"
@@ -286,10 +294,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="4"
-                    android:id="@+id/balance_number_edit" />
+                    android:id="@+id/balance_number_edit"
+                    android:layout_marginRight="30dp"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/balance_number"

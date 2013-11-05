@@ -30,6 +30,12 @@
           <theme>@android:style/Theme</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/res/layout/settings_fragment_1.xml">
+        <config>
+          <device>Nexus 4</device>
+          <theme>@android:style/Theme.Holo</theme>
+        </config>
+      </layout>
     </layouts>
   </component>
   <component name="AndroidLogFilters">
@@ -37,23 +43,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6cf6f7a7-2271-483b-b6ea-d04437551cbf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GsmNotify.iml" afterPath="$PROJECT_DIR$/GsmNotify.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GsmNotify.ipr" afterPath="$PROJECT_DIR$/GsmNotify.ipr" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/border.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GsmNotify.iws" afterPath="$PROJECT_DIR$/GsmNotify.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage3.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage3.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage4.java" afterPath="$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage4.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/device_settings.xml" afterPath="$PROJECT_DIR$/res/layout/device_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/input_setting.xml" afterPath="$PROJECT_DIR$/res/layout/input_setting.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/output_setting.xml" afterPath="$PROJECT_DIR$/res/layout/output_setting.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project.properties" afterPath="$PROJECT_DIR$/project.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings_fragment_1.xml" afterPath="$PROJECT_DIR$/res/layout/settings_fragment_1.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings_fragment_2.xml" afterPath="$PROJECT_DIR$/res/layout/settings_fragment_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings_fragment_3.xml" afterPath="$PROJECT_DIR$/res/layout/settings_fragment_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings_fragment_4.xml" afterPath="$PROJECT_DIR$/res/layout/settings_fragment_4.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/settings_fragment_5.xml" afterPath="$PROJECT_DIR$/res/layout/settings_fragment_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-ru/strings.xml" afterPath="$PROJECT_DIR$/res/values-ru/strings.xml" />
     </list>
     <ignored path="GsmNotify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -118,18 +114,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="settings_fragment_2.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="settings_fragment_2.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_2.xml">
           <provider editor-type-id="text-editor">
-            <state line="267" column="32" selection-start="10532" selection-end="10532" vertical-scroll-proportion="-14.7" vertical-offset="3564" max-vertical-offset="4620">
-              <folding>
-                <element signature="e#9561#9583#0" expanded="true" />
-                <element signature="e#10533#10556#0" expanded="true" />
-              </folding>
+            <state line="274" column="32" selection-start="10913" selection-end="10913" vertical-scroll-proportion="0.0" vertical-offset="3669" max-vertical-offset="4755">
+              <folding />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer">
             <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SettingsPage1.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage1.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="38" selection-start="38" selection-end="38" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SettingsPage2.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="1" selection-start="590" selection-end="590" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
@@ -137,22 +148,11 @@
         <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_3.xml">
           <provider editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
-              <folding>
-                <element signature="e#440#462#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer">
             <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SettingsPage4.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage4.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="0" selection-start="589" selection-end="589" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
-              <folding />
-            </state>
           </provider>
         </entry>
       </file>
@@ -160,9 +160,7 @@
         <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_4.xml">
           <provider editor-type-id="text-editor">
             <state line="31" column="0" selection-start="1122" selection-end="1122" vertical-scroll-proportion="0.0" vertical-offset="115" max-vertical-offset="660">
-              <folding>
-                <element signature="e#440#463#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer">
@@ -170,12 +168,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SettingsPage2.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="13" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+      <file leaf-file-name="output_setting.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/output_setting.xml">
+          <provider editor-type-id="text-editor">
+            <state line="80" column="80" selection-start="3665" selection-end="3665" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1425">
               <folding />
             </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -188,33 +189,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="input_setting.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/input_setting.xml">
+      <file leaf-file-name="Device.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="0" selection-start="0" selection-end="9386" vertical-scroll-proportion="-11.428572" vertical-offset="3055" max-vertical-offset="3600">
+            <state line="17" column="0" selection-start="309" selection-end="309" vertical-scroll-proportion="0.4450262" vertical-offset="0" max-vertical-offset="573">
               <folding />
             </state>
           </provider>
-          <provider editor-type-id="android-designer">
+        </entry>
+      </file>
+      <file leaf-file-name="device_settings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/device_settings.xml">
+          <provider editor-type-id="text-editor">
+            <state line="19" column="40" selection-start="306" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="510">
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="18" selection-start="3499" selection-end="3499" vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1545">
+      <file leaf-file-name="input_setting.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/input_setting.xml">
+          <provider editor-type-id="text-editor">
+            <state line="228" column="0" selection-start="0" selection-end="9536" vertical-scroll-proportion="0.0" vertical-offset="3100" max-vertical-offset="3645">
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values-ru/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="0" selection-start="3435" selection-end="3652" vertical-scroll-proportion="0.0" vertical-offset="672" max-vertical-offset="1530">
-              <folding />
-            </state>
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -241,14 +245,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/MainActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/settings_fragment_1.xml" />
-        <option value="$PROJECT_DIR$/res/layout/settings_fragment_5.xml" />
         <option value="$PROJECT_DIR$/../Android-ViewPagerIndicator/pom.xml" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/input_setting.xml" />
-        <option value="$PROJECT_DIR$/res/layout/output_setting.xml" />
         <option value="$PROJECT_DIR$/res/layout/device_settings.xml" />
         <option value="$PROJECT_DIR$/res/layout/settings_fragment_4.xml" />
         <option value="$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage3.java" />
@@ -256,7 +255,12 @@
         <option value="$PROJECT_DIR$/res/layout/settings_fragment_3.xml" />
         <option value="$PROJECT_DIR$/res/values-ru/strings.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/border.xml" />
+        <option value="$PROJECT_DIR$/res/layout/settings_fragment_1.xml" />
         <option value="$PROJECT_DIR$/res/layout/settings_fragment_2.xml" />
+        <option value="$PROJECT_DIR$/res/layout/settings_fragment_5.xml" />
+        <option value="$PROJECT_DIR$/res/layout/input_setting.xml" />
+        <option value="$PROJECT_DIR$/res/layout/output_setting.xml" />
       </list>
     </option>
   </component>
@@ -541,6 +545,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GsmNotify" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GsmNotify" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -559,7 +581,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Android-ViewPagerIndicator/library" />
     <property name="AndroidLayoutSelectedEditor" value="android-designer" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="192.168.0.82:5555" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5556" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="DEBUGGABLE_DEVICE" value="192.168.1.82:5555" />
     <property name="DEBUGGABLE_PROCESS" value="com.adonai.GsmNotify" />
@@ -735,7 +757,7 @@
       <option name="MODE" value="specific_activity" />
       <option name="DEPLOY" value="true" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -864,52 +886,55 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../Android-ViewPagerIndicator/pom.xml">
+    <entry file="file://$PROJECT_DIR$/res/values-ru/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="945" />
+        <state line="63" column="0" selection-start="3435" selection-end="3652" vertical-scroll-proportion="0.4764398" vertical-offset="672" max-vertical-offset="1530">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Android-ViewPagerIndicator/library/pom.xml">
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="12" selection-start="395" selection-end="395" vertical-scroll-proportion="0.13793103" vertical-offset="47" max-vertical-offset="945" />
+        <state line="66" column="18" selection-start="3499" selection-end="3499" vertical-scroll-proportion="0.33333334" vertical-offset="799" max-vertical-offset="1545">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Android-ViewPagerIndicator/library/src/com/viewpagerindicator/TabPageIndicator.java">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage4.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="213" column="30" selection-start="7219" selection-end="7224" vertical-scroll-proportion="-6.0666666" vertical-offset="2518" max-vertical-offset="3780" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/SettingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="4" selection-start="1704" selection-end="1721" vertical-scroll-proportion="0.0" vertical-offset="380" max-vertical-offset="4455">
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2049#2085#0" expanded="false" />
-            <element signature="e#2222#2257#0" expanded="false" />
-            <element signature="e#2389#2419#0" expanded="false" />
-            <element signature="e#2549#2581#0" expanded="false" />
-            <element signature="e#2707#2736#0" expanded="false" />
-            <element signature="e#3265#3304#0" expanded="false" />
-            <element signature="e#3446#3481#0" expanded="false" />
-            <element signature="e#9937#9969#0" expanded="false" />
-            <element signature="e#10672#10708#0" expanded="false" />
-          </folding>
+        <state line="19" column="0" selection-start="589" selection-end="589" vertical-scroll-proportion="0.34031415" vertical-offset="0" max-vertical-offset="573">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_1.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="41" selection-end="189" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="2490">
-          <folding />
+      <provider editor-type-id="text-editor">
+        <state line="29" column="73" selection-start="1139" selection-end="1139" vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="2595">
+          <folding>
+            <element signature="e#862#885#0" expanded="true" />
+            <element signature="e#1170#1191#0" expanded="true" />
+            <element signature="e#1803#1825#0" expanded="true" />
+            <element signature="e#2101#2118#0" expanded="true" />
+            <element signature="e#2331#2347#0" expanded="true" />
+            <element signature="e#2560#2577#0" expanded="true" />
+            <element signature="e#3139#3162#0" expanded="true" />
+            <element signature="e#3468#3486#0" expanded="true" />
+            <element signature="e#4043#4066#0" expanded="true" />
+            <element signature="e#4322#4344#0" expanded="true" />
+            <element signature="e#4914#4934#0" expanded="true" />
+            <element signature="e#5141#5164#0" expanded="true" />
+            <element signature="e#5371#5397#0" expanded="true" />
+            <element signature="e#6261#6283#0" expanded="true" />
+          </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
+      <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/output_setting.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_5.xml">
       <provider editor-type-id="text-editor">
-        <state line="80" column="80" selection-start="3628" selection-end="3628" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1425">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2310">
           <folding />
         </state>
       </provider>
@@ -927,59 +952,75 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values-ru/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="0" selection-start="3435" selection-end="3652" vertical-scroll-proportion="0.0" vertical-offset="672" max-vertical-offset="1530">
+    <entry file="file://$PROJECT_DIR$/res/layout/input_setting.xml">
+      <provider editor-type-id="text-editor">
+        <state line="228" column="0" selection-start="0" selection-end="9536" vertical-scroll-proportion="0.0" vertical-offset="3100" max-vertical-offset="3645">
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/input_setting.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="0" selection-start="0" selection-end="9386" vertical-scroll-proportion="-11.428572" vertical-offset="3055" max-vertical-offset="3600">
+    <entry file="file://$PROJECT_DIR$/res/layout/output_setting.xml">
+      <provider editor-type-id="text-editor">
+        <state line="80" column="80" selection-start="3665" selection-end="3665" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1425">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
+      <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_4.xml">
       <provider editor-type-id="text-editor">
         <state line="31" column="0" selection-start="1122" selection-end="1122" vertical-scroll-proportion="0.0" vertical-offset="115" max-vertical-offset="660">
-          <folding>
-            <element signature="e#440#463#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_3.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_2.xml">
       <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
-          <folding>
-            <element signature="e#440#462#0" expanded="true" />
-          </folding>
+        <state line="274" column="32" selection-start="10913" selection-end="10913" vertical-scroll-proportion="0.0" vertical-offset="3669" max-vertical-offset="4755">
+          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="18" selection-start="3499" selection-end="3499" vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1545">
+        <state line="0" column="38" selection-start="38" selection-end="38" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="13" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+        <state line="19" column="1" selection-start="590" selection-end="590" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/border.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="67" selection-start="178" selection-end="178" vertical-scroll-proportion="0.05235602" vertical-offset="0" max-vertical-offset="573">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_3.xml">
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage3.java">
@@ -989,24 +1030,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/settings/SettingsPage4.java">
+    <entry file="file://$PROJECT_DIR$/src/com/adonai/GsmNotify/Device.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="0" selection-start="589" selection-end="589" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
+        <state line="17" column="0" selection-start="309" selection-end="309" vertical-scroll-proportion="0.4450262" vertical-offset="0" max-vertical-offset="573">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/settings_fragment_2.xml">
-      <provider editor-type-id="text-editor">
-        <state line="267" column="32" selection-start="10532" selection-end="10532" vertical-scroll-proportion="-14.7" vertical-offset="3564" max-vertical-offset="4620">
-          <folding>
-            <element signature="e#9561#9583#0" expanded="true" />
-            <element signature="e#10533#10556#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
   </component>
