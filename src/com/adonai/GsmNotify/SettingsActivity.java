@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.adonai.GsmNotify.settings.SettingsFragment;
 import com.adonai.GsmNotify.settings.SettingsPage1;
 import com.adonai.GsmNotify.settings.SettingsPage2;
 import com.adonai.GsmNotify.settings.SettingsPage3;
@@ -47,7 +48,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     Handler mHandler;
 
     FragmentManager mFragmentManager;
-    Fragment mSettingsPage1, mSettingsPage2, mSettingsPage3, mSettingsPage4, mSettingsPage5;
+    SettingsFragment mSettingsPage1, mSettingsPage2, mSettingsPage3, mSettingsPage4, mSettingsPage5;
     ViewPager mPager;
     FragmentPagerAdapter mPagerAdapter;
 

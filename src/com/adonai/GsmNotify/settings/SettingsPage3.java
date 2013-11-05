@@ -6,9 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
 
-public class SettingsPage3 extends Fragment
+public class SettingsPage3 extends SettingsFragment
 {
 
     @Override
@@ -19,5 +20,11 @@ public class SettingsPage3 extends Fragment
         assert layout != null;
 
         return layout;
+    }
+
+    @Override
+    public String compileDiff(Device source)
+    {
+        return null;
     }
 }

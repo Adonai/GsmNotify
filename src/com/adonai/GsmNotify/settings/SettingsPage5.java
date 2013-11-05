@@ -6,9 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
 
-public class SettingsPage5 extends Fragment
+public class SettingsPage5 extends SettingsFragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -16,5 +17,11 @@ public class SettingsPage5 extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.settings_fragment_5, container, false);
+    }
+
+    @Override
+    public String compileDiff(Device source)
+    {
+        return null;
     }
 }

@@ -11,7 +11,8 @@
         <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:id="@+id/phones_table">
 
             <TableRow
                 android:layout_width="fill_parent"

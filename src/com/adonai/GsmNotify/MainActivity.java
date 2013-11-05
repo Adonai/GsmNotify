@@ -256,28 +256,28 @@ public class MainActivity extends Activity implements View.OnClickListener
         switch (view.getId())
         {
             case R.id.relay1_on_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_set_1=1#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_set_1=1#", sentPI, deliveredPI);
                 break;
             case R.id.relay1_off_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_set_1=0#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_set_1=0#", sentPI, deliveredPI);
                 break;
             case R.id.relay2_on_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_set_2=1#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_set_2=1#", sentPI, deliveredPI);
                 break;
             case R.id.relay2_off_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_set_2=0#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_set_2=0#", sentPI, deliveredPI);
                 break;
             case R.id.get_data_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_info#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_info#", sentPI, deliveredPI);
                 break;
             case R.id.get_temperature_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_temp#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_temp#", sentPI, deliveredPI);
                 break;
             case R.id.signal_on_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_on#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_on#", sentPI, deliveredPI);
                 break;
             case R.id.signal_off_button:
-                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.password + "#_off#", sentPI, deliveredPI);
+                sms.sendTextMessage(mDevice.number, null, "*" + mDevice.devicePassword + "#_off#", sentPI, deliveredPI);
                 break;
         }
     }
