@@ -9,17 +9,19 @@
 
 
         <CheckBox
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/temper_control"
             android:id="@+id/tc_checkbox"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:background="@drawable/border"/>
 
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tc_mode_group"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -60,7 +62,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tc_on_limit_group"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,7 +96,9 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:background="@drawable/border"
+            android:layout_margin="10dp">
 
             <TextView
                 android:layout_width="wrap_content"

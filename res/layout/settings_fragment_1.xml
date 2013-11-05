@@ -12,7 +12,8 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -20,12 +21,13 @@
                 android:inputType="number"
                 android:ems="6"
                 android:id="@+id/time_to_arm_edit"
-                android:hint="@string/from_0_to_255" />
+                android:hint="@string/from_0_to_255"
+                android:layout_marginRight="30dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/time_to_arm"
                 android:id="@+id/time_to_arm_label"
                 android:gravity="center" />
@@ -35,7 +37,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/manage_input_group"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -68,7 +71,8 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,7 +93,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                >
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -113,7 +117,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sms_at_group"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -138,19 +143,21 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="@drawable/border">
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="6"
-                android:id="@+id/new_password_edit" />
+                android:id="@+id/new_password_edit"
+                android:layout_marginRight="30dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/new_password"
                 android:id="@+id/new_password_label"
                 android:gravity="center" />
