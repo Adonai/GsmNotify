@@ -21,45 +21,45 @@
                     android:inputType="number"
                     android:ems="8"
                     android:hint="@string/from_0_to_255"
-                    android:id="@+id/time_to_wait_edit"
+                    android:id="@+id/enable_on_unarm_edit"
                     android:textSize="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_alignParentEnd="false"
-                    android:layout_above="@+id/time_to_rearm_edit"
-                    android:layout_alignLeft="@+id/time_to_rearm_edit"/>
+                    android:layout_above="@+id/enable_on_alarm_edit"
+                    android:layout_alignLeft="@+id/enable_on_alarm_edit"/>
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="8"
-                    android:id="@+id/time_to_rearm_edit"
+                    android:id="@+id/enable_on_alarm_edit"
                     android:hint="@string/from_0_to_1500"
                     android:textSize="10dp"
                     android:layout_gravity="right"
                     android:layout_marginTop="0dp"
                     android:layout_alignParentEnd="false"
-                    android:layout_alignBottom="@+id/output_radios"
-                    android:layout_alignRight="@+id/output_radios"/>
+                    android:layout_alignBottom="@+id/output_mode_radios"
+                    android:layout_alignRight="@+id/output_mode_radios"/>
 
                 <RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/output_radios"
+                    android:id="@+id/output_mode_radios"
                     >
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pcn"
-                    android:id="@+id/output_1_radio"
+                    android:id="@+id/output_1_mode_radio"
                     android:textAppearance="@android:style/TextAppearance.Small"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enable_on_arm_disable_on_unarm"
-                    android:id="@+id/output_2_radio"
+                    android:id="@+id/output_2_mode_radio"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     />
 
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enable_on_unarm"
-                    android:id="@+id/output_3_radio"
+                    android:id="@+id/output_3_mode_radio"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     />
 
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/enable_on_alarm"
-                    android:id="@+id/output_4_radio"
+                    android:id="@+id/output_4_mode_radio"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="0dp"
                     android:textAppearance="@android:style/TextAppearance.Small"/>
