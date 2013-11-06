@@ -23,7 +23,7 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/output_mode_radios"/>
+            android:id="@+id/input_1_radio"/>
 
         <RadioButton
             android:layout_width="wrap_content"

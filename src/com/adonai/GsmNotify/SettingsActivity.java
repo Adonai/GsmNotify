@@ -48,10 +48,11 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     Handler mHandler;
 
     FragmentManager mFragmentManager;
-    SettingsFragment mSettingsPage1, mSettingsPage2, mSettingsPage3, mSettingsPage4, mSettingsPage5;
+    SettingsFragment[] mSettingsPage = new SettingsFragment[5];
     ViewPager mPager;
     FragmentPagerAdapter mPagerAdapter;
 
+    Device mSavedDevice, mNewDevice;
 
     public  class sentConfirmReceiver extends BroadcastReceiver
     {
@@ -103,11 +104,11 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         deliveryReceiver = new deliveryConfirmReceiver();
         mFragmentManager = getSupportFragmentManager();
 
-        mSettingsPage1 = new SettingsPage1();
-        mSettingsPage2 = new SettingsPage2();
-        mSettingsPage3 = new SettingsPage3();
-        mSettingsPage4 = new SettingsPage4();
-        mSettingsPage5 = new SettingsPage5();
+        mSettingsPage[0] = new SettingsPage1();
+        mSettingsPage[1] = new SettingsPage2();
+        mSettingsPage[2] = new SettingsPage3();
+        mSettingsPage[3] = new SettingsPage4();
+        mSettingsPage[4] = new SettingsPage5();
 
         mPager = (ViewPager) findViewById(R.id.settings_page_holder);
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager)
@@ -115,15 +116,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             @Override
             public Fragment getItem(int i)
             {
-                switch(i)
-                {
-                    case 0: return mSettingsPage1;
-                    case 1: return mSettingsPage2;
-                    case 2: return mSettingsPage3;
-                    case 3: return mSettingsPage4;
-                    case 4: return mSettingsPage5;
-                    default: return null;
-                }
+                assert i < mSettingsPage.length;
+                return mSettingsPage[i];
             }
 
             @Override
@@ -161,7 +155,11 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
     private void prepareUI(String id)
     {
-        Device dev = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+        mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+
+        for(SettingsFragment sf : mSettingsPage)
+            sf.resetUI(mSavedDevice);
+
         /*mNumber.setText(dev.number);
         mName.setText(dev.name);
         mPassword.setText(dev.password);
