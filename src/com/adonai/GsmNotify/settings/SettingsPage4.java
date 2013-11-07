@@ -1,7 +1,6 @@
 package com.adonai.GsmNotify.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,14 @@ public class SettingsPage4 extends SettingsFragment
 
     RadioGroup mOutputNum;
     RadioGroup mOutputMode;
-    EditText mEnableOnUnarm, mEnableOnAlarm;
+    EditText mEnableOnDisarm, mEnableOnAlert;
+
+    Integer mCurrentOutput;
+
+    public SettingsPage4(Device source)
+    {
+        super(source);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -26,17 +32,62 @@ public class SettingsPage4 extends SettingsFragment
         assert layout != null;
 
         mOutputNum = (RadioGroup) layout.findViewById(R.id.output_selector);
+        mOutputNum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.output_1_radio: resetOutput(0); break;
+                    case R.id.output_2_radio: resetOutput(1); break;
+                }
+            }
+        });
         mOutputMode = (RadioGroup) layout.findViewById(R.id.output_mode_radios);
 
-        mEnableOnUnarm = (EditText) layout.findViewById(R.id.enable_on_unarm_edit);
-        mEnableOnAlarm = (EditText) layout.findViewById(R.id.enable_on_alarm_edit);
+        mEnableOnDisarm = (EditText) layout.findViewById(R.id.enable_on_disarm_edit);
+        mEnableOnAlert = (EditText) layout.findViewById(R.id.enable_on_alert_edit);
+
+        mOutputNum.check(R.id.output_1_radio);
 
         return layout;
     }
 
-    @Override
-    public String compileDiff(Device source)
+    public void resetOutput(int index)
     {
-        return null;
+        if(mCurrentOutput != null) // not init start
+            compileDiff();
+
+        mCurrentOutput = index;
+
+        Device.OutputSettings curr = mSource.outputs[mCurrentOutput];
+        switch (curr.outputMode)
+        {
+            case 1: mOutputMode.check(R.id.output_1_mode_radio); break;
+            case 2: mOutputMode.check(R.id.output_2_mode_radio); break;
+            case 3: mOutputMode.check(R.id.output_3_mode_radio); break;
+            case 4: mOutputMode.check(R.id.output_4_mode_radio); break;
+        }
+
+        mEnableOnAlert.setText(curr.timeToEnableOnAlert);
+        mEnableOnDisarm.setText(curr.timeToEnableOnDisarm);
+    }
+
+    @Override
+    public void compileDiff()
+    {
+        Device.OutputSettings curr = mSource.outputs[mCurrentOutput];
+
+        switch (mOutputMode.getCheckedRadioButtonId())
+        {
+            case R.id.output_1_mode_radio: curr.outputMode = 1; break;
+            case R.id.output_2_mode_radio: curr.outputMode = 2; break;
+            case R.id.output_3_mode_radio: curr.outputMode = 3; break;
+            case R.id.output_4_mode_radio: curr.outputMode = 4; break;
+        }
+
+        curr.timeToEnableOnAlert = getValue(mEnableOnAlert.getText().toString(), 0);
+        curr.timeToEnableOnDisarm = getValue(mEnableOnDisarm.getText().toString(), 0);
     }
 }

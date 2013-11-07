@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -20,6 +19,11 @@ public class SettingsPage1 extends SettingsFragment
     EditText mTimeToWait;
     RadioGroup mSmsSendSetting;
     EditText mPassword;
+
+    public SettingsPage1(Device source)
+    {
+        super(source);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -37,40 +41,50 @@ public class SettingsPage1 extends SettingsFragment
         mSmsSendSetting = (RadioGroup) layout.findViewById(R.id.sms_at_group);
         mPassword = (EditText) layout.findViewById(R.id.new_password_edit);
 
+        mTimeToArm.setText(mSource.timeToArm);
+        switch (mSource.inputManager)
+        {
+            case 1: mInputManager.check(R.id.manage_input_1); break;
+            case 2: mInputManager.check(R.id.manage_input_2); break;
+            case 3: mInputManager.check(R.id.manage_input_3); break;
+        }
+        mSendSMS.setChecked(mSource.sendSmsOnPowerLoss);
+        mTimeToWait.setText(mSource.timeToWaitOnPowerLoss);
+        switch (mSource.smsSendSetting)
+        {
+            case 1: mSmsSendSetting.check(R.id.sms_at_1); break;
+            case 2: mSmsSendSetting.check(R.id.sms_at_2); break;
+            case 3: mSmsSendSetting.check(R.id.sms_at_3); break;
+        }
+        mPassword.setText(mSource.devicePassword);
 
         return layout;
     }
 
     @Override
-    public void resetUI(Device source)
+    public void compileDiff()
     {
-
-    }
-
-    @Override
-    public void compileDiff(final Device source)
-    {
-        source.timeToArm = getValue(mTimeToArm.getText().toString(), 0);
+        mSource.timeToArm = getValue(mTimeToArm.getText().toString(), 0);
 
         switch (mInputManager.getCheckedRadioButtonId())
         {
             case -1:
-            case R.id.manage_input_1: source.inputManager = 1; break;
-            case R.id.manage_input_2: source.inputManager = 2; break;
-            case R.id.manage_input_3: source.inputManager = 3; break;
+            case R.id.manage_input_1: mSource.inputManager = 1; break;
+            case R.id.manage_input_2: mSource.inputManager = 2; break;
+            case R.id.manage_input_3: mSource.inputManager = 3; break;
         }
 
-        source.sendSmsOnPowerLoss = mSendSMS.isChecked();
-        source.timeToWaitOnPowerLoss = getValue(mTimeToWait.getText().toString(), 0);
+        mSource.sendSmsOnPowerLoss = mSendSMS.isChecked();
+        mSource.timeToWaitOnPowerLoss = getValue(mTimeToWait.getText().toString(), 0);
 
         switch (mSmsSendSetting.getCheckedRadioButtonId())
         {
             case -1:
-            case R.id.sms_at_1: source.smsSendSetting = 1; break;
-            case R.id.sms_at_2: source.smsSendSetting = 2; break;
-            case R.id.sms_at_3: source.smsSendSetting = 3; break;
+            case R.id.sms_at_1: mSource.smsSendSetting = 1; break;
+            case R.id.sms_at_2: mSource.smsSendSetting = 2; break;
+            case R.id.sms_at_3: mSource.smsSendSetting = 3; break;
         }
 
-        source.devicePassword = mPassword.getText().toString();
+        mSource.devicePassword = mPassword.getText().toString();
     }
 }

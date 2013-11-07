@@ -1,7 +1,6 @@
 package com.adonai.GsmNotify.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,12 @@ public class SettingsPage3 extends SettingsFragment
     CheckBox mConstantControl, mInnerSound;
     EditText mSmsText;
 
-    Device.InputSettings[] mInnerDIS;
+    Integer mCurrentInput;
+
+    public SettingsPage3(Device source)
+    {
+        super(source);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -52,24 +56,40 @@ public class SettingsPage3 extends SettingsFragment
 
         mSmsText = (EditText) layout.findViewById(R.id.sms_text_edit);
 
-        return layout;
-    }
-
-    @Override
-    public void resetUI(Device source)
-    {
-        mInnerDIS = source.inputs.clone();
         mInputNum.check(R.id.input_1_radio);
+
+        return layout;
     }
 
     public void resetInput(int index)
     {
+        if(mCurrentInput != null) // not init start
+            compileDiff();
 
+        mCurrentInput = index;
+
+        Device.InputSettings curr = mSource.inputs[mCurrentInput];
+
+        mTimeToWait.setText(curr.timeToWaitBeforeCall);
+        mTimeToRearm.setText(curr.timeToRearm);
+
+        mConstantControl.setChecked(curr.constantControl);
+        mInnerSound.setChecked(curr.innerSound);
+
+        mSmsText.setText(curr.smsText);
     }
 
     @Override
-    public void compileDiff(Device source)
+    public void compileDiff()
     {
-        source.inputs = mInnerDIS.clone();
+        Device.InputSettings curr = mSource.inputs[mCurrentInput];
+
+        curr.timeToWaitBeforeCall = getValue(mTimeToWait.getText().toString(), 0);
+        curr.timeToRearm = getValue(mTimeToRearm.getText().toString(), 0);
+
+        curr.constantControl = mConstantControl.isChecked();
+        curr.innerSound = mInnerSound.isChecked();
+
+        curr.smsText = mSmsText.getText().toString();
     }
 }

@@ -1,7 +1,6 @@
 package com.adonai.GsmNotify.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,11 @@ public class SettingsPage5 extends SettingsFragment
     RadioGroup mTcOnLimitGroup;
     EditText mTMin, mTMax;
 
+    public SettingsPage5(Device source)
+    {
+        super(source);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -35,12 +39,45 @@ public class SettingsPage5 extends SettingsFragment
         mTMin = (EditText) layout.findViewById(R.id.tc_min);
         mTMax = (EditText) layout.findViewById(R.id.tc_max);
 
+        mTcEnable.setChecked(mSource.enableTC);
+        mTempLimit.setText(mSource.tempLimit);
+        switch (mSource.tempMode)
+        {
+            case 0: mTcModeGroup.check(R.id.tc_mode_0); break;
+            case 1: mTcModeGroup.check(R.id.tc_mode_1); break;
+        }
+        switch (mSource.onLimitReach)
+        {
+            case 1: mTcOnLimitGroup.check(R.id.tc_on_limit_1); break;
+            case 2: mTcOnLimitGroup.check(R.id.tc_on_limit_2); break;
+            case 3: mTcOnLimitGroup.check(R.id.tc_on_limit_3); break;
+        }
+        mTMin.setText(mSource.tMin);
+        mTMax.setText(mSource.tMax);
+
         return layout;
     }
 
     @Override
-    public String compileDiff(Device source)
+    public void compileDiff()
     {
-        return null;
+        mSource.enableTC = mTcEnable.isChecked();
+        mSource.tempLimit = getValue(mTempLimit.getText().toString(), 20);
+
+        switch (mTcModeGroup.getCheckedRadioButtonId())
+        {
+            case R.id.tc_mode_0: mSource.tempMode = 0; break;
+            case R.id.tc_mode_1: mSource.tempMode = 1; break;
+        }
+
+        switch (mTcOnLimitGroup.getCheckedRadioButtonId())
+        {
+            case R.id.tc_on_limit_1: mSource.onLimitReach = 1; break;
+            case R.id.tc_on_limit_2: mSource.onLimitReach = 2; break;
+            case R.id.tc_on_limit_3: mSource.onLimitReach = 3; break;
+        }
+
+        mSource.tMin = getValue(mTMin.getText().toString(), 15);
+        mSource.tMax = getValue(mTMax.getText().toString(), 25);
     }
 }

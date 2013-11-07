@@ -104,12 +104,6 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         deliveryReceiver = new deliveryConfirmReceiver();
         mFragmentManager = getSupportFragmentManager();
 
-        mSettingsPage[0] = new SettingsPage1();
-        mSettingsPage[1] = new SettingsPage2();
-        mSettingsPage[2] = new SettingsPage3();
-        mSettingsPage[3] = new SettingsPage4();
-        mSettingsPage[4] = new SettingsPage5();
-
         mPager = (ViewPager) findViewById(R.id.settings_page_holder);
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager)
         {
@@ -147,18 +141,29 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mApply = (Button) findViewById(R.id.device_apply);
         mApply.setOnClickListener(this);
 
-        if(getIntent().hasExtra("ID"))
-            prepareUI(getIntent().getStringExtra("ID"));
+        prepareUI(getIntent().getStringExtra("ID"));
 
         mHandler = new Handler(this);
     }
 
     private void prepareUI(String id)
     {
-        mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+        if(id != null)
+        {
+            mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+            mNewDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+        }
+        else
+        {
+            mSavedDevice = new Device();
+            mNewDevice = new Device();
+        }
 
-        for(SettingsFragment sf : mSettingsPage)
-            sf.resetUI(mSavedDevice);
+        mSettingsPage[0] = new SettingsPage1(mSavedDevice);
+        mSettingsPage[1] = new SettingsPage2(mSavedDevice);
+        mSettingsPage[2] = new SettingsPage3(mSavedDevice);
+        mSettingsPage[3] = new SettingsPage4(mSavedDevice);
+        mSettingsPage[4] = new SettingsPage5(mSavedDevice);
 
         /*mNumber.setText(dev.number);
         mName.setText(dev.name);

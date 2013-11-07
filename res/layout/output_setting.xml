@@ -21,19 +21,19 @@
                     android:inputType="number"
                     android:ems="8"
                     android:hint="@string/from_0_to_255"
-                    android:id="@+id/enable_on_unarm_edit"
+                    android:id="@+id/enable_on_disarm_edit"
                     android:textSize="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_alignParentEnd="false"
-                    android:layout_above="@+id/enable_on_alarm_edit"
-                    android:layout_alignLeft="@+id/enable_on_alarm_edit"/>
+                    android:layout_above="@+id/enable_on_alert_edit"
+                    android:layout_alignLeft="@+id/enable_on_alert_edit"/>
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="8"
-                    android:id="@+id/enable_on_alarm_edit"
+                    android:id="@+id/enable_on_alert_edit"
                     android:hint="@string/from_0_to_1500"
                     android:textSize="10dp"
                     android:layout_gravity="right"

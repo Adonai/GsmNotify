@@ -8,6 +8,13 @@ import java.lang.reflect.Method;
 
 public abstract class SettingsFragment extends Fragment
 {
+    protected Device mSource;
+
+    public SettingsFragment(Device source)
+    {
+        mSource = source;
+    }
+
     public <T extends Object> T getValue(String value, T defaultValue)
     {
         T result;
@@ -23,7 +30,5 @@ public abstract class SettingsFragment extends Fragment
         return result;
     }
 
-    public abstract void resetUI(final Device source);
-
-    public abstract void compileDiff(final Device source);
+    public abstract void compileDiff();
 }

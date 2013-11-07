@@ -1,7 +1,6 @@
 package com.adonai.GsmNotify.settings;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,11 @@ public class SettingsPage2 extends SettingsFragment
     TableLayout mPhones;
     EditText mRecallCycles, mRecallWait, mBalanceNumber;
 
+    public SettingsPage2(Device source)
+    {
+        super(source);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -32,29 +36,35 @@ public class SettingsPage2 extends SettingsFragment
         mRecallWait = (EditText) layout.findViewById(R.id.call_length_edit);
         mBalanceNumber = (EditText) layout.findViewById(R.id.balance_number_edit);
 
+        for (int i = 0; i < mPhones.getChildCount(); ++i)
+        {
+            TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
+            ((EditText)currentRow.getChildAt(1)).setText(mSource.phones[i].phoneNum);
+            ((CheckBox)currentRow.getChildAt(2)).setChecked(mSource.phones[i].info);
+            ((CheckBox)currentRow.getChildAt(3)).setChecked(mSource.phones[i].manage);
+            ((CheckBox)currentRow.getChildAt(4)).setChecked(mSource.phones[i].confirm);
+        }
+        mRecallCycles.setText(mSource.recallCycles);
+        mRecallWait.setText(mSource.recallWait);
+        mBalanceNumber.setText(mSource.checkBalanceNum);
+
         return layout;
     }
 
     @Override
-    public void resetUI(Device source)
+    public void compileDiff()
     {
-
-    }
-
-    @Override
-    public void compileDiff(Device source)
-    {
-        for (int i = 0; i < source.phones.length; ++i)
+        for (int i = 0; i < mSource.phones.length; ++i)
         {
             TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
-            source.phones[i].phoneNum = ((EditText)currentRow.getChildAt(1)).getText().toString();
-            source.phones[i].info = ((CheckBox)currentRow.getChildAt(2)).isChecked();
-            source.phones[i].manage = ((CheckBox)currentRow.getChildAt(3)).isChecked();
-            source.phones[i].confirm = ((CheckBox)currentRow.getChildAt(4)).isChecked();
+            mSource.phones[i].phoneNum = ((EditText)currentRow.getChildAt(1)).getText().toString();
+            mSource.phones[i].info = ((CheckBox)currentRow.getChildAt(2)).isChecked();
+            mSource.phones[i].manage = ((CheckBox)currentRow.getChildAt(3)).isChecked();
+            mSource.phones[i].confirm = ((CheckBox)currentRow.getChildAt(4)).isChecked();
         }
 
-        source.recallCycles = getValue(mRecallCycles.getText().toString(), 1);
-        source.recallWait = getValue(mRecallWait.getText().toString(), 30);
-        source.checkBalanceNum = mBalanceNumber.getText().toString();
+        mSource.recallCycles = getValue(mRecallCycles.getText().toString(), 1);
+        mSource.recallWait = getValue(mRecallWait.getText().toString(), 30);
+        mSource.checkBalanceNum = mBalanceNumber.getText().toString();
     }
 }
