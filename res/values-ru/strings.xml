@@ -39,7 +39,7 @@
     <string name="remove_device">Удалить устройство</string>
     <string name="send_notify_sms">Отсылать СМС</string>
     <string name="not_send_notify_sms">Не отсылать СМС</string>
-    <string name="time_to_arm">Time to arm in seconds</string>
+    <string name="time_to_arm">Задержка до постановки (сек.)</string>
     <string name="manage_input">Вход управления</string>
     <string name="ibutton">I-Button</string>
     <string name="button">Кнопка</string>
@@ -79,7 +79,7 @@
     <string name="inputs">Входы</string>
     <string name="phones">Телефоны</string>
     <string name="common">Общие</string>
-    <string name="time_to_wait_before_call">Время до начала дозвона илиСМС</string>
+    <string name="time_to_wait_before_call">Время до начала дозвона или СМС</string>
     <string name="time_to_rearm">Время до восстановления наблюдения</string>
     <string name="constant_control">Постоянный контроль</string>
     <string name="inner_sound">Внутренний сигнализатор</string>

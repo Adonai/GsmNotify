@@ -69,7 +69,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/phone_1_number"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/plus_seven"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -104,7 +105,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/phone_2_number"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/plus_seven"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -139,7 +141,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/phone_3_number"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/plus_seven"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -174,7 +177,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/phone_4_number"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/plus_seven"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -209,7 +213,8 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/phone_5_number"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/plus_seven"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"

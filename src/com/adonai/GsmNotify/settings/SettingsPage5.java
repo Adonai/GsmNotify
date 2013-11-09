@@ -19,8 +19,8 @@ public class SettingsPage5 extends SettingsFragment
     CheckBox mTcEnable;
     EditText mTempLimit;
     RadioGroup mTcModeGroup;
-    RadioGroup mTcOnLimitGroup;
     EditText mTMin, mTMax;
+    CheckBox mSendSms, mActivateAlert, mActivateInnerSound;
 
     public SettingsPage5(Device source)
     {
@@ -36,8 +36,10 @@ public class SettingsPage5 extends SettingsFragment
 
         mTcEnable = (CheckBox) layout.findViewById(R.id.tc_checkbox);
         mTempLimit = (EditText) layout.findViewById(R.id.tc_limit_edit);
+        mSendSms = (CheckBox) layout.findViewById(R.id.tc_send_sms);
+        mActivateAlert = (CheckBox) layout.findViewById(R.id.tc_activate_alert);
+        mActivateInnerSound = (CheckBox) layout.findViewById(R.id.tc_activate_inner_sound);
         mTcModeGroup = (RadioGroup) layout.findViewById(R.id.tc_mode_group);
-        mTcOnLimitGroup = (RadioGroup) layout.findViewById(R.id.tc_on_limit_group);
         mTMin = (EditText) layout.findViewById(R.id.tc_min);
         mTMax = (EditText) layout.findViewById(R.id.tc_max);
 
@@ -52,13 +54,14 @@ public class SettingsPage5 extends SettingsFragment
                 case 0: mTcModeGroup.check(R.id.tc_mode_0); break;
                 case 1: mTcModeGroup.check(R.id.tc_mode_1); break;
             }
-        if(mSource.onLimitReach != null)
-            switch (mSource.onLimitReach)
-            {
-                case 1: mTcOnLimitGroup.check(R.id.tc_on_limit_1); break;
-                case 2: mTcOnLimitGroup.check(R.id.tc_on_limit_2); break;
-                case 3: mTcOnLimitGroup.check(R.id.tc_on_limit_3); break;
-            }
+        if(mSource.tcSendSms != null)
+            mSendSms.setChecked(mSource.tcSendSms);
+        if(mSource.tcActivateAlert != null)
+            mActivateAlert.setChecked(mSource.tcActivateAlert);
+        if(mSource.tcActivateInnerSound != null)
+            mActivateInnerSound.setChecked(mSource.tcActivateInnerSound);
+
+
         if(mSource.tMin != null)
             mTMin.setText(String.valueOf(mSource.tMin));
         if(mSource.tMax != null)
@@ -90,7 +93,7 @@ public class SettingsPage5 extends SettingsFragment
             @Override
             public void afterTextChanged(Editable s)
             {
-                mSource.tempLimit = getValue(s.toString(), 20);
+                mSource.tempLimit = getValue(s.toString(), 28.0);
             }
         });
         mTcModeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -100,22 +103,37 @@ public class SettingsPage5 extends SettingsFragment
             {
                 switch (checkedId)
                 {
-                    case R.id.tc_mode_0: mSource.tempMode = 0; break;
-                    case R.id.tc_mode_1: mSource.tempMode = 1; break;
+                    case R.id.tc_mode_0:
+                        mSource.tempMode = 0;
+                        break;
+                    case R.id.tc_mode_1:
+                        mSource.tempMode = 1;
+                        break;
                 }
             }
         });
-        mTcOnLimitGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        mSendSms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
-                switch (checkedId)
-                {
-                    case R.id.tc_on_limit_1: mSource.onLimitReach = 1; break;
-                    case R.id.tc_on_limit_2: mSource.onLimitReach = 2; break;
-                    case R.id.tc_on_limit_3: mSource.onLimitReach = 3; break;
-                }
+                mSource.tcSendSms = isChecked;
+            }
+        });
+        mActivateAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mSource.tcActivateAlert = isChecked;
+            }
+        });
+        mActivateInnerSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mSource.tcActivateInnerSound = isChecked;
             }
         });
         mTMin.addTextChangedListener(new TextWatcher()
@@ -135,7 +153,7 @@ public class SettingsPage5 extends SettingsFragment
             @Override
             public void afterTextChanged(Editable s)
             {
-                mSource.tMin = getValue(s.toString(), 15);
+                mSource.tMin = getValue(s.toString(), 15.0);
             }
         });
         mTMax.addTextChangedListener(new TextWatcher()
@@ -155,7 +173,7 @@ public class SettingsPage5 extends SettingsFragment
             @Override
             public void afterTextChanged(Editable s)
             {
-                mSource.tMax = getValue(s.toString(), 25);
+                mSource.tMax = getValue(s.toString(), 30.0);
             }
         });
 

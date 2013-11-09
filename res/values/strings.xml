@@ -93,5 +93,5 @@
     <string name="enable_on_arm_disable_on_unarm">Вкл при постановке, откл при снятии</string>
     <string name="enable_on_unarm">Вкл. при снятии</string>
     <string name="enable_on_alarm">Вкл при тревоге</string>
-    <string name="from_0_to_1500">От 0 до 1500</string><string name="output_number">Номер выхода</string><string name="input_number">Номер входа</string>
+    <string name="from_0_to_1500">От 0 до 1500</string><string name="output_number">Номер выхода</string><string name="input_number">Номер входа</string><string name="plus_seven">+7</string><string name="tc_15dot0">15.0</string><string name="tc_30dot0">30.0</string><string name="tc_28dot0">28.0</string>
 </resources>

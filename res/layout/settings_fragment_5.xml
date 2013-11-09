@@ -32,9 +32,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:ems="6"
-                    android:id="@+id/tc_limit_edit" />
+                    android:id="@+id/tc_limit_edit"
+                    android:hint="@string/tc_28dot0"
+                    android:inputType="numberDecimal"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -58,12 +59,13 @@
                 android:id="@+id/tc_mode_1" />
         </RadioGroup>
 
-        <RadioGroup
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tc_on_limit_group"
             android:layout_margin="10dp"
-            android:background="@drawable/border">
+            android:background="@drawable/border"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,25 +75,25 @@
                 android:id="@+id/textView"
                 android:layout_gravity="center_horizontal" />
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/send_sms"
-                android:id="@+id/tc_on_limit_1" />
+                android:id="@+id/tc_send_sms" />
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activate_sound"
-                android:id="@+id/tc_on_limit_2" />
+                android:id="@+id/tc_activate_alert" />
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activate_inner_sound"
-                android:id="@+id/tc_on_limit_3" />
+                android:id="@+id/tc_activate_inner_sound" />
 
-        </RadioGroup>
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -125,9 +127,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:ems="3"
-                    android:id="@+id/tc_min" />
+                    android:id="@+id/tc_min"
+                    android:hint="@string/tc_15dot0"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,9 +144,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:ems="3"
-                    android:id="@+id/tc_max" />
+                    android:id="@+id/tc_max"
+                    android:inputType="numberDecimal"
+                    android:hint="@string/tc_30dot0"/>
 
 
             </LinearLayout>

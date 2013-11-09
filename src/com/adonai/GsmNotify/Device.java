@@ -32,7 +32,7 @@ public class Device
     public Integer inputManager;
     public Boolean sendSmsOnPowerLoss;
     public Integer timeToWaitOnPowerLoss;
-    public Integer smsSendSetting;
+    public Boolean smsAtArm, smsAtDisarm, smsAtWrongKey;
     public String devicePassword;
 
     // page 2
@@ -49,8 +49,8 @@ public class Device
 
     // page 5
     public Boolean enableTC;
-    public Integer tempLimit;
+    public Double tempLimit;
     public Integer tempMode;
-    public Integer onLimitReach;
-    public Integer tMin, tMax;
+    public Boolean tcSendSms, tcActivateAlert, tcActivateInnerSound;
+    public Double tMin, tMax;
 }

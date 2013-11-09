@@ -1,6 +1,7 @@
 package com.adonai.GsmNotify;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -17,6 +18,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.telephony.SmsManager;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -180,14 +182,6 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mSettingsPage[2] = new SettingsPage3(mNewDevice);
         mSettingsPage[3] = new SettingsPage4(mNewDevice);
         mSettingsPage[4] = new SettingsPage5(mNewDevice);
-
-        /*mNumber.setText(dev.number);
-        mName.setText(dev.name);
-        mPassword.setText(dev.password);
-        mTempLimit.setText(dev.tempLimit);
-        mtMin.setText(dev.tMin);
-        mtMax.setText(dev.tMax);
-        mSendSMS.setChecked(dev.sendSMS);*/
     }
 
     @Override
@@ -216,6 +210,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             case R.id.edit_device_button:
             {
                 mNewDevice.devicePassword = mDevicePassword.getText().toString();
+                mSavedDevice.devicePassword = mDevicePassword.getText().toString();
+
                 mNewDevice.name = mDeviceName.getText().toString();
                 mNewDevice.number = mDeviceNumber.getText().toString();
 
@@ -253,6 +249,22 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 toSave.tMax = mtMax.getText().toString();
                 toSave.sendSMS = mSendSMS.isChecked();*/
 
+                Pair<Boolean, String> toSend = compileDiff(1);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 1").setMessage(toSend.second).show();
+                toSend = compileDiff(2);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 2").setMessage(toSend.second).show();
+                toSend = compileDiff(3);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 3").setMessage(toSend.second).show();
+                toSend = compileDiff(4);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 4").setMessage(toSend.second).show();
+                toSend = compileDiff(5);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 5").setMessage(toSend.second).show();
+
                 String IDStrings = mPrefs.getString("IDs", "");
                 if(!IDStrings.contains(mNewDevice.number))
                     IDStrings = IDStrings + mNewDevice.number + ";";
@@ -261,8 +273,127 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 edit.putString("IDs", IDStrings);
                 edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
                 edit.commit();
+
+                // replace with finish
+                mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
                 break;
         }
+    }
+
+
+    private boolean shouldBeSent(Object old, Object current)
+    {
+        if(old == null && current != null)
+            return true;
+
+        return old != null && current != null && !old.equals(current);
+    }
+
+    // boolean - page changed, string - message to send
+    private Pair<Boolean, String> compileDiff(Integer pageNumber)
+    {
+        assert pageNumber != null;
+        String res = "*1928#_sp_*" + pageNumber;
+        Integer original_length = res.length();
+
+        if(pageNumber == 1)
+        {
+            if(shouldBeSent(mSavedDevice.timeToArm, mNewDevice.timeToArm))
+                res += "_1=" + String.format("%03d", mNewDevice.timeToArm);
+            if(shouldBeSent(mSavedDevice.inputManager, mNewDevice.inputManager))
+                res += "_2=" + String.format("%1d", mNewDevice.inputManager);
+            if(shouldBeSent(mSavedDevice.sendSmsOnPowerLoss, mNewDevice.sendSmsOnPowerLoss))
+                res += "_3=" + (mNewDevice.sendSmsOnPowerLoss ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.timeToWaitOnPowerLoss, mNewDevice.timeToWaitOnPowerLoss))
+                res += "_4=" + String.format("%03d", mNewDevice.timeToWaitOnPowerLoss);
+            if(shouldBeSent(mSavedDevice.smsAtArm, mNewDevice.smsAtArm))
+                res += "_5=" + (mNewDevice.smsAtArm ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.smsAtWrongKey, mNewDevice.smsAtWrongKey))
+                res += "_6=" + (mNewDevice.smsAtWrongKey ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.devicePassword, mNewDevice.devicePassword))
+                res += "_7=" + "\"" + mNewDevice.devicePassword + "\"";
+            if(shouldBeSent(mSavedDevice.smsAtDisarm, mNewDevice.smsAtDisarm))
+                res += "_8=" + (mNewDevice.smsAtDisarm ? "1" : "+");
+        }
+        if(pageNumber == 2)
+        {
+            for(int i = 0; i < mNewDevice.phones.length; i++)
+            {
+                Device.PhoneSettings curr = mNewDevice.phones[i];
+                Device.PhoneSettings old = mSavedDevice.phones[i];
+
+                if(shouldBeSent(old.phoneNum, curr.phoneNum))
+                    res += "_1." + String.valueOf(i + 1) + "=" + curr.phoneNum;
+                if(shouldBeSent(old.info, curr.info))
+                    res += "_2." + String.valueOf(i + 1) + "=" + (curr.info ? "1" : "+");
+                if(shouldBeSent(old.manage, curr.manage))
+                    res += "_3." + String.valueOf(i + 1) + "=" + (curr.manage ? "1" : "+");
+                if(shouldBeSent(old.confirm, curr.confirm))
+                    res += "_4." + String.valueOf(i + 1) + "=" + (curr.confirm ? "1" : "+");
+            }
+            if(shouldBeSent(mSavedDevice.recallCycles, mNewDevice.recallCycles))
+                res += "_5=" + String.format("%03d", mNewDevice.recallCycles);
+            if(shouldBeSent(mSavedDevice.recallWait, mNewDevice.recallWait))
+                res += "_6=" + String.format("%03d", mNewDevice.recallWait);
+            if(shouldBeSent(mSavedDevice.checkBalanceNum, mNewDevice.checkBalanceNum))
+                res += "_7=" + "\"" + mNewDevice.checkBalanceNum + "\"";
+        }
+        if(pageNumber == 3)
+        {
+            for(int i = 0; i < mNewDevice.inputs.length; i++)
+            {
+                Device.InputSettings curr = mNewDevice.inputs[i];
+                Device.InputSettings old = mSavedDevice.inputs[i];
+
+                if(shouldBeSent(old.timeToRearm, curr.timeToRearm))
+                    res += "_1." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToRearm);
+                // TODO: here will some additional code sit
+                if(shouldBeSent(old.timeToWaitBeforeCall, curr.timeToWaitBeforeCall))
+                    res += "_3." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToWaitBeforeCall);
+                if(shouldBeSent(old.smsText, curr.smsText))
+                    res += "_5." + String.valueOf(i + 1) + "=" + "\"" + curr.smsText + "\"";
+                if(shouldBeSent(old.constantControl, curr.constantControl))
+                    res += "_6." + String.valueOf(i + 1) + "=" + (curr.constantControl ? "1" : "+");
+                if(shouldBeSent(old.innerSound, curr.innerSound))
+                    res += "_6." + String.valueOf(i + 1) + "=" + (curr.innerSound ? "1" : "+");
+            }
+        }
+        if(pageNumber == 4)
+        {
+            for(int i = 0; i < mNewDevice.outputs.length; i++)
+            {
+                Device.OutputSettings curr = mNewDevice.outputs[i];
+                Device.OutputSettings old = mSavedDevice.outputs[i];
+
+                if(shouldBeSent(old.outputMode, curr.outputMode))
+                {
+                    res += "_1." + String.valueOf(i + 1) + "=" + String.format("%1d", curr.outputMode);
+                    if(shouldBeSent(old.timeToEnableOnDisarm, curr.timeToEnableOnDisarm) && curr.outputMode == 3)
+                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnDisarm);
+                    else if (shouldBeSent(old.timeToEnableOnAlert, curr.timeToEnableOnAlert) && curr.outputMode == 4)
+                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
+                }
+            }
+        }
+        if(pageNumber == 5)
+        {
+            if(shouldBeSent(mSavedDevice.enableTC, mNewDevice.enableTC))
+                res += "_1=" + (mNewDevice.enableTC ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.tempLimit, mNewDevice.tempLimit))
+                res += "_2=" + String.format("%05.0f", mNewDevice.tempLimit * 1000).substring(0, 5);
+            if(shouldBeSent(mSavedDevice.tcSendSms, mNewDevice.tcSendSms))
+                res += "_3=" + (mNewDevice.tcSendSms ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.tcActivateAlert, mNewDevice.tcActivateAlert))
+                res += "_4=" + (mNewDevice.tcActivateAlert ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.tcActivateInnerSound, mNewDevice.tcActivateInnerSound))
+                res += "_5=" + (mNewDevice.tcActivateInnerSound ? "1" : "+");
+            if(shouldBeSent(mSavedDevice.tMin, mNewDevice.tMin))
+                res += "_6=" + String.format("%05.0f", mNewDevice.tMin * 1000).substring(0, 5);
+            if(shouldBeSent(mSavedDevice.tMax, mNewDevice.tMax))
+                res += "_7=" + String.format("%05.0f", mNewDevice.tMax * 1000).substring(0, 5);
+        }
+
+        return new Pair<>(res.length() > original_length, res);
     }
 
     private String composeMessage()

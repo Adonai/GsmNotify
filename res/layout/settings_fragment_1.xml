@@ -22,7 +22,7 @@
                 android:ems="6"
                 android:id="@+id/time_to_arm_edit"
                 android:hint="@string/from_0_to_255"
-                android:layout_marginRight="30dp"/>
+                android:layout_marginRight="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,31 +113,32 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RadioGroup
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sms_at_group"
             android:layout_margin="10dp"
-            android:background="@drawable/border">
+            android:background="@drawable/border"
+            android:orientation="vertical">
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sms_at_arm"
-                android:id="@+id/sms_at_1" />
+                android:id="@+id/sms_at_arm" />
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sms_on_disarm"
-                android:id="@+id/sms_at_2" />
+                android:id="@+id/sms_at_disarm" />
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sms_on_wrong_key"
-                android:id="@+id/sms_at_3" />
-        </RadioGroup>
+                android:id="@+id/sms_at_wrong_key" />
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -152,7 +153,8 @@
                 android:inputType="number"
                 android:ems="6"
                 android:id="@+id/new_password_edit"
-                android:layout_marginRight="30dp"/>
+                android:layout_marginRight="30dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"

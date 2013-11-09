@@ -20,7 +20,7 @@ public class SettingsPage1 extends SettingsFragment
     RadioGroup mInputManager;
     CheckBox mSendSMS;
     EditText mTimeToWait;
-    RadioGroup mSmsSendSetting;
+    CheckBox mSmsAtArm, mSmsAtDisarm, mSmsAtWrongKey;
     EditText mPassword;
 
     public SettingsPage1(Device source)
@@ -41,7 +41,9 @@ public class SettingsPage1 extends SettingsFragment
         mInputManager = (RadioGroup) layout.findViewById(R.id.manage_input_group);
         mSendSMS = (CheckBox) layout.findViewById(R.id.sms_send_check);
         mTimeToWait = (EditText) layout.findViewById(R.id.time_to_send_edit);
-        mSmsSendSetting = (RadioGroup) layout.findViewById(R.id.sms_at_group);
+        mSmsAtArm = (CheckBox) layout.findViewById(R.id.sms_at_arm);
+        mSmsAtDisarm = (CheckBox) layout.findViewById(R.id.sms_at_disarm);
+        mSmsAtWrongKey = (CheckBox) layout.findViewById(R.id.sms_at_wrong_key);
         mPassword = (EditText) layout.findViewById(R.id.new_password_edit);
 
         // Initial layout
@@ -59,13 +61,12 @@ public class SettingsPage1 extends SettingsFragment
             mSendSMS.setChecked(mSource.sendSmsOnPowerLoss);
         if(mSource.timeToWaitOnPowerLoss != null)
             mTimeToWait.setText(String.valueOf(mSource.timeToWaitOnPowerLoss));
-        if(mSource.smsSendSetting != null)
-            switch (mSource.smsSendSetting)
-            {
-                case 1: mSmsSendSetting.check(R.id.sms_at_1); break;
-                case 2: mSmsSendSetting.check(R.id.sms_at_2); break;
-                case 3: mSmsSendSetting.check(R.id.sms_at_3); break;
-            }
+        if(mSource.smsAtArm != null)
+            mSmsAtArm.setChecked(mSource.smsAtArm);
+        if(mSource.smsAtDisarm != null)
+            mSmsAtDisarm.setChecked(mSource.smsAtDisarm);
+        if(mSource.smsAtWrongKey != null)
+            mSmsAtWrongKey.setChecked(mSource.smsAtWrongKey);
         if(mSource.devicePassword != null)
             mPassword.setText(mSource.devicePassword);
 
@@ -98,9 +99,15 @@ public class SettingsPage1 extends SettingsFragment
                 switch (checkedId)
                 {
                     case -1:
-                    case R.id.manage_input_1: mSource.inputManager = 1; break;
-                    case R.id.manage_input_2: mSource.inputManager = 2; break;
-                    case R.id.manage_input_3: mSource.inputManager = 3; break;
+                    case R.id.manage_input_1:
+                        mSource.inputManager = 1;
+                        break;
+                    case R.id.manage_input_2:
+                        mSource.inputManager = 2;
+                        break;
+                    case R.id.manage_input_3:
+                        mSource.inputManager = 3;
+                        break;
                 }
             }
         });
@@ -132,18 +139,28 @@ public class SettingsPage1 extends SettingsFragment
                 mSource.timeToWaitOnPowerLoss = getValue(s.toString(), 0);
             }
         });
-        mSmsSendSetting.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        mSmsAtArm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
-                switch (checkedId)
-                {
-                    case -1:
-                    case R.id.sms_at_1: mSource.smsSendSetting = 1; break;
-                    case R.id.sms_at_2: mSource.smsSendSetting = 2; break;
-                    case R.id.sms_at_3: mSource.smsSendSetting = 3; break;
-                }
+                mSource.smsAtArm = isChecked;
+            }
+        });
+        mSmsAtDisarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mSource.smsAtDisarm = isChecked;
+            }
+        });
+        mSmsAtWrongKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mSource.smsAtWrongKey = isChecked;
             }
         });
         mPassword.addTextChangedListener(new TextWatcher()
