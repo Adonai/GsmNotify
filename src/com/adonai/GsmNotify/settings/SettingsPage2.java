@@ -52,9 +52,9 @@ public class SettingsPage2 extends SettingsFragment
                 ((CheckBox)currentRow.getChildAt(4)).setChecked(mSource.phones[i].confirm);
         }
         if(mSource.recallCycles != null)
-            mRecallCycles.setText(mSource.recallCycles);
+            mRecallCycles.setText(String.valueOf(mSource.recallCycles));
         if(mSource.recallWait != null)
-            mRecallWait.setText(mSource.recallWait);
+            mRecallWait.setText(String.valueOf(mSource.recallWait));
         if(mSource.checkBalanceNum != null)
             mBalanceNumber.setText(mSource.checkBalanceNum);
 
@@ -170,11 +170,5 @@ public class SettingsPage2 extends SettingsFragment
         });
 
         return layout;
-    }
-
-    @Override
-    public void compileDiff()
-    {
-
     }
 }

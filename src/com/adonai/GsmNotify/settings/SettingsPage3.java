@@ -71,9 +71,9 @@ public class SettingsPage3 extends SettingsFragment
 
             // Initial layout
             if(curr.timeToWaitBeforeCall != null)
-                mTimeToWait.setText(curr.timeToWaitBeforeCall);
+                mTimeToWait.setText(String.valueOf(curr.timeToWaitBeforeCall));
             if(curr.timeToRearm != null)
-                mTimeToRearm.setText(curr.timeToRearm);
+                mTimeToRearm.setText(String.valueOf(curr.timeToRearm));
             if(curr.constantControl != null)
                 mConstantControl.setChecked(curr.constantControl);
             if(curr.innerSound != null)
@@ -163,10 +163,5 @@ public class SettingsPage3 extends SettingsFragment
         mInputNum.check(R.id.input_1_radio);
 
         return layout;
-    }
-
-    @Override
-    public void compileDiff()
-    {
     }
 }

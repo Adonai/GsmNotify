@@ -73,9 +73,9 @@ public class SettingsPage4 extends SettingsFragment
                     case 4: mOutputMode.check(R.id.output_4_mode_radio); break;
                 }
             if(curr.timeToEnableOnAlert != null)
-                mEnableOnAlert.setText(curr.timeToEnableOnAlert);
+                mEnableOnAlert.setText(String.valueOf(curr.timeToEnableOnAlert));
             if(curr.timeToEnableOnDisarm != null)
-                mEnableOnDisarm.setText(curr.timeToEnableOnDisarm);
+                mEnableOnDisarm.setText(String.valueOf(curr.timeToEnableOnDisarm));
 
             // Handlers
             mOutputMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -137,33 +137,5 @@ public class SettingsPage4 extends SettingsFragment
         mOutputNum.check(R.id.output_1_radio);
 
         return layout;
-    }
-
-    public void resetOutput(int index)
-    {
-        if(mCurrentOutput != null) // not init start
-            compileDiff();
-
-        mCurrentOutput = index;
-
-        Device.OutputSettings curr = mSource.outputs[mCurrentOutput];
-        switch (curr.outputMode)
-        {
-            case 1: mOutputMode.check(R.id.output_1_mode_radio); break;
-            case 2: mOutputMode.check(R.id.output_2_mode_radio); break;
-            case 3: mOutputMode.check(R.id.output_3_mode_radio); break;
-            case 4: mOutputMode.check(R.id.output_4_mode_radio); break;
-        }
-
-        mEnableOnAlert.setText(curr.timeToEnableOnAlert);
-        mEnableOnDisarm.setText(curr.timeToEnableOnDisarm);
-    }
-
-    @Override
-    public void compileDiff()
-    {
-        Device.OutputSettings curr = mSource.outputs[mCurrentOutput];
-
-        curr.timeToEnableOnDisarm = getValue(mEnableOnDisarm.getText().toString(), 0);
     }
 }

@@ -15,11 +15,12 @@ public abstract class SettingsFragment extends Fragment
         mSource = source;
     }
 
-    public <T extends Object> T getValue(String value, T defaultValue)
+    public static <T extends Object> T getValue(String value, T defaultValue)
     {
         T result;
         try
         {
+
             final Method valueOf = defaultValue.getClass().getMethod("valueOf", String.class);
             result = (T) valueOf.invoke(null, value);
             return result;
@@ -29,6 +30,4 @@ public abstract class SettingsFragment extends Fragment
         }
         return result;
     }
-
-    public abstract void compileDiff();
 }

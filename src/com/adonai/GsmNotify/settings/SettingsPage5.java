@@ -45,7 +45,7 @@ public class SettingsPage5 extends SettingsFragment
         if(mSource.enableTC != null)
             mTcEnable.setChecked(mSource.enableTC);
         if(mSource.tempLimit != null)
-            mTempLimit.setText(mSource.tempLimit);
+            mTempLimit.setText(String.valueOf(mSource.tempLimit));
         if(mSource.tempMode != null)
             switch (mSource.tempMode)
             {
@@ -60,9 +60,9 @@ public class SettingsPage5 extends SettingsFragment
                 case 3: mTcOnLimitGroup.check(R.id.tc_on_limit_3); break;
             }
         if(mSource.tMin != null)
-            mTMin.setText(mSource.tMin);
+            mTMin.setText(String.valueOf(mSource.tMin));
         if(mSource.tMax != null)
-            mTMax.setText(mSource.tMax);
+            mTMax.setText(String.valueOf(mSource.tMax));
 
         // Handlers
         mTcEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
@@ -160,11 +160,5 @@ public class SettingsPage5 extends SettingsFragment
         });
 
         return layout;
-    }
-
-    @Override
-    public void compileDiff()
-    {
-
     }
 }

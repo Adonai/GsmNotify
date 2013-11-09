@@ -46,7 +46,7 @@ public class SettingsPage1 extends SettingsFragment
 
         // Initial layout
         if(mSource.timeToArm != null)
-            mTimeToArm.setText(mSource.timeToArm);
+            mTimeToArm.setText(String.valueOf(mSource.timeToArm));
 
         if(mSource.inputManager != null)
             switch (mSource.inputManager)
@@ -58,7 +58,7 @@ public class SettingsPage1 extends SettingsFragment
         if(mSource.sendSmsOnPowerLoss != null)
             mSendSMS.setChecked(mSource.sendSmsOnPowerLoss);
         if(mSource.timeToWaitOnPowerLoss != null)
-            mTimeToWait.setText(mSource.timeToWaitOnPowerLoss);
+            mTimeToWait.setText(String.valueOf(mSource.timeToWaitOnPowerLoss));
         if(mSource.smsSendSetting != null)
             switch (mSource.smsSendSetting)
             {
@@ -169,10 +169,5 @@ public class SettingsPage1 extends SettingsFragment
 
 
         return layout;
-    }
-
-    @Override
-    public void compileDiff()
-    {
     }
 }

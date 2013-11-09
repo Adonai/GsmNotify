@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.adonai.GsmNotify.settings.SettingsFragment;
 import com.adonai.GsmNotify.settings.SettingsPage1;
@@ -52,6 +53,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     FragmentManager mFragmentManager;
     SettingsFragment[] mSettingsPage = new SettingsFragment[5];
     ViewPager mPager;
+    ViewFlipper mFlipper;
     FragmentPagerAdapter mPagerAdapter;
 
     Device mSavedDevice, mNewDevice;
@@ -139,11 +141,14 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
         mPager.setAdapter(mPagerAdapter);
 
-
+        mFlipper = (ViewFlipper) findViewById(R.id.settings_flipper);
         mApply = (Button) findViewById(R.id.device_apply);
         mApply.setOnClickListener(this);
-
         mEditDevice = (Button) findViewById(R.id.edit_device_button);
+        mEditDevice.setOnClickListener(this);
+        mDeviceName = (EditText) findViewById(R.id.device_name_text);
+        mDeviceNumber = (EditText) findViewById(R.id.device_number_text);
+        mDevicePassword = (EditText) findViewById(R.id.device_password_text);
 
         prepareUI(getIntent().getStringExtra("ID"));
 
@@ -156,6 +161,13 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         {
             mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
             mNewDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+
+            if(mNewDevice.name != null)
+                mDeviceName.setText(mSavedDevice.name);
+            if(mNewDevice.number != null)
+                mDeviceNumber.setText(mSavedDevice.number);
+            if(mNewDevice.devicePassword != null)
+                mDevicePassword.setText(mSavedDevice.devicePassword);
         }
         else
         {
@@ -163,11 +175,11 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             mNewDevice = new Device();
         }
 
-        mSettingsPage[0] = new SettingsPage1(mSavedDevice);
-        mSettingsPage[1] = new SettingsPage2(mSavedDevice);
-        mSettingsPage[2] = new SettingsPage3(mSavedDevice);
-        mSettingsPage[3] = new SettingsPage4(mSavedDevice);
-        mSettingsPage[4] = new SettingsPage5(mSavedDevice);
+        mSettingsPage[0] = new SettingsPage1(mNewDevice);
+        mSettingsPage[1] = new SettingsPage2(mNewDevice);
+        mSettingsPage[2] = new SettingsPage3(mNewDevice);
+        mSettingsPage[3] = new SettingsPage4(mNewDevice);
+        mSettingsPage[4] = new SettingsPage5(mNewDevice);
 
         /*mNumber.setText(dev.number);
         mName.setText(dev.name);
@@ -199,10 +211,19 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     @Override
     public void onClick(View v)
     {
-        /*switch (v.getId())
+        switch (v.getId())
         {
+            case R.id.edit_device_button:
+            {
+                mNewDevice.devicePassword = mDevicePassword.getText().toString();
+                mNewDevice.name = mDeviceName.getText().toString();
+                mNewDevice.number = mDeviceNumber.getText().toString();
+
+                mFlipper.setDisplayedChild(1);
+                break;
+            }
             case R.id.device_apply:
-                try
+                /*try
                 {
                     Double.parseDouble(mTempLimit.getText().toString());
                     Double.parseDouble(mtMin.getText().toString());
@@ -230,18 +251,18 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 toSave.tempLimit = mTempLimit.getText().toString();
                 toSave.tMin = mtMin.getText().toString();
                 toSave.tMax = mtMax.getText().toString();
-                toSave.sendSMS = mSendSMS.isChecked();
+                toSave.sendSMS = mSendSMS.isChecked();*/
 
                 String IDStrings = mPrefs.getString("IDs", "");
-                if(!IDStrings.contains(mNumber.getText().toString()))
-                    IDStrings = IDStrings + mNumber.getText().toString() + ";";
+                if(!IDStrings.contains(mNewDevice.number))
+                    IDStrings = IDStrings + mNewDevice.number + ";";
 
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putString("IDs", IDStrings);
-                edit.putString(mNumber.getText().toString(), new Gson().toJson(toSave));
+                edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
                 edit.commit();
                 break;
-        }*/
+        }
     }
 
     private String composeMessage()
