@@ -36,16 +36,16 @@ public class Device
     public String devicePassword;
 
     // page 2
-    public PhoneSettings phones[] = new PhoneSettings[5];
+    public PhoneSettings phones[] = new PhoneSettings[] { new PhoneSettings(), new PhoneSettings(), new PhoneSettings(), new PhoneSettings(), new PhoneSettings() };
     public Integer recallCycles;
     public Integer recallWait;
     public String checkBalanceNum;
 
     //page 3
-    public InputSettings inputs[] = new InputSettings[5];
+    public InputSettings inputs[] = new InputSettings[] { new InputSettings(), new InputSettings(), new InputSettings(), new InputSettings() };
 
     //page 4
-    public OutputSettings outputs[] = new OutputSettings[2];
+    public OutputSettings outputs[] = new OutputSettings[] { new OutputSettings(), new OutputSettings() };
 
     // page 5
     public Boolean enableTC;

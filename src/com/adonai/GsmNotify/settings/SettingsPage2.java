@@ -1,10 +1,13 @@
 package com.adonai.GsmNotify.settings;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -31,22 +34,140 @@ public class SettingsPage2 extends SettingsFragment
         assert layout != null;
 
         mPhones = (TableLayout) layout.findViewById(R.id.phones_table);
-
         mRecallCycles = (EditText) layout.findViewById(R.id.recall_cycles_edit);
         mRecallWait = (EditText) layout.findViewById(R.id.call_length_edit);
         mBalanceNumber = (EditText) layout.findViewById(R.id.balance_number_edit);
 
-        for (int i = 0; i < mPhones.getChildCount(); ++i)
+        // Initial layout
+        for (int i = 0; i < mSource.phones.length; ++i)
         {
             TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
-            ((EditText)currentRow.getChildAt(1)).setText(mSource.phones[i].phoneNum);
-            ((CheckBox)currentRow.getChildAt(2)).setChecked(mSource.phones[i].info);
-            ((CheckBox)currentRow.getChildAt(3)).setChecked(mSource.phones[i].manage);
-            ((CheckBox)currentRow.getChildAt(4)).setChecked(mSource.phones[i].confirm);
+            if(mSource.phones[i].phoneNum != null)
+                ((EditText)currentRow.getChildAt(1)).setText(mSource.phones[i].phoneNum);
+            if(mSource.phones[i].info != null)
+                ((CheckBox)currentRow.getChildAt(2)).setChecked(mSource.phones[i].info);
+            if(mSource.phones[i].manage != null)
+                ((CheckBox)currentRow.getChildAt(3)).setChecked(mSource.phones[i].manage);
+            if(mSource.phones[i].confirm != null)
+                ((CheckBox)currentRow.getChildAt(4)).setChecked(mSource.phones[i].confirm);
         }
-        mRecallCycles.setText(mSource.recallCycles);
-        mRecallWait.setText(mSource.recallWait);
-        mBalanceNumber.setText(mSource.checkBalanceNum);
+        if(mSource.recallCycles != null)
+            mRecallCycles.setText(mSource.recallCycles);
+        if(mSource.recallWait != null)
+            mRecallWait.setText(mSource.recallWait);
+        if(mSource.checkBalanceNum != null)
+            mBalanceNumber.setText(mSource.checkBalanceNum);
+
+        // Handlers
+        for (int i = 0; i < mSource.phones.length; ++i)
+        {
+            final int index = i;
+            TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
+            ((EditText)currentRow.getChildAt(1)).addTextChangedListener(new TextWatcher()
+            {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after)
+                {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count)
+                {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s)
+                {
+                    mSource.phones[index].phoneNum = s.toString();
+                }
+            });
+            ((CheckBox)currentRow.getChildAt(2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    mSource.phones[index].info = isChecked;
+                }
+            });
+            ((CheckBox)currentRow.getChildAt(3)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    mSource.phones[index].manage = isChecked;
+                }
+            });
+            ((CheckBox)currentRow.getChildAt(4)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    mSource.phones[index].confirm = isChecked;
+                }
+            });
+        }
+        mRecallCycles.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                mSource.recallCycles = getValue(s.toString(), 1);
+            }
+        });
+        mRecallWait.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                mSource.recallWait = getValue(s.toString(), 30);
+            }
+        });
+        mBalanceNumber.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                mSource.checkBalanceNum = s.toString();
+            }
+        });
 
         return layout;
     }
@@ -54,17 +175,6 @@ public class SettingsPage2 extends SettingsFragment
     @Override
     public void compileDiff()
     {
-        for (int i = 0; i < mSource.phones.length; ++i)
-        {
-            TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
-            mSource.phones[i].phoneNum = ((EditText)currentRow.getChildAt(1)).getText().toString();
-            mSource.phones[i].info = ((CheckBox)currentRow.getChildAt(2)).isChecked();
-            mSource.phones[i].manage = ((CheckBox)currentRow.getChildAt(3)).isChecked();
-            mSource.phones[i].confirm = ((CheckBox)currentRow.getChildAt(4)).isChecked();
-        }
 
-        mSource.recallCycles = getValue(mRecallCycles.getText().toString(), 1);
-        mSource.recallWait = getValue(mRecallWait.getText().toString(), 30);
-        mSource.checkBalanceNum = mBalanceNumber.getText().toString();
     }
 }

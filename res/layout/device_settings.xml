@@ -1,29 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:layout_height="match_parent"
+    <ViewFlipper
         android:layout_width="match_parent"
-        android:id="@+id/settings_page_holder"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:id="@+id/viewFlipper"
+        android:layout_weight="1"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right">
 
-        <android.support.v4.view.PagerTabStrip
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_gravity="top" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/login_layout"
+            >
 
-    </android.support.v4.view.ViewPager>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/device_name"
+                android:id="@+id/device_name_label"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/apply"
-        android:id="@+id/device_apply"
-        android:layout_margin="10dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/device_name_text"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/device_number"
+                android:id="@+id/device_number_label"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/device_number_text"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/new_password"
+                android:id="@+id/device_password_label"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/device_password_text"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_device"
+                android:id="@+id/edit_device_button"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/device_parameters_layout">
+
+            <android.support.v4.view.ViewPager
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/settings_page_holder"
+                android:layout_weight="1">
+
+                <android.support.v4.view.PagerTabStrip
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="top" />
+
+            </android.support.v4.view.ViewPager>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/apply"
+                android:id="@+id/device_apply"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+    </ViewFlipper>
 
 </LinearLayout>

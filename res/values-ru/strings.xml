@@ -11,7 +11,7 @@
     <string name="get_temperature">Запросить температуру</string>
     <string name="settings">Настройки</string>
     <string name="add_device">Добавить устройство</string>
-    <string name="edit_device">Редактировать текущее устройство</string>
+    <string name="edit_device">Редактировать устройство</string>
     <string name="grad">°C</string>
     <string name="temper_limit">Порог Т</string>
     <string name="mode_0">Режим 0</string>

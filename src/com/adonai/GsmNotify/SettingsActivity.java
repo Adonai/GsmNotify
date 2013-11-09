@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.adonai.GsmNotify.settings.SettingsFragment;
@@ -44,7 +45,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     SharedPreferences mPrefs;
     ProgressDialog pd;
 
-    Button mApply;
+    Button mApply, mEditDevice;
+    EditText mDeviceName, mDeviceNumber, mDevicePassword;
     Handler mHandler;
 
     FragmentManager mFragmentManager;
@@ -140,6 +142,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
         mApply = (Button) findViewById(R.id.device_apply);
         mApply.setOnClickListener(this);
+
+        mEditDevice = (Button) findViewById(R.id.edit_device_button);
 
         prepareUI(getIntent().getStringExtra("ID"));
 

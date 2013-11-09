@@ -13,7 +13,7 @@
     <string name="get_temperature">Get temperature</string>
     <string name="settings">Settings</string>
     <string name="add_device">Add new device</string>
-    <string name="edit_device">Edit current device</string>
+    <string name="edit_device">Edit device</string>
     <string name="grad">°C</string>
     <string name="temper_limit">Temperature limit</string>
     <string name="mode_0">Mode 0</string>

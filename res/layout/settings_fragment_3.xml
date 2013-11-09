@@ -41,8 +41,12 @@
             android:id="@+id/input_4_radio"/>
     </RadioGroup>
 
-    <include
+    <ViewFlipper
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/input_setting"/>
+        android:id="@+id/input_flipper"
+        android:layout_gravity="center_horizontal"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right"/>
+
 </LinearLayout>
