@@ -46,7 +46,7 @@
     <string name="tumbler">Тумблер</string>
     <string name="on_power_loss">При потере питания 220V</string>
     <string name="send_sms">Отсылать СМС</string>
-    <string name="time_to_send">Время ожидания до отсылки</string>
+    <string name="time_to_send">Время ожидания до отсылки (сек.)</string>
     <string name="from_0_to_255">От 0 до 255</string>
     <string name="sms_at_arm">СМС при постановке</string>
     <string name="sms_on_disarm">СМС при снятии</string>
@@ -63,10 +63,10 @@
     <string name="five">5</string>
     <string name="recall_cycles">Циклы дозвона</string>
     <string name="from_1_to_15">1…15</string>
-    <string name="call_length">Длительность посылки вызова</string>
+    <string name="call_length">Длительность посылки вызова (сек.)</string>
     <string name="from_30_to_60">30…60</string>
     <string name="balance_number">Номер проверки баланса</string>
-    <string name="temper_control">Включить Т.К.?</string>
+    <string name="temper_control">Включить Т.К.</string>
     <string name="tc_limit">Порог температуры</string>
     <string name="tc_growing">Режим 0 - рост температуры</string>
     <string name="tc_fading">Режим 1 - падение температуры</string>
@@ -79,8 +79,8 @@
     <string name="inputs">Входы</string>
     <string name="phones">Телефоны</string>
     <string name="common">Общие</string>
-    <string name="time_to_wait_before_call">Время до начала дозвона или СМС</string>
-    <string name="time_to_rearm">Время до восстановления наблюдения</string>
+    <string name="time_to_wait_before_call">Время до начала дозвона или СМС (сек.)</string>
+    <string name="time_to_rearm">Время до восстановления наблюдения (сек.)</string>
     <string name="constant_control">Постоянный контроль</string>
     <string name="inner_sound">Внутренний сигнализатор</string>
     <string name="phone_id">ID телефона</string>
@@ -89,8 +89,8 @@
     <string name="sms_text">Текст СМС (до 40 символов)</string>
     <string name="pcn">ПЦН</string>
     <string name="enable_on_arm_disable_on_unarm">Вкл при постановке, откл при снятии</string>
-    <string name="enable_on_unarm">Вкл. при снятии</string>
-    <string name="enable_on_alarm">Вкл при тревоге</string>
+    <string name="enable_on_unarm">Вкл. при снятии (сек.)</string>
+    <string name="enable_on_alarm">Вкл при тревоге (мин.)</string>
     <string name="from_0_to_1500">От 0 до 1500</string>
     <string name="output_number">Номер выхода</string>
     <string name="input_number">Номер входа</string>

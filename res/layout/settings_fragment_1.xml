@@ -22,7 +22,8 @@
                 android:ems="6"
                 android:id="@+id/time_to_arm_edit"
                 android:hint="@string/from_0_to_255"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/time_to_arm"
                 android:id="@+id/time_to_arm_label"
-                android:gravity="center" />
+                android:gravity="center"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         <RadioGroup
@@ -101,7 +103,8 @@
                     android:inputType="number"
                     android:ems="6"
                     android:id="@+id/time_to_send_edit"
-                    android:hint="@string/from_0_to_255" />
+                    android:hint="@string/from_0_to_255"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -109,7 +112,9 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/time_to_send"
                     android:id="@+id/time_to_send_label"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:singleLine="false"
+                    android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -154,7 +159,7 @@
                 android:ems="6"
                 android:id="@+id/new_password_edit"
                 android:layout_marginRight="30dp"
-                />
+                android:layout_gravity="center"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -162,7 +167,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/new_password"
                 android:id="@+id/new_password_label"
-                android:gravity="center" />
+                android:gravity="center"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
     </LinearLayout>

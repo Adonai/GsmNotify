@@ -13,7 +13,8 @@
             android:layout_height="fill_parent"
             android:layout_margin="10dp"
             android:background="@drawable/border"
-            android:id="@+id/phones_table">
+            android:id="@+id/phones_table"
+            android:paddingLeft="5dp">
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -66,11 +67,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
+                    android:ems="8"
                     android:id="@+id/phone_1_number"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/plus_seven"/>
+                    android:hint="@string/plus_seven"
+                    android:inputType="phone"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -102,11 +102,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
+                    android:ems="8"
                     android:id="@+id/phone_2_number"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/plus_seven"/>
+                    android:hint="@string/plus_seven"
+                    android:inputType="phone"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -138,11 +137,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
+                    android:ems="8"
                     android:id="@+id/phone_3_number"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/plus_seven"/>
+                    android:hint="@string/plus_seven"
+                    android:inputType="phone"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -174,11 +172,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
+                    android:ems="8"
                     android:id="@+id/phone_4_number"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/plus_seven"/>
+                    android:hint="@string/plus_seven"
+                    android:inputType="phone"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -210,11 +207,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="10"
+                    android:ems="8"
                     android:id="@+id/phone_5_number"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/plus_seven"/>
+                    android:hint="@string/plus_seven"
+                    android:inputType="phone"/>
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -255,7 +251,8 @@
                     android:ems="4"
                     android:id="@+id/recall_cycles_edit"
                     android:hint="@string/from_1_to_15"
-                    android:layout_marginRight="30dp"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -263,7 +260,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/recall_cycles"
                     android:id="@+id/recall_cycles_label"
-                    android:gravity="center" />
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -279,7 +277,8 @@
                     android:ems="4"
                     android:id="@+id/call_length_edit"
                     android:hint="@string/from_30_to_60"
-                    android:layout_marginRight="30dp"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -287,7 +286,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/call_length"
                     android:id="@+id/call_length_label"
-                    android:gravity="center" />
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -301,7 +301,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:id="@+id/balance_number_edit"
-                    android:layout_marginRight="30dp"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -309,7 +310,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/balance_number"
                     android:id="@+id/balance_number_label"
-                    android:gravity="center" />
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
 
         </LinearLayout>

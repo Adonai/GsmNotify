@@ -111,6 +111,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mFragmentManager = getSupportFragmentManager();
 
         mPager = (ViewPager) findViewById(R.id.settings_page_holder);
+        mPager.setOffscreenPageLimit(5);
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager)
         {
             @Override
@@ -209,8 +210,10 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         {
             case R.id.edit_device_button:
             {
-                mNewDevice.devicePassword = mDevicePassword.getText().toString();
+                // we assume we have all the views created
                 mSavedDevice.devicePassword = mDevicePassword.getText().toString();
+                EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
+                password.setText(mDevicePassword.getText().toString());
 
                 mNewDevice.name = mDeviceName.getText().toString();
                 mNewDevice.number = mDeviceNumber.getText().toString();

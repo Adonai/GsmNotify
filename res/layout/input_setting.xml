@@ -27,7 +27,8 @@
                     android:ems="7"
                     android:hint="@string/from_0_to_255"
                     android:id="@+id/time_to_wait_edit"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -35,7 +36,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/time_to_wait_before_call"
                     android:id="@+id/time_to_wait_label"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <LinearLayout
@@ -51,7 +53,8 @@
                     android:ems="7"
                     android:id="@+id/time_to_rearm_edit"
                     android:hint="@string/from_0_to_255"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -59,7 +62,8 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/time_to_rearm"
                     android:id="@+id/time_to_rearm_label"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <CheckBox

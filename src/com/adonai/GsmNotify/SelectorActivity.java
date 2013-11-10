@@ -37,6 +37,19 @@ public class SelectorActivity extends Activity implements View.OnClickListener
             viewer.setOnClickListener(this);
             LL.addView(viewer);
         }
+        Button addNew = new Button(this);
+        addNew.setText(R.string.add_device);
+        addNew.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+        LL.addView(addNew);
+
 
         setContentView(LL);
 

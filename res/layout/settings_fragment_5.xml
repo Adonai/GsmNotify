@@ -35,7 +35,8 @@
                     android:ems="6"
                     android:id="@+id/tc_limit_edit"
                     android:hint="@string/tc_28dot0"
-                    android:inputType="numberDecimal"/>
+                    android:inputType="numberDecimal"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/tc_limit"
                     android:id="@+id/tc_limit_label"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <RadioButton
