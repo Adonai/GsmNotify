@@ -213,15 +213,20 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         {
             case R.id.edit_device_button:
             {
-                // we assume we have all the views created
-                mSavedDevice.devicePassword = mDevicePassword.getText().toString();
-                EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
-                password.setText(mDevicePassword.getText().toString());
+                if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0)
+                {
+                    // we assume we have all the views created
+                    mSavedDevice.devicePassword = mDevicePassword.getText().toString();
+                    EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
+                    password.setText(mDevicePassword.getText().toString());
 
-                mNewDevice.name = mDeviceName.getText().toString();
-                mNewDevice.number = mDeviceNumber.getText().toString();
+                    mNewDevice.name = mDeviceName.getText().toString();
+                    mNewDevice.number = mDeviceNumber.getText().toString();
 
-                mFlipper.setDisplayedChild(1);
+                    mFlipper.setDisplayedChild(1);
+                }
+                else
+                    new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
                 break;
             }
             case R.id.device_apply:
@@ -378,7 +383,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                             PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                             PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                             SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mSavedDevice.number, null, toSend.second, sentPI, deliveredPI);
+                            sms.sendTextMessage(mNewDevice.number, null, toSend.second, sentPI, deliveredPI);
                             mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
                         }
                         else
@@ -394,7 +399,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                             PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                             PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                             SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mSavedDevice.number, null, res, sentPI, deliveredPI);
+                            sms.sendTextMessage(mNewDevice.number, null, res, sentPI, deliveredPI);
                             mHandler.sendEmptyMessageDelayed(HANDLE_RESET, SMS_DEFAULT_TIMEOUT);
                         }
                         else
@@ -406,14 +411,20 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
             case HANDLE_RESET:
             {
-                pd.setMessage(getString(R.string.resetting_device));
+                if(hasSomethingChanged)
+                {
+                    pd.setMessage(getString(R.string.resetting_device));
 
-                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(mSavedDevice.number, null, "*" + mSavedDevice.devicePassword + "#_fullrst#", sentPI, deliveredPI);
+                    PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                    PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(mNewDevice.number, null, "*" + mSavedDevice.devicePassword + "#_fullrst#", sentPI, deliveredPI);
+                    mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
+                }
+                else
+                    mHandler.sendEmptyMessage(HANDLE_FINISH);
 
-                mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
+
                 break;
             }
             case HANDLE_FINISH:
