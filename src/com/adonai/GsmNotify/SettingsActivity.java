@@ -35,7 +35,6 @@ import com.google.gson.Gson;
 
 public class SettingsActivity extends FragmentActivity implements View.OnClickListener, Handler.Callback
 {
-    final public static int HANDLE_INCOMING = 0;
     final public static int HANDLE_STEP = 1;
     final public static int HANDLE_TEMP_MODE = 2;
     final public static int HANDLE_RESET = 3;
@@ -243,10 +242,6 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         assert pageNumber != null;
         String res = "*" + mSavedDevice.devicePassword + "#_sp_*" + pageNumber;
         Integer original_length = res.length();
-        if(pageNumber == 0)
-        {
-
-        }
         if(pageNumber == 1)
         {
             if(shouldBeSent(mSavedDevice.timeToArm, mNewDevice.timeToArm))
@@ -396,7 +391,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     case 4:
                     case 5:
                     {
-                        pd.setMessage(getString(R.string.setting_mode) + " 1");
+                        pd.setMessage(getString(R.string.setting_mode) + " " + step);
                         Pair<Boolean, String> toSend = compileDiff(step);
                         if(toSend.first)
                         {
