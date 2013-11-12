@@ -36,12 +36,16 @@ import com.google.gson.Gson;
 public class SettingsActivity extends FragmentActivity implements View.OnClickListener, Handler.Callback
 {
     final public static int HANDLE_STEP = 1;
-    final public static int HANDLE_TEMP_MODE = 2;
+    final public static int HANDLE_FINISH = 2;
     final public static int HANDLE_RESET = 3;
+
+    final public static int SMS_DEFAULT_TIMEOUT = 10000;
 
 
     String SENT = "SMS_SENT_NOTIFY";
     String DELIVERED = "SMS_DELIVERED_NOTIFY";
+
+    Boolean hasSomethingChanged = false;
 
     BroadcastReceiver sentReceiver, deliveryReceiver;
     SharedPreferences mPrefs;
@@ -221,6 +225,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 break;
             }
             case R.id.device_apply:
+                hasSomethingChanged = false;
                 pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
                 mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
                 break;
@@ -354,20 +359,50 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     {
         switch (msg.what)
         {
-            case HANDLE_TEMP_MODE:
+            case HANDLE_STEP:
             {
-                pd.setMessage(getString(R.string.setting_temp_mode));
-                if(shouldBeSent(mSavedDevice.tempMode, mNewDevice.tempMode))
+                Integer step = (Integer) msg.obj;
+                switch(step)
                 {
-                    String res = "*" + mSavedDevice.devicePassword + "#" + (mNewDevice.tempMode == 1 ? "_tb" : "_th") + "#";
-                    PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                    PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(mSavedDevice.number, null, res, sentPI, deliveredPI);
-                    mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_RESET), 10000);
+                    case 1: // pages
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    {
+                        pd.setMessage(getString(R.string.setting_mode) + " " + step);
+                        Pair<Boolean, String> toSend = compileDiff(step);
+                        if(toSend.first)
+                        {
+                            hasSomethingChanged = true;
+                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(mSavedDevice.number, null, toSend.second, sentPI, deliveredPI);
+                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
+                        }
+                        else
+                            mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
+                        break;
+                    }
+                    case 6: // temp control
+                    {
+                        pd.setMessage(getString(R.string.setting_temp_mode));
+                        if(shouldBeSent(mSavedDevice.tempMode, mNewDevice.tempMode))
+                        {
+                            String res = "*" + mSavedDevice.devicePassword + "#" + (mNewDevice.tempMode == 1 ? "_tb" : "_th") + "#";
+                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(mSavedDevice.number, null, res, sentPI, deliveredPI);
+                            mHandler.sendEmptyMessageDelayed(HANDLE_RESET, SMS_DEFAULT_TIMEOUT);
+                        }
+                        else
+                            mHandler.sendEmptyMessage(HANDLE_RESET);
+                        break;
+                    }
                 }
-                else
-                    mHandler.sendEmptyMessage(HANDLE_RESET);
+                break;
             }
             case HANDLE_RESET:
             {
@@ -378,56 +413,30 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(mSavedDevice.number, null, "*" + mSavedDevice.devicePassword + "#_fullrst#", sentPI, deliveredPI);
 
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, 1), 10000);
+                mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
                 break;
             }
-            case HANDLE_STEP:
-                Integer step = (Integer) msg.obj;
-                switch(step)
-                {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    {
-                        pd.setMessage(getString(R.string.setting_mode) + " " + step);
-                        Pair<Boolean, String> toSend = compileDiff(step);
-                        if(toSend.first)
-                        {
-                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mSavedDevice.number, null, toSend.second, sentPI, deliveredPI);
-                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), 10000);
-                        }
-                        else
-                            mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
-                        break;
-                    }
-                    case 6:
-                    {
-                        pd.dismiss();
+            case HANDLE_FINISH:
+            {
+                pd.dismiss();
 
-                        String IDStrings = mPrefs.getString("IDs", "");
-                        if(!IDStrings.contains(mNewDevice.number))
-                            IDStrings = IDStrings + mNewDevice.number + ";";
+                String IDStrings = mPrefs.getString("IDs", "");
+                if(!IDStrings.contains(mNewDevice.number))
+                    IDStrings = IDStrings + mNewDevice.number + ";";
 
-                        SharedPreferences.Editor edit = mPrefs.edit();
-                        edit.putString("IDs", IDStrings);
-                        edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
-                        edit.commit();
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putString("IDs", IDStrings);
+                edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
+                edit.commit();
 
-                        // replace with finish
-                        // mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
+                // replace with finish
+                // mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
 
-                        Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
-                        startActivity(editNow);
-                        finish();
-                        break;
-                    }
-                }
+                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
+                startActivity(editNow);
+                finish();
                 break;
+            }
         }
         return true;
     }
