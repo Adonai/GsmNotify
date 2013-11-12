@@ -109,7 +109,7 @@ public class SettingsPage4 extends SettingsFragment
                 @Override
                 public void afterTextChanged(Editable s)
                 {
-                    curr.timeToEnableOnAlert = getValue(s.toString(), 0);
+                    curr.timeToEnableOnDisarm = getValue(s.toString(), 0);
                 }
             });
             mEnableOnAlert.addTextChangedListener(new TextWatcher()
@@ -129,7 +129,7 @@ public class SettingsPage4 extends SettingsFragment
                 @Override
                 public void afterTextChanged(Editable s)
                 {
-                    curr.timeToEnableOnDisarm = getValue(s.toString(), 0);
+                    curr.timeToEnableOnAlert = getValue(s.toString(), 0);
                 }
             });
         }

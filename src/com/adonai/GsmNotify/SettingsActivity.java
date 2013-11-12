@@ -368,12 +368,19 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 Device.OutputSettings curr = mNewDevice.outputs[i];
                 Device.OutputSettings old = mSavedDevice.outputs[i];
 
-                if(shouldBeSent(old.outputMode, curr.outputMode))
+                if(shouldBeSent(old.outputMode, curr.outputMode)) // always send timing when change mode
                 {
                     res += "_1." + String.valueOf(i + 1) + "=" + String.format("%1d", curr.outputMode);
-                    if(shouldBeSent(old.timeToEnableOnDisarm, curr.timeToEnableOnDisarm) && curr.outputMode == 3)
+                    if(curr.outputMode == 3 && curr.timeToEnableOnDisarm != null)
                         res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnDisarm);
-                    else if (shouldBeSent(old.timeToEnableOnAlert, curr.timeToEnableOnAlert) && curr.outputMode == 4)
+                    else if (curr.outputMode == 4 && curr.timeToEnableOnAlert != null)
+                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
+                }
+                else // if only timing changed
+                {
+                    if(curr.outputMode == 3 && shouldBeSent(old.timeToEnableOnDisarm, curr.timeToEnableOnDisarm))
+                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnDisarm);
+                    if(curr.outputMode == 4 && shouldBeSent(old.timeToEnableOnAlert, curr.timeToEnableOnAlert))
                         res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
                 }
             }
@@ -396,7 +403,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 res += "_7=" + String.format("%05.0f", mNewDevice.tMax * 1000).substring(0, 5);
         }
 
-        return new Pair<>(res.length() > original_length, res);
+        return new Pair<>(res.length() > original_length, res + "#");
     }
 
     private String composeMessage()
