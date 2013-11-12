@@ -36,9 +36,9 @@ import com.google.gson.Gson;
 public class SettingsActivity extends FragmentActivity implements View.OnClickListener, Handler.Callback
 {
     final public static int HANDLE_INCOMING = 0;
-    final public static int HANDLE_STEP_1 = 1;
-    final public static int HANDLE_STEP_2 = 2;
-    final public static int HANDLE_STEP_3 = 3;
+    final public static int HANDLE_STEP = 1;
+    final public static int HANDLE_TEMP_MODE = 2;
+    final public static int HANDLE_RESET = 3;
 
 
     String SENT = "SMS_SENT_NOTIFY";
@@ -222,63 +222,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 break;
             }
             case R.id.device_apply:
-                /*try
-                {
-                    Double.parseDouble(mTempLimit.getText().toString());
-                    Double.parseDouble(mtMin.getText().toString());
-                    Double.parseDouble(mtMax.getText().toString());
-                    Long.parseLong(mNumber.getText().toString());
-                }
-                catch (NumberFormatException nfe)
-                {
-                    Toast.makeText(SettingsActivity.this, getString(R.string.data_not_full), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
-
-                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(mNumber.getText().toString(), null, composeMessage(), sentPI, deliveredPI);
-
-                mHandler.sendEmptyMessageDelayed(HANDLE_STEP_1, 10000);
-
-                Device toSave = new Device(mNumber.getText().toString());
-                toSave.name = mName.getText().toString();
-                toSave.password = mPassword.getText().toString();
-                toSave.tempLimit = mTempLimit.getText().toString();
-                toSave.tMin = mtMin.getText().toString();
-                toSave.tMax = mtMax.getText().toString();
-                toSave.sendSMS = mSendSMS.isChecked();*/
-
-                Pair<Boolean, String> toSend = compileDiff(1);
-                if(toSend.first)
-                    new AlertDialog.Builder(this).setTitle("Страница 1").setMessage(toSend.second).show();
-                toSend = compileDiff(2);
-                if(toSend.first)
-                    new AlertDialog.Builder(this).setTitle("Страница 2").setMessage(toSend.second).show();
-                toSend = compileDiff(3);
-                if(toSend.first)
-                    new AlertDialog.Builder(this).setTitle("Страница 3").setMessage(toSend.second).show();
-                toSend = compileDiff(4);
-                if(toSend.first)
-                    new AlertDialog.Builder(this).setTitle("Страница 4").setMessage(toSend.second).show();
-                toSend = compileDiff(5);
-                if(toSend.first)
-                    new AlertDialog.Builder(this).setTitle("Страница 5").setMessage(toSend.second).show();
-
-                String IDStrings = mPrefs.getString("IDs", "");
-                if(!IDStrings.contains(mNewDevice.number))
-                    IDStrings = IDStrings + mNewDevice.number + ";";
-
-                SharedPreferences.Editor edit = mPrefs.edit();
-                edit.putString("IDs", IDStrings);
-                edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
-                edit.commit();
-
-                // replace with finish
-                mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
+                mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
                 break;
         }
     }
@@ -296,9 +241,12 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     private Pair<Boolean, String> compileDiff(Integer pageNumber)
     {
         assert pageNumber != null;
-        String res = "*1928#_sp_*" + pageNumber;
+        String res = "*" + mSavedDevice.devicePassword + "#_sp_*" + pageNumber;
         Integer original_length = res.length();
+        if(pageNumber == 0)
+        {
 
+        }
         if(pageNumber == 1)
         {
             if(shouldBeSent(mSavedDevice.timeToArm, mNewDevice.timeToArm))
@@ -376,7 +324,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     else if (curr.outputMode == 4 && curr.timeToEnableOnAlert != null)
                         res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
                 }
-                else // if only timing changed
+                else if(curr.outputMode != null) // if only timing changed
                 {
                     if(curr.outputMode == 3 && shouldBeSent(old.timeToEnableOnDisarm, curr.timeToEnableOnDisarm))
                         res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnDisarm);
@@ -406,55 +354,85 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         return new Pair<>(res.length() > original_length, res + "#");
     }
 
-    private String composeMessage()
-    {
-        // *1928#_sp_*1_5=1_8=1#*5_1=1_2=50000_3=1_5=1_6=25000_7=30000#
-        String res = "*";
-        /*res += mPassword.getText().toString();
-        res += "#_sp_*1_5=" + (mSendSMS.isChecked() ? "1" : "+") + "_8=" + (mSendSMS.isChecked() ? "1" : "+") + "#*5_1=1_2=";
-        String tmp = String.format("%05.0f", Double.parseDouble(mTempLimit.getText().toString()) * 1000).substring(0, 5);
-        res += tmp + "_3=1_5=1_6=";
-        tmp = String.format("%05.0f", Double.parseDouble(mtMin.getText().toString()) * 1000).substring(0, 5);
-        res += tmp + "_7=";
-        tmp = String.format("%05.0f", Double.parseDouble(mtMax.getText().toString()) * 1000).substring(0, 5);
-        res += tmp + "#";*/
-        return res;
-    }
-
     @Override
     public boolean handleMessage(Message msg)
     {
         switch (msg.what)
         {
-            case HANDLE_STEP_1:
+            case HANDLE_TEMP_MODE:
             {
-                pd.setMessage(getString(R.string.setting_mode));
-                mHandler.sendEmptyMessageDelayed(HANDLE_STEP_2, 10000);
-
-                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                SmsManager sms = SmsManager.getDefault();
-                //sms.sendTextMessage(mNumber.getText().toString(), null, "*" + mPassword.getText().toString() + "#" + (mMode.getCheckedRadioButtonId() == R.id.mode0_radio ? "_tb" : "_th") + "#", sentPI, deliveredPI);
-                break;
+                pd.setMessage(getString(R.string.setting_temp_mode));
+                if(shouldBeSent(mSavedDevice.tempMode, mNewDevice.tempMode))
+                {
+                    String res = "*" + mSavedDevice.devicePassword + "#" + (mNewDevice.tempMode == 1 ? "_tb" : "_th") + "#";
+                    PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                    PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(mSavedDevice.number, null, res, sentPI, deliveredPI);
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_RESET), 10000);
+                }
+                else
+                    mHandler.sendEmptyMessage(HANDLE_RESET);
             }
-            case HANDLE_STEP_2:
+            case HANDLE_RESET:
             {
                 pd.setMessage(getString(R.string.resetting_device));
-                mHandler.sendEmptyMessageDelayed(HANDLE_STEP_3, 10000);
 
                 PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                 PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                 SmsManager sms = SmsManager.getDefault();
-                //sms.sendTextMessage(mNumber.getText().toString(), null, "*" + mPassword.getText().toString() + "#_fullrst#", sentPI, deliveredPI);
+                sms.sendTextMessage(mSavedDevice.number, null, "*" + mSavedDevice.devicePassword + "#_fullrst#", sentPI, deliveredPI);
+
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, 1), 10000);
                 break;
             }
-            case HANDLE_STEP_3:
-                pd.dismiss();
+            case HANDLE_STEP:
+                Integer step = (Integer) msg.obj;
+                switch(step)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    {
+                        pd.setMessage(getString(R.string.setting_mode) + " 1");
+                        Pair<Boolean, String> toSend = compileDiff(step);
+                        if(toSend.first)
+                        {
+                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(mSavedDevice.number, null, toSend.second, sentPI, deliveredPI);
+                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), 10000);
+                        }
+                        else
+                            mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
+                        break;
+                    }
+                    case 6:
+                    {
+                        pd.dismiss();
 
-                /*Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNumber.getText().toString());
-                startActivity(editNow);
-                finish();
-                break;*/
+                        String IDStrings = mPrefs.getString("IDs", "");
+                        if(!IDStrings.contains(mNewDevice.number))
+                            IDStrings = IDStrings + mNewDevice.number + ";";
+
+                        SharedPreferences.Editor edit = mPrefs.edit();
+                        edit.putString("IDs", IDStrings);
+                        edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
+                        edit.commit();
+
+                        // replace with finish
+                        // mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
+
+                        Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
+                        startActivity(editNow);
+                        finish();
+                        break;
+                    }
+                }
+                break;
         }
         return true;
     }
