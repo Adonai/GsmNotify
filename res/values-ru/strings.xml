@@ -88,6 +88,7 @@
     <string name="sms">SMS</string>
     <string name="sms_text">Текст SMS (до 40 знаков латиницей)</string>
     <string name="pcn">ПЦН</string>
+    <string name="plus_seven">+7</string>
     <string name="enable_on_arm_disable_on_unarm">Вкл при постановке, откл при снятии</string>
     <string name="enable_on_unarm">Вкл. при снятии (сек.)</string>
     <string name="enable_on_alarm">Вкл при тревоге (мин.)</string>
@@ -95,4 +96,8 @@
     <string name="output_number">Номер выхода</string>
     <string name="input_number">Номер входа</string>
     <string name="setting_temp_mode">Установка режима Т.К.</string>
+    <string name="enter_0_for_delete">Введите 0 для удаления</string>
+    <string name="manage_device">Управление</string>
+    <string name="existing_device">Устройство с таким номером уже существует!</string>
+    <string name="settings_applied">Настройки применены!</string>
 </resources>

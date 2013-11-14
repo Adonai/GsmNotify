@@ -225,13 +225,13 @@ public class MainActivity extends Activity implements View.OnClickListener
                                 }
                                 else // если нет, надо добавить
                                     startActivity(intent);
+                                finish();
                                 break;
                             }
                             case 2: // edit_device
                                 startActivity(intent.putExtra("ID", mAddressID));
                                 break;
                         }
-                        finish();
                     }
                 };
 

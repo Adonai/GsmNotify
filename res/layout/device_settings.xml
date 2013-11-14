@@ -87,12 +87,41 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_device"
-                android:id="@+id/edit_device_button"
+                android:text="@string/apply"
+                android:id="@+id/device_apply_button"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="30dp"
-                android:gravity="center"/>
+                android:layout_marginTop="10dp"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_device"
+                    android:id="@+id/manage_device_button"
+                    android:layout_weight="1"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings"
+                    android:id="@+id/edit_device_button"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout

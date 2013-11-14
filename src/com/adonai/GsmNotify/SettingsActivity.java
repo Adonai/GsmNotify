@@ -39,7 +39,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     final public static int HANDLE_FINISH = 2;
     final public static int HANDLE_RESET = 3;
 
-    final public static int SMS_DEFAULT_TIMEOUT = 10000;
+    final public static int SMS_DEFAULT_TIMEOUT = 20000;
 
 
     String SENT = "SMS_SENT_NOTIFY";
@@ -51,7 +51,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     SharedPreferences mPrefs;
     ProgressDialog pd;
 
-    Button mApply, mEditDevice;
+    Button mApply, mEditDevice, mManageDevice, mApplyDevice;
     EditText mDeviceName, mDeviceNumber, mDevicePassword;
     Handler mHandler;
 
@@ -94,9 +94,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             {
                 case Activity.RESULT_OK: Toast.makeText(SettingsActivity.this, getString(R.string.sms_deliver_success), Toast.LENGTH_SHORT).show(); break;
                 case Activity.RESULT_CANCELED:
-                    Toast.makeText(SettingsActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show();
-                    mHandler.removeCallbacksAndMessages(null);
-                    pd.dismiss();
+                    //Toast.makeText(SettingsActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show();
+                    //mHandler.removeCallbacksAndMessages(null);
+                    //pd.dismiss();
                     break;
             }
         }
@@ -152,6 +152,10 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mApply.setOnClickListener(this);
         mEditDevice = (Button) findViewById(R.id.edit_device_button);
         mEditDevice.setOnClickListener(this);
+        mManageDevice = (Button) findViewById(R.id.manage_device_button);
+        mManageDevice.setOnClickListener(this);
+        mApplyDevice = (Button) findViewById(R.id.device_apply_button);
+        mApplyDevice.setOnClickListener(this);
         mDeviceName = (EditText) findViewById(R.id.device_name_text);
         mDeviceNumber = (EditText) findViewById(R.id.device_number_text);
         mDevicePassword = (EditText) findViewById(R.id.device_password_text);
@@ -161,10 +165,23 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mHandler = new Handler(this);
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        SharedPreferences.Editor edit = mPrefs.edit();
+        edit.remove("currentEdit");
+        edit.commit();
+    }
+
     private void prepareUI(String id)
     {
         if(id != null)
         {
+            SharedPreferences.Editor edit = mPrefs.edit();
+            edit.putString("currentEdit", id);
+            edit.commit();
+
             mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
             mNewDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
 
@@ -174,6 +191,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 mDeviceNumber.setText(mSavedDevice.number);
             if(mNewDevice.devicePassword != null)
                 mDevicePassword.setText(mSavedDevice.devicePassword);
+
+            mManageDevice.setVisibility(View.VISIBLE);
+            mApplyDevice.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -211,10 +231,56 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     {
         switch (v.getId())
         {
+            case R.id.manage_device_button:
+            {
+                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mSavedDevice.number);
+                startActivity(editNow);
+                finish();
+                break;
+            }
+            case R.id.device_apply_button:
+            {
+                if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0)
+                {
+                    String IDStrings = mPrefs.getString("IDs", "");
+                    if(IDStrings.contains(mDeviceNumber.getText()) && !mDeviceNumber.getText().toString().equals(mSavedDevice.number)) // we have already that number
+                    {
+                        Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    // we assume we have all the views created
+                    mSavedDevice.devicePassword = mDevicePassword.getText().toString();
+                    EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
+                    password.setText(mDevicePassword.getText().toString());
+
+                    mNewDevice.name = mDeviceName.getText().toString();
+                    mNewDevice.number = mDeviceNumber.getText().toString();
+
+                    SharedPreferences.Editor edit = mPrefs.edit();
+                    edit.remove(mSavedDevice.number); // delete old data about this device
+                    IDStrings = IDStrings.replace(mSavedDevice.number, "") + mNewDevice.number;
+                    edit.putString("IDs", IDStrings);
+                    edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
+                    edit.commit();
+
+                    Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
+                }
+                else
+                    new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
+                break;
+            }
             case R.id.edit_device_button:
             {
                 if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0)
                 {
+                    String IDStrings = mPrefs.getString("IDs", "");
+                    if(IDStrings.contains(mDeviceNumber.getText()) && mSavedDevice.number == null) // new device has number like existing
+                    {
+                        Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     // we assume we have all the views created
                     mSavedDevice.devicePassword = mDevicePassword.getText().toString();
                     EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);

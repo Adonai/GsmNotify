@@ -80,7 +80,10 @@ public class SettingsPage2 extends SettingsFragment
                 @Override
                 public void afterTextChanged(Editable s)
                 {
-                    mSource.phones[index].phoneNum = s.toString();
+                    if(s.toString().equals("0"))
+                        mSource.phones[index].phoneNum = "+++++++++++";
+                    else
+                        mSource.phones[index].phoneNum = s.toString();
                 }
             });
             ((CheckBox)currentRow.getChildAt(2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()

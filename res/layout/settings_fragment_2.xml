@@ -228,6 +228,14 @@
                     android:id="@+id/phone_5_confirm" />
             </TableRow>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/enter_0_for_delete"
+                android:id="@+id/phone_number_note"
+                android:layout_marginLeft="15dp"/>
+
 
         </TableLayout>
 
@@ -315,6 +323,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

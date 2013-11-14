@@ -101,4 +101,8 @@
     <string name="tc_30dot0">30.0</string>
     <string name="tc_28dot0">28.0</string>
     <string name="setting_temp_mode">Установка режима Т.К.</string>
+    <string name="enter_0_for_delete">Введите 0 для удаления</string>
+    <string name="manage_device">Управление</string>
+    <string name="existing_device">Устройство с таким номером уже существует!</string>
+    <string name="settings_applied">Настройки применены!</string>
 </resources>

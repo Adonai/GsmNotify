@@ -38,8 +38,9 @@ public class SMSReceiveService extends Service
         if(intent != null && intent.hasExtra("number"))
         {
             String[] IDs = preferences.getString("IDs", "").split(";");
+            String current = preferences.getString("currentEdit", "");
             for (String ID : IDs)
-                if(intent.getStringExtra("number").endsWith(ID.substring(1))) // +7 / 8 handling
+                if(intent.getStringExtra("number").endsWith(ID.substring(1)) && !ID.equals(current)) // +7 / 8 handling
                 {
                     Intent starter = new Intent(this, MainActivity.class);
                     starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("number", ID).putExtra("text", intent.getStringExtra("text"));

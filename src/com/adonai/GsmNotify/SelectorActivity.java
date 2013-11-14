@@ -46,6 +46,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener
             {
                 Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         LL.addView(addNew);
