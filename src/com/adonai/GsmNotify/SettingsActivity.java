@@ -33,6 +33,10 @@ import com.adonai.GsmNotify.settings.SettingsPage4;
 import com.adonai.GsmNotify.settings.SettingsPage5;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class SettingsActivity extends FragmentActivity implements View.OnClickListener, Handler.Callback
 {
     final public static int HANDLE_STEP = 1;
@@ -193,7 +197,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 mDevicePassword.setText(mSavedDevice.devicePassword);
 
             mManageDevice.setVisibility(View.VISIBLE);
-            mApplyDevice.setVisibility(View.VISIBLE);
+            mEditDevice.setVisibility(View.VISIBLE);
         }
         else
         {
@@ -233,17 +237,19 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         {
             case R.id.manage_device_button:
             {
-                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mSavedDevice.number);
+                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
                 startActivity(editNow);
                 finish();
                 break;
             }
             case R.id.device_apply_button:
             {
-                if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0)
+                if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0) // all fields are filled in
                 {
-                    String IDStrings = mPrefs.getString("IDs", "");
-                    if(IDStrings.contains(mDeviceNumber.getText()) && !mDeviceNumber.getText().toString().equals(mSavedDevice.number)) // we have already that number
+                    List<String> IDStrings = new ArrayList<>();
+                    Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
+
+                    if(IDStrings.contains(mDeviceNumber.getText().toString()) && !(mSavedDevice.number != null && mDeviceNumber.getText().toString().equals(mSavedDevice.number))) // we have already that number and that's not us
                     {
                         Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
                         break;
@@ -258,13 +264,21 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     mNewDevice.number = mDeviceNumber.getText().toString();
 
                     SharedPreferences.Editor edit = mPrefs.edit();
-                    edit.remove(mSavedDevice.number); // delete old data about this device
-                    IDStrings = IDStrings.replace(mSavedDevice.number, "") + mNewDevice.number;
-                    edit.putString("IDs", IDStrings);
+                    if(mSavedDevice.number != null) // if we have old device data
+                    {
+                        IDStrings.remove(mSavedDevice.number);
+                        edit.remove(mSavedDevice.number); // delete old data about this device
+                    }
+
+                    IDStrings.add(mNewDevice.number);
+                    edit.putString("IDs", Utils.join(IDStrings, ";"));
                     edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
                     edit.commit();
 
                     Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
+
+                    mManageDevice.setVisibility(View.VISIBLE);
+                    mEditDevice.setVisibility(View.VISIBLE);
                 }
                 else
                     new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
@@ -272,27 +286,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
             case R.id.edit_device_button:
             {
-                if(mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0)
-                {
-                    String IDStrings = mPrefs.getString("IDs", "");
-                    if(IDStrings.contains(mDeviceNumber.getText()) && mSavedDevice.number == null) // new device has number like existing
-                    {
-                        Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-
-                    // we assume we have all the views created
-                    mSavedDevice.devicePassword = mDevicePassword.getText().toString();
-                    EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
-                    password.setText(mDevicePassword.getText().toString());
-
-                    mNewDevice.name = mDeviceName.getText().toString();
-                    mNewDevice.number = mDeviceNumber.getText().toString();
-
-                    mFlipper.setDisplayedChild(1);
-                }
-                else
-                    new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
+                mFlipper.setDisplayedChild(1);
                 break;
             }
             case R.id.device_apply:

@@ -18,7 +18,7 @@
             android:label="@string/settings"
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
+        <activity android:theme="@style/GSMTheme"
             android:name="MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"

@@ -1,0 +1,10 @@
+<resources>
+    <style name="GSMTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/GSMTheme.ActionBar</item>
+    </style>
+
+    <style name="GSMTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/header</item>
+    </style>
+
+</resources>

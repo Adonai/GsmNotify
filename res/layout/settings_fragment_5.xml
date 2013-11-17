@@ -35,8 +35,8 @@
                     android:ems="6"
                     android:id="@+id/tc_limit_edit"
                     android:hint="@string/tc_28dot0"
-                    android:inputType="numberDecimal"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:inputType="number"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -129,10 +129,10 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
                     android:ems="3"
                     android:id="@+id/tc_min"
-                    android:hint="@string/tc_15dot0"/>
+                    android:hint="@string/tc_15dot0"
+                    android:inputType="number"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -148,8 +148,8 @@
                     android:layout_height="wrap_content"
                     android:ems="3"
                     android:id="@+id/tc_max"
-                    android:inputType="numberDecimal"
-                    android:hint="@string/tc_30dot0"/>
+                    android:hint="@string/tc_30dot0"
+                    android:inputType="number"/>
 
 
             </LinearLayout>

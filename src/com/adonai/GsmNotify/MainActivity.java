@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 
@@ -26,6 +27,7 @@ public class MainActivity extends Activity implements View.OnClickListener
     BroadcastReceiver sentReceiver, deliveryReceiver;
     Device mDevice;
 
+    ScrollView mScroll;
     Button mNotifyEnable, mNotifyDisable, mRelay1Enable, mRelay1Disable, mRelay2Enable, mRelay2Disable;
     Button mGetData, mGetTemperature;
     EditText mResultText;
@@ -65,6 +67,8 @@ public class MainActivity extends Activity implements View.OnClickListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        mScroll = (ScrollView) findViewById(R.id.scroll_bar);
 
         incMessages = new MessageQueue();
         sentReceiver = new sentConfirmReceiver();
@@ -132,6 +136,7 @@ public class MainActivity extends Activity implements View.OnClickListener
     protected void onStart()
     {
         super.onStart();
+
         //--- When the SMS has been sent ---
         registerReceiver(sentReceiver, new IntentFilter(SENT));
         //--- When the SMS has been delivered. ---
@@ -170,6 +175,7 @@ public class MainActivity extends Activity implements View.OnClickListener
                 String newMessage = intent.getStringExtra("text");
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
+                mScroll.fling(10000);
             }
             else
             {
@@ -178,6 +184,14 @@ public class MainActivity extends Activity implements View.OnClickListener
                 mAddressID = intent.getStringExtra("number");
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
+            }
+        }
+        else
+        {
+            if(intent.hasExtra("ID")) // запускаем из настроек
+            {
+                mAddressID = intent.getStringExtra("ID");
+                extractParams();
             }
         }
     }

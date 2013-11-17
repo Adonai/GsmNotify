@@ -1,103 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-    >
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_enable"
-            android:id="@+id/signal_on_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/notify_disable"
-            android:id="@+id/signal_off_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:baselineAligned="true">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/Relay_1_enable"
-            android:id="@+id/relay1_on_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/Relay_1_disable"
-            android:id="@+id/relay1_off_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/Relay_2_enable"
-            android:id="@+id/relay2_on_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/Relay_2_disable"
-            android:id="@+id/relay2_off_button"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/get_data"
-        android:id="@+id/get_data_button"
-        android:layout_gravity="center"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/get_temperature"
-        android:id="@+id/get_temperature_button"
-        android:layout_gravity="center"/>
-
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:fillViewport="true">
+        android:id="@+id/scroll_bar"
+        android:fillViewport="true" >
 
-        <EditText
+    <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/back"
+                  android:baselineAligned="false">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="-10dp"
+                >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relay1_on_button"
+                    android:background="@drawable/out1on_button"
+                    android:layout_weight="1"
+                    android:layout_marginRight="-10dp"
+                    />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relay1_off_button"
+                    android:background="@drawable/out1off_button"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="-10dp"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="-10dp"
+                >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/relay2_on_button"
+                    android:layout_weight="1"
+                    android:background="@drawable/out2on_button"
+                    android:layout_marginRight="-10dp"
+                    />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relay2_off_button"
+                    android:layout_weight="1"
+                    android:background="@drawable/out2off_button"
+                    android:layout_marginLeft="-10dp"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="95dp"
+            android:baselineAligned="false"
+            android:layout_marginLeft="95dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/signal_on_button"
+                android:layout_gravity="center"
+                android:background="@drawable/arm_button"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signal_off_button"
+                android:layout_gravity="center"
+                android:background="@drawable/disarm_buttom"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/get_data_button"
+        android:layout_gravity="center"
+        android:background="@drawable/status_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/get_temperature_button"
+        android:layout_gravity="center"
+        android:background="@drawable/temp_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"/>
+
+
+    <EditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/result_text"
             android:enabled="false"
             android:gravity="top"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            />
+            android:background="@drawable/sms_field"
+            android:minLines="10"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
     </ScrollView>
 
-</LinearLayout>
 
