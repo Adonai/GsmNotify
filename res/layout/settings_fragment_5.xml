@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:adonai="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent" android:layout_width="match_parent">
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
         <com.adonai.contrib.ThreeStateCheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/temper_control"
+            adonai:label="@string/temper_control"
             android:id="@+id/tc_checkbox"
             android:layout_margin="10dp"
             android:background="@drawable/border"/>
@@ -80,19 +80,19 @@
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/send_sms"
+                adonai:label="@string/send_sms"
                 android:id="@+id/tc_send_sms" />
 
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/activate_sound"
+                adonai:label="@string/activate_sound"
                 android:id="@+id/tc_activate_alert" />
 
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/activate_inner_sound"
+                adonai:label="@string/activate_inner_sound"
                 android:id="@+id/tc_activate_inner_sound" />
 
         </LinearLayout>

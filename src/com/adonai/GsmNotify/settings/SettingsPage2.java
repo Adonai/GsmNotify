@@ -6,14 +6,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
+import com.adonai.contrib.ThreeStateButton;
 
 public class SettingsPage2 extends SettingsFragment
 {
@@ -66,28 +65,43 @@ public class SettingsPage2 extends SettingsFragment
                         mSource.phones[index].phoneNum = s.toString();
                 }
             });
-            ((CheckBox)currentRow.getChildAt(2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            ((ThreeStateButton)currentRow.getChildAt(2)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
             {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                public void onStateChanged(View v, int newState)
                 {
-                    mSource.phones[index].info = isChecked;
+                    switch (newState)
+                    {
+                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].info = null; break;
+                        case ThreeStateButton.STATE_NO: mSource.phones[index].info = false; break;
+                        case ThreeStateButton.STATE_YES: mSource.phones[index].info = true; break;
+                    }
                 }
             });
-            ((CheckBox)currentRow.getChildAt(3)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            ((ThreeStateButton)currentRow.getChildAt(3)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
             {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                public void onStateChanged(View v, int newState)
                 {
-                    mSource.phones[index].manage = isChecked;
+                    switch (newState)
+                    {
+                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].manage = null; break;
+                        case ThreeStateButton.STATE_NO: mSource.phones[index].manage = false; break;
+                        case ThreeStateButton.STATE_YES: mSource.phones[index].manage = true; break;
+                    }
                 }
             });
-            ((CheckBox)currentRow.getChildAt(4)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            ((ThreeStateButton)currentRow.getChildAt(4)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
             {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                public void onStateChanged(View v, int newState)
                 {
-                    mSource.phones[index].confirm = isChecked;
+                    switch (newState)
+                    {
+                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].confirm = null; break;
+                        case ThreeStateButton.STATE_NO: mSource.phones[index].confirm = false; break;
+                        case ThreeStateButton.STATE_YES: mSource.phones[index].confirm = true; break;
+                    }
                 }
             });
         }

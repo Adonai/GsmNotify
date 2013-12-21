@@ -32,7 +32,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener
             Device dev = conv.fromJson(gson, Device.class);
             Button viewer = new Button(this);
             viewer.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-            viewer.setText(dev.name);
+            viewer.setText(dev.details.name);
             viewer.setTag(ID);
             viewer.setOnClickListener(this);
             LL.addView(viewer);

@@ -293,19 +293,27 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
             case R.id.device_apply:
                 hasSomethingChanged = false;
-                pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
-                mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
+
+                Pair<Boolean, String> toSend = compileDiff(1);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 1").setMessage(toSend.second).show();
+                toSend = compileDiff(2);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 2").setMessage(toSend.second).show();
+                toSend = compileDiff(3);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 3").setMessage(toSend.second).show();
+                toSend = compileDiff(4);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 4").setMessage(toSend.second).show();
+                toSend = compileDiff(5);
+                if(toSend.first)
+                    new AlertDialog.Builder(this).setTitle("Страница 5").setMessage(toSend.second).show();
+
+                //pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
+                //mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
                 break;
         }
-    }
-
-
-    private boolean shouldBeSent(Object old, Object current)
-    {
-        if(old == null && current != null)
-            return true;
-
-        return old != null && current != null && !old.equals(current);
     }
 
     // boolean - page changed, string - message to send
@@ -328,7 +336,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 res += "_5=" + (mDevice.smsAtArm ? "1" : "+");
             if(mDevice.smsAtWrongKey != null)
                 res += "_6=" + (mDevice.smsAtWrongKey ? "1" : "+");
-            if(mDevice.details.password != null)
+            if(mDevice.details.password != null && !mDevice.details.password.equals(mDevicePassword.getText().toString()))
                 res += "_7=" + "\"" + mDevice.details.password + "\"";
             if(mDevice.smsAtDisarm != null)
                 res += "_8=" + (mDevice.smsAtDisarm ? "1" : "+");
@@ -371,7 +379,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 if(curr.constantControl != null)
                     res += "_6." + String.valueOf(i + 1) + "=" + (curr.constantControl ? "1" : "+");
                 if(curr.innerSound != null)
-                    res += "_6." + String.valueOf(i + 1) + "=" + (curr.innerSound ? "1" : "+");
+                    res += "_7." + String.valueOf(i + 1) + "=" + (curr.innerSound ? "1" : "+");
             }
         }
         if(pageNumber == 4)
@@ -464,9 +472,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                         if(mDevice.enableInfoReport != null || mDevice.enableTempReport != null)
                         {
                             String res = "*" + mDevice.details.password + "#";
-                            if(shouldBeSent(mDevice.enableInfoReport, mDevice.enableInfoReport))
+                            if(mDevice.enableInfoReport != null)
                                 res += mDevice.enableInfoReport ? "_infon" : "_infoff";
-                            if(shouldBeSent(mDevice.enableTempReport, mDevice.enableTempReport))
+                            if(mDevice.enableTempReport != null)
                                 res += mDevice.enableTempReport ? "_tempon" : "_tempoff";
                             res += "#";
 

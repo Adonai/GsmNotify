@@ -89,7 +89,7 @@
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/send_sms"
+                adonai:label="@string/send_sms"
                 android:id="@+id/sms_send_check" />
 
             <LinearLayout
@@ -136,13 +136,13 @@
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sms_on_disarm"
+                adonai:label="@string/sms_on_disarm"
                 android:id="@+id/sms_at_disarm" />
 
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sms_on_wrong_key"
+                adonai:label="@string/sms_on_wrong_key"
                 android:id="@+id/sms_at_wrong_key" />
         </LinearLayout>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:adonai="http://schemas.android.com/apk/res-auto"
             android:layout_height="match_parent" android:layout_width="match_parent">
 
     <LinearLayout android:orientation="vertical"
@@ -69,13 +69,13 @@
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/constant_control"
+                adonai:label="@string/constant_control"
                 android:id="@+id/constant_control_check"/>
 
             <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/inner_sound"
+                adonai:label="@string/inner_sound"
                 android:id="@+id/inner_sound_check"/>
 
         </LinearLayout>
@@ -154,27 +154,27 @@
                     android:id="@+id/header_call"
                     android:layout_marginRight="20dp"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_1_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_2_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_3_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_4_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/call_5_check"/>
@@ -193,27 +193,27 @@
                     android:id="@+id/header_sms"
                     android:layout_marginRight="20dp"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sms_1_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sms_2_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sms_3_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sms_4_check"/>
 
-                <com.adonai.contrib.ThreeStateCheckBox
+                <com.adonai.contrib.ThreeStateButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sms_5_check"/>
