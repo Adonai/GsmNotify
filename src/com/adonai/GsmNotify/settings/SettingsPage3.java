@@ -6,21 +6,21 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.ViewFlipper;
 
 import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
+import com.adonai.contrib.ThreeStateButton;
+import com.adonai.contrib.ThreeStateCheckBox;
 
 public class SettingsPage3 extends SettingsFragment
 {
     RadioGroup mInputNum;
     ViewFlipper mFlipper;
     EditText mTimeToWait, mTimeToRearm;
-    CheckBox mConstantControl, mInnerSound;
+    ThreeStateCheckBox mConstantControl, mInnerSound;
     EditText mSmsText;
 
     Integer mCurrentInput;
@@ -65,21 +65,9 @@ public class SettingsPage3 extends SettingsFragment
 
             mTimeToWait = (EditText) input.findViewById(R.id.time_to_wait_edit);
             mTimeToRearm = (EditText) input.findViewById(R.id.time_to_rearm_edit);
-            mConstantControl = (CheckBox) input.findViewById(R.id.constant_control_check);
-            mInnerSound = (CheckBox) input.findViewById(R.id.inner_sound_check);
+            mConstantControl = (ThreeStateCheckBox) input.findViewById(R.id.constant_control_check);
+            mInnerSound = (ThreeStateCheckBox) input.findViewById(R.id.inner_sound_check);
             mSmsText = (EditText) input.findViewById(R.id.sms_text_edit);
-
-            // Initial layout
-            if(curr.timeToWaitBeforeCall != null)
-                mTimeToWait.setText(String.valueOf(curr.timeToWaitBeforeCall));
-            if(curr.timeToRearm != null)
-                mTimeToRearm.setText(String.valueOf(curr.timeToRearm));
-            if(curr.constantControl != null)
-                mConstantControl.setChecked(curr.constantControl);
-            if(curr.innerSound != null)
-                mInnerSound.setChecked(curr.innerSound);
-            if(curr.smsText != null)
-                mSmsText.setText(curr.smsText);
 
             // Handlers
             mTimeToWait.addTextChangedListener(new TextWatcher()
@@ -122,20 +110,30 @@ public class SettingsPage3 extends SettingsFragment
                     curr.timeToRearm = getValue(s.toString(), 0);
                 }
             });
-            mConstantControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            mConstantControl.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
             {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                public void onStateChanged(View v, int newState)
                 {
-                    curr.constantControl = isChecked;
+                    switch (newState)
+                    {
+                        case ThreeStateButton.STATE_UNKNOWN: curr.constantControl = null; break;
+                        case ThreeStateButton.STATE_NO: curr.constantControl = false; break;
+                        case ThreeStateButton.STATE_YES: curr.constantControl = true; break;
+                    }
                 }
             });
-            mInnerSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            mInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
             {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                public void onStateChanged(View v, int newState)
                 {
-                    curr.innerSound = isChecked;
+                    switch (newState)
+                    {
+                        case ThreeStateButton.STATE_UNKNOWN: curr.innerSound = null; break;
+                        case ThreeStateButton.STATE_NO: curr.innerSound = false; break;
+                        case ThreeStateButton.STATE_YES: curr.innerSound = true; break;
+                    }
                 }
             });
             mSmsText.addTextChangedListener(new TextWatcher()

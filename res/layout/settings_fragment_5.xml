@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
 
-        <CheckBox
+        <com.adonai.contrib.ThreeStateCheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/temper_control"
@@ -77,19 +77,19 @@
                 android:id="@+id/textView"
                 android:layout_gravity="center_horizontal" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/send_sms"
                 android:id="@+id/tc_send_sms" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activate_sound"
                 android:id="@+id/tc_activate_alert" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/activate_inner_sound"

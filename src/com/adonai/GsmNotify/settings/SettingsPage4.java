@@ -62,21 +62,6 @@ public class SettingsPage4 extends SettingsFragment
             mEnableOnDisarm = (EditText) output.findViewById(R.id.enable_on_disarm_edit);
             mEnableOnAlert = (EditText) output.findViewById(R.id.enable_on_alert_edit);
 
-
-            // Initial layout
-            if(curr.outputMode != null)
-                switch (curr.outputMode)
-                {
-                    case 1: mOutputMode.check(R.id.output_1_mode_radio); break;
-                    case 2: mOutputMode.check(R.id.output_2_mode_radio); break;
-                    case 3: mOutputMode.check(R.id.output_3_mode_radio); break;
-                    case 4: mOutputMode.check(R.id.output_4_mode_radio); break;
-                }
-            if(curr.timeToEnableOnAlert != null)
-                mEnableOnAlert.setText(String.valueOf(curr.timeToEnableOnAlert));
-            if(curr.timeToEnableOnDisarm != null)
-                mEnableOnDisarm.setText(String.valueOf(curr.timeToEnableOnDisarm));
-
             // Handlers
             mOutputMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
             {

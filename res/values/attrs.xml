@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="ThreeStateCheckBox">
+        <attr name="label" format="string" />
+        <attr name="state" format="integer" />
+    </declare-styleable>
+</resources>

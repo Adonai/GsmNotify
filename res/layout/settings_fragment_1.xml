@@ -2,6 +2,7 @@
 
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:adonai="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent" android:layout_width="match_parent">
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -85,7 +86,7 @@
                 android:layout_gravity="center_horizontal"
                 android:singleLine="false" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/send_sms"
@@ -126,19 +127,19 @@
             android:background="@drawable/border"
             android:orientation="vertical">
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sms_at_arm"
+                adonai:label="@string/sms_at_arm"
                 android:id="@+id/sms_at_arm" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sms_on_disarm"
                 android:id="@+id/sms_at_disarm" />
 
-            <CheckBox
+            <com.adonai.contrib.ThreeStateCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sms_on_wrong_key"

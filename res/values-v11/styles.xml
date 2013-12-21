@@ -6,5 +6,4 @@
     <style name="GSMTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/header</item>
     </style>
-
 </resources>

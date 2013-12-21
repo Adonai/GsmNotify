@@ -38,26 +38,6 @@ public class SettingsPage2 extends SettingsFragment
         mRecallWait = (EditText) layout.findViewById(R.id.call_length_edit);
         mBalanceNumber = (EditText) layout.findViewById(R.id.balance_number_edit);
 
-        // Initial layout
-        for (int i = 0; i < mSource.phones.length; ++i)
-        {
-            TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
-            if(mSource.phones[i].phoneNum != null)
-                ((EditText)currentRow.getChildAt(1)).setText(mSource.phones[i].phoneNum);
-            if(mSource.phones[i].info != null)
-                ((CheckBox)currentRow.getChildAt(2)).setChecked(mSource.phones[i].info);
-            if(mSource.phones[i].manage != null)
-                ((CheckBox)currentRow.getChildAt(3)).setChecked(mSource.phones[i].manage);
-            if(mSource.phones[i].confirm != null)
-                ((CheckBox)currentRow.getChildAt(4)).setChecked(mSource.phones[i].confirm);
-        }
-        if(mSource.recallCycles != null)
-            mRecallCycles.setText(String.valueOf(mSource.recallCycles));
-        if(mSource.recallWait != null)
-            mRecallWait.setText(String.valueOf(mSource.recallWait));
-        if(mSource.checkBalanceNum != null)
-            mBalanceNumber.setText(mSource.checkBalanceNum);
-
         // Handlers
         for (int i = 0; i < mSource.phones.length; ++i)
         {

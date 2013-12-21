@@ -100,4 +100,14 @@
     <string name="manage_device">Управление</string>
     <string name="existing_device">Устройство с таким номером уже существует!</string>
     <string name="settings_applied">Настройки применены!</string>
+    <string name="temp_report_switch">Температура</string>
+    <string name="info_report_switch">Инфо</string>
+    <string name="sms_daily_report">Ежедневный SMS-отчёт</string>
+    <string name="restart">Рестарт</string>
+    <string name="report">Отчёт</string>
+    <string name="immediate_reset">Немедленная перезагрузка</string>
+    <string name="reset_device">Перезагрузить устройство</string>
+    <string name="enable">Вкл.</string>
+    <string name="disable">Выкл.</string>
+    <string name="setting_reports_mode">Установка режима отчетов</string>
 </resources>

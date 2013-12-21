@@ -2,13 +2,13 @@ package com.adonai.GsmNotify;
 
 public class Device
 {
-    public class PhoneSettings
+    final public class PhoneSettings
     {
         public String phoneNum;
         public Boolean info, manage, confirm;
     }
 
-    public class InputSettings
+    final public class InputSettings
     {
         public Integer timeToWaitBeforeCall;
         public Integer timeToRearm;
@@ -16,16 +16,22 @@ public class Device
         public String smsText;
     }
 
-    public class OutputSettings
+    final public class OutputSettings
     {
         public Integer outputMode;
         public Integer timeToEnableOnDisarm;
         public Integer timeToEnableOnAlert;
     }
 
+    final public static class CommonSettings
+    {
+        public String name;
+        public String number;
+        public String password;
+    }
+
     // Common
-    public String name;
-    public String number;
+    public CommonSettings details = new CommonSettings();
 
     // page 1
     public Integer timeToArm;
@@ -33,7 +39,6 @@ public class Device
     public Boolean sendSmsOnPowerLoss;
     public Integer timeToWaitOnPowerLoss;
     public Boolean smsAtArm, smsAtDisarm, smsAtWrongKey;
-    public String devicePassword;
 
     // page 2
     public PhoneSettings phones[] = new PhoneSettings[] { new PhoneSettings(), new PhoneSettings(), new PhoneSettings(), new PhoneSettings(), new PhoneSettings() };
@@ -53,4 +58,8 @@ public class Device
     public Integer tempMode;
     public Boolean tcSendSms, tcActivateAlert, tcActivateInnerSound;
     public Double tMin, tMax;
+
+    // page 6
+    public Boolean enableTempReport;
+    public Boolean enableInfoReport;
 }

@@ -31,6 +31,8 @@ import com.adonai.GsmNotify.settings.SettingsPage2;
 import com.adonai.GsmNotify.settings.SettingsPage3;
 import com.adonai.GsmNotify.settings.SettingsPage4;
 import com.adonai.GsmNotify.settings.SettingsPage5;
+import com.adonai.GsmNotify.settings.SettingsPage6;
+import com.adonai.GsmNotify.settings.SettingsPage7;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     final public static int HANDLE_STEP = 1;
     final public static int HANDLE_FINISH = 2;
     final public static int HANDLE_RESET = 3;
+    final public static int HANDLE_FORCE_RESET = 4;
 
     final public static int SMS_DEFAULT_TIMEOUT = 20000;
 
@@ -60,12 +63,12 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     Handler mHandler;
 
     FragmentManager mFragmentManager;
-    SettingsFragment[] mSettingsPage = new SettingsFragment[5];
+    SettingsFragment[] mSettingsPages = new SettingsFragment[7];
     ViewPager mPager;
     ViewFlipper mFlipper;
     FragmentPagerAdapter mPagerAdapter;
 
-    Device mSavedDevice, mNewDevice;
+    Device mDevice;
 
     public  class sentConfirmReceiver extends BroadcastReceiver
     {
@@ -118,20 +121,20 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mFragmentManager = getSupportFragmentManager();
 
         mPager = (ViewPager) findViewById(R.id.settings_page_holder);
-        mPager.setOffscreenPageLimit(5);
+        mPager.setOffscreenPageLimit(mSettingsPages.length);
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager)
         {
             @Override
             public Fragment getItem(int i)
             {
-                assert i < mSettingsPage.length;
-                return mSettingsPage[i];
+                assert i < mSettingsPages.length;
+                return mSettingsPages[i];
             }
 
             @Override
             public int getCount()
             {
-                return 5;
+                return mSettingsPages.length;
             }
 
             @Override
@@ -144,6 +147,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     case 2: return getString(R.string.inputs);
                     case 3: return getString(R.string.outputs);
                     case 4: return getString(R.string.temperature);
+                    case 5: return getString(R.string.report);
+                    case 6: return getString(R.string.restart);
                     default: return null;
                 }
             }
@@ -180,36 +185,34 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
     private void prepareUI(String id)
     {
+        mDevice = new Device();
+
         if(id != null)
         {
             SharedPreferences.Editor edit = mPrefs.edit();
             edit.putString("currentEdit", id);
             edit.commit();
 
-            mSavedDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
-            mNewDevice = new Gson().fromJson(mPrefs.getString(id, ""), Device.class);
+            mDevice.details = new Gson().fromJson(mPrefs.getString(id, ""), Device.CommonSettings.class);
 
-            if(mNewDevice.name != null)
-                mDeviceName.setText(mSavedDevice.name);
-            if(mNewDevice.number != null)
-                mDeviceNumber.setText(mSavedDevice.number);
-            if(mNewDevice.devicePassword != null)
-                mDevicePassword.setText(mSavedDevice.devicePassword);
+            if(mDevice.details.name != null)
+                mDeviceName.setText(mDevice.details.name);
+            if(mDevice.details.number != null)
+                mDeviceNumber.setText(mDevice.details.number);
+            if(mDevice.details.password != null)
+                mDevicePassword.setText(mDevice.details.password);
 
             mManageDevice.setVisibility(View.VISIBLE);
             mEditDevice.setVisibility(View.VISIBLE);
         }
-        else
-        {
-            mSavedDevice = new Device();
-            mNewDevice = new Device();
-        }
 
-        mSettingsPage[0] = new SettingsPage1(mNewDevice);
-        mSettingsPage[1] = new SettingsPage2(mNewDevice);
-        mSettingsPage[2] = new SettingsPage3(mNewDevice);
-        mSettingsPage[3] = new SettingsPage4(mNewDevice);
-        mSettingsPage[4] = new SettingsPage5(mNewDevice);
+        mSettingsPages[0] = new SettingsPage1(mDevice);
+        mSettingsPages[1] = new SettingsPage2(mDevice);
+        mSettingsPages[2] = new SettingsPage3(mDevice);
+        mSettingsPages[3] = new SettingsPage4(mDevice);
+        mSettingsPages[4] = new SettingsPage5(mDevice);
+        mSettingsPages[5] = new SettingsPage6(mDevice);
+        mSettingsPages[6] = new SettingsPage7(mDevice);
     }
 
     @Override
@@ -237,7 +240,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         {
             case R.id.manage_device_button:
             {
-                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
+                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mDevice.details.number);
                 startActivity(editNow);
                 finish();
                 break;
@@ -249,30 +252,29 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     List<String> IDStrings = new ArrayList<>();
                     Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
 
-                    if(IDStrings.contains(mDeviceNumber.getText().toString()) && !(mSavedDevice.number != null && mDeviceNumber.getText().toString().equals(mSavedDevice.number))) // we have already that number and that's not us
+                    if(IDStrings.contains(mDeviceNumber.getText().toString()) && !(mDevice.details.number != null && mDeviceNumber.getText().toString().equals(mDevice.details.number))) // we have already that number and that's not us
                     {
                         Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     // we assume we have all the views created
-                    mSavedDevice.devicePassword = mDevicePassword.getText().toString();
-                    EditText password = (EditText) mSettingsPage[0].getView().findViewById(R.id.new_password_edit);
+                    EditText password = (EditText) mSettingsPages[0].getView().findViewById(R.id.new_password_edit);
                     password.setText(mDevicePassword.getText().toString());
 
-                    mNewDevice.name = mDeviceName.getText().toString();
-                    mNewDevice.number = mDeviceNumber.getText().toString();
+                    mDevice.details.name = mDeviceName.getText().toString();
+                    mDevice.details.number = mDeviceNumber.getText().toString();
 
                     SharedPreferences.Editor edit = mPrefs.edit();
-                    if(mSavedDevice.number != null) // if we have old device data
+                    if(mDevice.details.number != null)
                     {
-                        IDStrings.remove(mSavedDevice.number);
-                        edit.remove(mSavedDevice.number); // delete old data about this device
+                        IDStrings.remove(mDevice.details.number);
+                        edit.remove(mDevice.details.number);
                     }
 
-                    IDStrings.add(mNewDevice.number);
+                    IDStrings.add(mDevice.details.number);
                     edit.putString("IDs", Utils.join(IDStrings, ";"));
-                    edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
+                    edit.putString(mDevice.details.number, new Gson().toJson(mDevice));
                     edit.commit();
 
                     Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
@@ -310,78 +312,75 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     private Pair<Boolean, String> compileDiff(Integer pageNumber)
     {
         assert pageNumber != null;
-        String res = "*" + mSavedDevice.devicePassword + "#_sp_*" + pageNumber;
+        String res = "*" + mDevice.details.password + "#_sp_*" + pageNumber;
         Integer original_length = res.length();
         if(pageNumber == 1)
         {
-            if(shouldBeSent(mSavedDevice.timeToArm, mNewDevice.timeToArm))
-                res += "_1=" + String.format("%03d", mNewDevice.timeToArm);
-            if(shouldBeSent(mSavedDevice.inputManager, mNewDevice.inputManager))
-                res += "_2=" + String.format("%1d", mNewDevice.inputManager);
-            if(shouldBeSent(mSavedDevice.sendSmsOnPowerLoss, mNewDevice.sendSmsOnPowerLoss))
-                res += "_3=" + (mNewDevice.sendSmsOnPowerLoss ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.timeToWaitOnPowerLoss, mNewDevice.timeToWaitOnPowerLoss))
-                res += "_4=" + String.format("%03d", mNewDevice.timeToWaitOnPowerLoss);
-            if(shouldBeSent(mSavedDevice.smsAtArm, mNewDevice.smsAtArm))
-                res += "_5=" + (mNewDevice.smsAtArm ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.smsAtWrongKey, mNewDevice.smsAtWrongKey))
-                res += "_6=" + (mNewDevice.smsAtWrongKey ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.devicePassword, mNewDevice.devicePassword))
-                res += "_7=" + "\"" + mNewDevice.devicePassword + "\"";
-            if(shouldBeSent(mSavedDevice.smsAtDisarm, mNewDevice.smsAtDisarm))
-                res += "_8=" + (mNewDevice.smsAtDisarm ? "1" : "+");
+            if(mDevice.timeToArm != null)
+                res += "_1=" + String.format("%03d", mDevice.timeToArm);
+            if(mDevice.inputManager != null)
+                res += "_2=" + String.format("%1d", mDevice.inputManager);
+            if(mDevice.sendSmsOnPowerLoss != null)
+                res += "_3=" + (mDevice.sendSmsOnPowerLoss ? "1" : "+");
+            if(mDevice.timeToWaitOnPowerLoss != null)
+                res += "_4=" + String.format("%03d", mDevice.timeToWaitOnPowerLoss);
+            if(mDevice.smsAtArm  != null)
+                res += "_5=" + (mDevice.smsAtArm ? "1" : "+");
+            if(mDevice.smsAtWrongKey != null)
+                res += "_6=" + (mDevice.smsAtWrongKey ? "1" : "+");
+            if(mDevice.details.password != null)
+                res += "_7=" + "\"" + mDevice.details.password + "\"";
+            if(mDevice.smsAtDisarm != null)
+                res += "_8=" + (mDevice.smsAtDisarm ? "1" : "+");
         }
         if(pageNumber == 2)
         {
-            for(int i = 0; i < mNewDevice.phones.length; i++)
+            for(int i = 0; i < mDevice.phones.length; i++)
             {
-                Device.PhoneSettings curr = mNewDevice.phones[i];
-                Device.PhoneSettings old = mSavedDevice.phones[i];
+                Device.PhoneSettings curr = mDevice.phones[i];
 
-                if(shouldBeSent(old.phoneNum, curr.phoneNum))
+                if(curr.phoneNum != null)
                     res += "_1." + String.valueOf(i + 1) + "=" + curr.phoneNum;
-                if(shouldBeSent(old.info, curr.info))
+                if(curr.info != null)
                     res += "_2." + String.valueOf(i + 1) + "=" + (curr.info ? "1" : "+");
-                if(shouldBeSent(old.manage, curr.manage))
+                if(curr.manage != null)
                     res += "_3." + String.valueOf(i + 1) + "=" + (curr.manage ? "1" : "+");
-                if(shouldBeSent(old.confirm, curr.confirm))
+                if(curr.confirm != null)
                     res += "_4." + String.valueOf(i + 1) + "=" + (curr.confirm ? "1" : "+");
             }
-            if(shouldBeSent(mSavedDevice.recallCycles, mNewDevice.recallCycles))
-                res += "_5=" + String.format("%03d", mNewDevice.recallCycles);
-            if(shouldBeSent(mSavedDevice.recallWait, mNewDevice.recallWait))
-                res += "_6=" + String.format("%03d", mNewDevice.recallWait);
-            if(shouldBeSent(mSavedDevice.checkBalanceNum, mNewDevice.checkBalanceNum))
-                res += "_7=" + "\"" + mNewDevice.checkBalanceNum + "\"";
+            if(mDevice.recallCycles != null)
+                res += "_5=" + String.format("%03d", mDevice.recallCycles);
+            if(mDevice.recallWait != null)
+                res += "_6=" + String.format("%03d", mDevice.recallWait);
+            if(mDevice.checkBalanceNum != null)
+                res += "_7=" + "\"" + mDevice.checkBalanceNum + "\"";
         }
         if(pageNumber == 3)
         {
-            for(int i = 0; i < mNewDevice.inputs.length; i++)
+            for(int i = 0; i < mDevice.inputs.length; i++)
             {
-                Device.InputSettings curr = mNewDevice.inputs[i];
-                Device.InputSettings old = mSavedDevice.inputs[i];
+                Device.InputSettings curr = mDevice.inputs[i];
 
-                if(shouldBeSent(old.timeToRearm, curr.timeToRearm))
+                if(curr.timeToRearm != null)
                     res += "_1." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToRearm);
                 // TODO: here will some additional code sit
-                if(shouldBeSent(old.timeToWaitBeforeCall, curr.timeToWaitBeforeCall))
+                if(curr.timeToWaitBeforeCall != null)
                     res += "_3." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToWaitBeforeCall);
-                if(shouldBeSent(old.smsText, curr.smsText))
+                if(curr.smsText != null)
                     res += "_5." + String.valueOf(i + 1) + "=" + "\"" + curr.smsText + "\"";
-                if(shouldBeSent(old.constantControl, curr.constantControl))
+                if(curr.constantControl != null)
                     res += "_6." + String.valueOf(i + 1) + "=" + (curr.constantControl ? "1" : "+");
-                if(shouldBeSent(old.innerSound, curr.innerSound))
+                if(curr.innerSound != null)
                     res += "_6." + String.valueOf(i + 1) + "=" + (curr.innerSound ? "1" : "+");
             }
         }
         if(pageNumber == 4)
         {
-            for(int i = 0; i < mNewDevice.outputs.length; i++)
+            for(int i = 0; i < mDevice.outputs.length; i++)
             {
-                Device.OutputSettings curr = mNewDevice.outputs[i];
-                Device.OutputSettings old = mSavedDevice.outputs[i];
+                Device.OutputSettings curr = mDevice.outputs[i];
 
-                if(shouldBeSent(old.outputMode, curr.outputMode)) // always send timing when change mode
+                if(curr.outputMode != null) // always send timing when change mode
                 {
                     res += "_1." + String.valueOf(i + 1) + "=" + String.format("%1d", curr.outputMode);
                     if(curr.outputMode == 3 && curr.timeToEnableOnDisarm != null)
@@ -389,31 +388,24 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     else if (curr.outputMode == 4 && curr.timeToEnableOnAlert != null)
                         res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
                 }
-                else if(curr.outputMode != null) // if only timing changed
-                {
-                    if(curr.outputMode == 3 && shouldBeSent(old.timeToEnableOnDisarm, curr.timeToEnableOnDisarm))
-                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnDisarm);
-                    if(curr.outputMode == 4 && shouldBeSent(old.timeToEnableOnAlert, curr.timeToEnableOnAlert))
-                        res += "_2." + String.valueOf(i + 1) + "=" + String.format("%03d", curr.timeToEnableOnAlert);
-                }
             }
         }
         if(pageNumber == 5)
         {
-            if(shouldBeSent(mSavedDevice.enableTC, mNewDevice.enableTC))
-                res += "_1=" + (mNewDevice.enableTC ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.tempLimit, mNewDevice.tempLimit))
-                res += "_2=" + String.format("%05.0f", mNewDevice.tempLimit * 1000).substring(0, 5);
-            if(shouldBeSent(mSavedDevice.tcSendSms, mNewDevice.tcSendSms))
-                res += "_3=" + (mNewDevice.tcSendSms ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.tcActivateAlert, mNewDevice.tcActivateAlert))
-                res += "_4=" + (mNewDevice.tcActivateAlert ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.tcActivateInnerSound, mNewDevice.tcActivateInnerSound))
-                res += "_5=" + (mNewDevice.tcActivateInnerSound ? "1" : "+");
-            if(shouldBeSent(mSavedDevice.tMin, mNewDevice.tMin))
-                res += "_6=" + String.format("%05.0f", mNewDevice.tMin * 1000).substring(0, 5);
-            if(shouldBeSent(mSavedDevice.tMax, mNewDevice.tMax))
-                res += "_7=" + String.format("%05.0f", mNewDevice.tMax * 1000).substring(0, 5);
+            if(mDevice.enableTC != null)
+                res += "_1=" + (mDevice.enableTC ? "1" : "+");
+            if(mDevice.tempLimit != null)
+                res += "_2=" + String.format("%05.0f", mDevice.tempLimit * 1000).substring(0, 5);
+            if(mDevice.tcSendSms != null)
+                res += "_3=" + (mDevice.tcSendSms ? "1" : "+");
+            if(mDevice.tcActivateAlert != null)
+                res += "_4=" + (mDevice.tcActivateAlert ? "1" : "+");
+            if(mDevice.tcActivateInnerSound != null)
+                res += "_5=" + (mDevice.tcActivateInnerSound ? "1" : "+");
+            if(mDevice.tMin != null)
+                res += "_6=" + String.format("%05.0f", mDevice.tMin * 1000).substring(0, 5);
+            if(mDevice.tMax != null)
+                res += "_7=" + String.format("%05.0f", mDevice.tMax * 1000).substring(0, 5);
         }
 
         return new Pair<>(res.length() > original_length, res + "#");
@@ -443,7 +435,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                             PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                             PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                             SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mNewDevice.number, null, toSend.second, sentPI, deliveredPI);
+                            sms.sendTextMessage(mDevice.details.number, null, toSend.second, sentPI, deliveredPI);
                             mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
                         }
                         else
@@ -453,13 +445,35 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     case 6: // temp control
                     {
                         pd.setMessage(getString(R.string.setting_temp_mode));
-                        if(shouldBeSent(mSavedDevice.tempMode, mNewDevice.tempMode))
+                        if(mDevice.tempMode != null)
                         {
-                            String res = "*" + mSavedDevice.devicePassword + "#" + (mNewDevice.tempMode == 1 ? "_tb" : "_th") + "#";
+                            String res = "*" + mDevice.details.password + "#" + (mDevice.tempMode == 1 ? "_th" : "_tb") + "#";
                             PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                             PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                             SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mNewDevice.number, null, res, sentPI, deliveredPI);
+                            sms.sendTextMessage(mDevice.details.number, null, res, sentPI, deliveredPI);
+                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
+                        }
+                        else
+                            mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
+                        break;
+                    }
+                    case 7: // report control
+                    {
+                        pd.setMessage(getString(R.string.setting_reports_mode));
+                        if(mDevice.enableInfoReport != null || mDevice.enableTempReport != null)
+                        {
+                            String res = "*" + mDevice.details.password + "#";
+                            if(shouldBeSent(mDevice.enableInfoReport, mDevice.enableInfoReport))
+                                res += mDevice.enableInfoReport ? "_infon" : "_infoff";
+                            if(shouldBeSent(mDevice.enableTempReport, mDevice.enableTempReport))
+                                res += mDevice.enableTempReport ? "_tempon" : "_tempoff";
+                            res += "#";
+
+                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                            SmsManager sms = SmsManager.getDefault();
+                            sms.sendTextMessage(mDevice.details.number, null, res, sentPI, deliveredPI);
                             mHandler.sendEmptyMessageDelayed(HANDLE_RESET, SMS_DEFAULT_TIMEOUT);
                         }
                         else
@@ -478,7 +492,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
                     PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
                     SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(mNewDevice.number, null, "*" + mSavedDevice.devicePassword + "#_fullrst#", sentPI, deliveredPI);
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_fullrst#", sentPI, deliveredPI);
                     mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
                 }
                 else
@@ -492,20 +506,37 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 pd.dismiss();
 
                 String IDStrings = mPrefs.getString("IDs", "");
-                if(!IDStrings.contains(mNewDevice.number))
-                    IDStrings = IDStrings + mNewDevice.number + ";";
+                if(!IDStrings.contains(mDevice.details.number))
+                    IDStrings = IDStrings + mDevice.details.number + ";";
 
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putString("IDs", IDStrings);
-                edit.putString(mNewDevice.number, new Gson().toJson(mNewDevice));
+                edit.putString(mDevice.details.number, new Gson().toJson(mDevice));
                 edit.commit();
 
                 // replace with finish
-                // mSavedDevice = new Gson().fromJson(mPrefs.getString(mNewDevice.number, ""), Device.class);
+                // mSavedDevice = new Gson().fromJson(mPrefs.getString(mDevice.number, ""), Device.class);
 
-                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mNewDevice.number);
+                Intent editNow = new Intent(this, MainActivity.class).putExtra("ID", mDevice.details.number);
                 startActivity(editNow);
                 finish();
+                break;
+            }
+            case HANDLE_FORCE_RESET:
+            {
+                pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.resetting_device), true, false);
+                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_fullrst#", sentPI, deliveredPI);
+                mHandler.postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        pd.dismiss();
+                    }
+                }, SMS_DEFAULT_TIMEOUT);
                 break;
             }
         }

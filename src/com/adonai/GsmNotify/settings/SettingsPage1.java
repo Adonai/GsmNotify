@@ -6,21 +6,21 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
+import com.adonai.contrib.ThreeStateButton;
+import com.adonai.contrib.ThreeStateCheckBox;
 
 public class SettingsPage1 extends SettingsFragment
 {
     EditText mTimeToArm;
     RadioGroup mInputManager;
-    CheckBox mSendSMS;
+    ThreeStateCheckBox mSendSMS;
     EditText mTimeToWait;
-    CheckBox mSmsAtArm, mSmsAtDisarm, mSmsAtWrongKey;
+    ThreeStateCheckBox mSmsAtDisarm, mSmsAtWrongKey, mSmsAtArm;
     EditText mPassword;
 
     public SettingsPage1(Device source)
@@ -39,36 +39,12 @@ public class SettingsPage1 extends SettingsFragment
 
         mTimeToArm = (EditText) layout.findViewById(R.id.time_to_arm_edit);
         mInputManager = (RadioGroup) layout.findViewById(R.id.manage_input_group);
-        mSendSMS = (CheckBox) layout.findViewById(R.id.sms_send_check);
+        mSendSMS = (ThreeStateCheckBox) layout.findViewById(R.id.sms_send_check);
         mTimeToWait = (EditText) layout.findViewById(R.id.time_to_send_edit);
-        mSmsAtArm = (CheckBox) layout.findViewById(R.id.sms_at_arm);
-        mSmsAtDisarm = (CheckBox) layout.findViewById(R.id.sms_at_disarm);
-        mSmsAtWrongKey = (CheckBox) layout.findViewById(R.id.sms_at_wrong_key);
+        mSmsAtArm = (ThreeStateCheckBox) layout.findViewById(R.id.sms_at_arm);
+        mSmsAtDisarm = (ThreeStateCheckBox) layout.findViewById(R.id.sms_at_disarm);
+        mSmsAtWrongKey = (ThreeStateCheckBox) layout.findViewById(R.id.sms_at_wrong_key);
         mPassword = (EditText) layout.findViewById(R.id.new_password_edit);
-
-        // Initial layout
-        if(mSource.timeToArm != null)
-            mTimeToArm.setText(String.valueOf(mSource.timeToArm));
-
-        if(mSource.inputManager != null)
-            switch (mSource.inputManager)
-            {
-                case 1: mInputManager.check(R.id.manage_input_1); break;
-                case 2: mInputManager.check(R.id.manage_input_2); break;
-                case 3: mInputManager.check(R.id.manage_input_3); break;
-            }
-        if(mSource.sendSmsOnPowerLoss != null)
-            mSendSMS.setChecked(mSource.sendSmsOnPowerLoss);
-        if(mSource.timeToWaitOnPowerLoss != null)
-            mTimeToWait.setText(String.valueOf(mSource.timeToWaitOnPowerLoss));
-        if(mSource.smsAtArm != null)
-            mSmsAtArm.setChecked(mSource.smsAtArm);
-        if(mSource.smsAtDisarm != null)
-            mSmsAtDisarm.setChecked(mSource.smsAtDisarm);
-        if(mSource.smsAtWrongKey != null)
-            mSmsAtWrongKey.setChecked(mSource.smsAtWrongKey);
-        if(mSource.devicePassword != null)
-            mPassword.setText(mSource.devicePassword);
 
         // Handlers
         mTimeToArm.addTextChangedListener(new TextWatcher()
@@ -111,12 +87,17 @@ public class SettingsPage1 extends SettingsFragment
                 }
             }
         });
-        mSendSMS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mSendSMS.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.sendSmsOnPowerLoss = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.sendSmsOnPowerLoss = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.sendSmsOnPowerLoss = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.sendSmsOnPowerLoss = true; break;
+                }
             }
         });
         mTimeToWait.addTextChangedListener(new TextWatcher()
@@ -139,28 +120,43 @@ public class SettingsPage1 extends SettingsFragment
                 mSource.timeToWaitOnPowerLoss = getValue(s.toString(), 0);
             }
         });
-        mSmsAtArm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mSmsAtArm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.smsAtArm = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtArm = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.smsAtArm = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.smsAtArm = true; break;
+                }
             }
         });
-        mSmsAtDisarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mSmsAtDisarm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.smsAtDisarm = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtDisarm = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.smsAtDisarm = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.smsAtDisarm = true; break;
+                }
             }
         });
-        mSmsAtWrongKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mSmsAtWrongKey.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.smsAtWrongKey = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtWrongKey = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.smsAtWrongKey = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.smsAtWrongKey = true; break;
+                }
             }
         });
         mPassword.addTextChangedListener(new TextWatcher()
@@ -180,7 +176,7 @@ public class SettingsPage1 extends SettingsFragment
             @Override
             public void afterTextChanged(Editable s)
             {
-                mSource.devicePassword = s.toString();
+                mSource.details.password = s.toString();
             }
         });
 

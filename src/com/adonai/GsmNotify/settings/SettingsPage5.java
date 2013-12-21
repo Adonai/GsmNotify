@@ -6,21 +6,21 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
+import com.adonai.contrib.ThreeStateButton;
+import com.adonai.contrib.ThreeStateCheckBox;
 
 public class SettingsPage5 extends SettingsFragment
 {
-    CheckBox mTcEnable;
+    ThreeStateCheckBox mTcEnable;
     EditText mTempLimit;
     RadioGroup mTcModeGroup;
     EditText mTMin, mTMax;
-    CheckBox mSendSms, mActivateAlert, mActivateInnerSound;
+    ThreeStateCheckBox mSendSms, mActivateAlert, mActivateInnerSound;
 
     public SettingsPage5(Device source)
     {
@@ -34,33 +34,14 @@ public class SettingsPage5 extends SettingsFragment
         View layout = inflater.inflate(R.layout.settings_fragment_5, container, false);
         assert layout != null;
 
-        mTcEnable = (CheckBox) layout.findViewById(R.id.tc_checkbox);
+        mTcEnable = (ThreeStateCheckBox) layout.findViewById(R.id.tc_checkbox);
         mTempLimit = (EditText) layout.findViewById(R.id.tc_limit_edit);
-        mSendSms = (CheckBox) layout.findViewById(R.id.tc_send_sms);
-        mActivateAlert = (CheckBox) layout.findViewById(R.id.tc_activate_alert);
-        mActivateInnerSound = (CheckBox) layout.findViewById(R.id.tc_activate_inner_sound);
+        mSendSms = (ThreeStateCheckBox) layout.findViewById(R.id.tc_send_sms);
+        mActivateAlert = (ThreeStateCheckBox) layout.findViewById(R.id.tc_activate_alert);
+        mActivateInnerSound = (ThreeStateCheckBox) layout.findViewById(R.id.tc_activate_inner_sound);
         mTcModeGroup = (RadioGroup) layout.findViewById(R.id.tc_mode_group);
         mTMin = (EditText) layout.findViewById(R.id.tc_min);
         mTMax = (EditText) layout.findViewById(R.id.tc_max);
-
-        // Initial layout
-        if(mSource.enableTC != null)
-            mTcEnable.setChecked(mSource.enableTC);
-        if(mSource.tempLimit != null)
-            mTempLimit.setText(String.valueOf(mSource.tempLimit));
-        if(mSource.tempMode != null)
-            switch (mSource.tempMode)
-            {
-                case 0: mTcModeGroup.check(R.id.tc_mode_0); break;
-                case 1: mTcModeGroup.check(R.id.tc_mode_1); break;
-            }
-        if(mSource.tcSendSms != null)
-            mSendSms.setChecked(mSource.tcSendSms);
-        if(mSource.tcActivateAlert != null)
-            mActivateAlert.setChecked(mSource.tcActivateAlert);
-        if(mSource.tcActivateInnerSound != null)
-            mActivateInnerSound.setChecked(mSource.tcActivateInnerSound);
-
 
         if(mSource.tMin != null)
             mTMin.setText(String.valueOf(mSource.tMin));
@@ -68,12 +49,17 @@ public class SettingsPage5 extends SettingsFragment
             mTMax.setText(String.valueOf(mSource.tMax));
 
         // Handlers
-        mTcEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mTcEnable.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.enableTC = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.enableTC = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.enableTC = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.enableTC = true; break;
+                }
             }
         });
         mTempLimit.addTextChangedListener(new TextWatcher()
@@ -112,28 +98,43 @@ public class SettingsPage5 extends SettingsFragment
                 }
             }
         });
-        mSendSms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mSendSms.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.tcSendSms = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcSendSms = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.tcSendSms = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.tcSendSms = true; break;
+                }
             }
         });
-        mActivateAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mActivateAlert.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.tcActivateAlert = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcActivateAlert = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.tcActivateAlert = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.tcActivateAlert = true; break;
+                }
             }
         });
-        mActivateInnerSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        mActivateInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
         {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            public void onStateChanged(View v, int newState)
             {
-                mSource.tcActivateInnerSound = isChecked;
+                switch (newState)
+                {
+                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcActivateInnerSound = null; break;
+                    case ThreeStateButton.STATE_NO: mSource.tcActivateInnerSound = false; break;
+                    case ThreeStateButton.STATE_YES: mSource.tcActivateInnerSound = true; break;
+                }
             }
         });
         mTMin.addTextChangedListener(new TextWatcher()

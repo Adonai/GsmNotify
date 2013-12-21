@@ -72,17 +72,17 @@
                     android:hint="@string/plus_seven"
                     android:inputType="phone"/>
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_1_info" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_1_manage" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_1_confirm" />
@@ -107,17 +107,17 @@
                     android:hint="@string/plus_seven"
                     android:inputType="phone"/>
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_2_info" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_2_manage" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_2_confirm" />
@@ -142,17 +142,17 @@
                     android:hint="@string/plus_seven"
                     android:inputType="phone"/>
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_3_info" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_3_manage" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_3_confirm" />
@@ -177,17 +177,17 @@
                     android:hint="@string/plus_seven"
                     android:inputType="phone"/>
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_4_info" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_4_manage" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_4_confirm" />
@@ -212,17 +212,17 @@
                     android:hint="@string/plus_seven"
                     android:inputType="phone"/>
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_5_info" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_5_manage" />
 
-                <CheckBox
+                <com.adonai.contrib.ThreeStateCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/phone_5_confirm" />
