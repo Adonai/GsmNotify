@@ -20,8 +20,8 @@ public class ThreeStateButton extends CheckBox
 {
 
     public static final int STATE_UNKNOWN = 0;
-    public static final int STATE_NO = 1;
-    public static final int STATE_YES = 2;
+    public static final int STATE_NO = 2;
+    public static final int STATE_YES = 1;
     public static final int NUMBER_OF_STATES = 3;
 
     private int state;

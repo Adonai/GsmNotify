@@ -66,7 +66,7 @@
     <string name="call_length">Длительность посылки вызова (сек.)</string>
     <string name="from_30_to_60">30…60</string>
     <string name="balance_number">Номер проверки баланса</string>
-    <string name="temper_control">Включить Т.К.</string>
+    <string name="temper_control">Включить термоконтроль</string>
     <string name="tc_limit">Порог температуры</string>
     <string name="tc_growing">Режим 0 - рост температуры</string>
     <string name="tc_fading">Режим 1 - падение температуры</string>

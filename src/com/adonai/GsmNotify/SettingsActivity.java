@@ -274,7 +274,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
                     IDStrings.add(mDevice.details.number);
                     edit.putString("IDs", Utils.join(IDStrings, ";"));
-                    edit.putString(mDevice.details.number, new Gson().toJson(mDevice));
+                    edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
                     edit.commit();
 
                     Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
@@ -294,6 +294,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             case R.id.device_apply:
                 hasSomethingChanged = false;
 
+                /*
                 Pair<Boolean, String> toSend = compileDiff(1);
                 if(toSend.first)
                     new AlertDialog.Builder(this).setTitle("Страница 1").setMessage(toSend.second).show();
@@ -309,9 +310,10 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 toSend = compileDiff(5);
                 if(toSend.first)
                     new AlertDialog.Builder(this).setTitle("Страница 5").setMessage(toSend.second).show();
+                */
 
-                //pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
-                //mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
+                pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.querying_device), true, false);
+                mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, 1));
                 break;
         }
     }
@@ -320,7 +322,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     private Pair<Boolean, String> compileDiff(Integer pageNumber)
     {
         assert pageNumber != null;
-        String res = "*" + mDevice.details.password + "#_sp_*" + pageNumber;
+        String res = "*" + mDevicePassword.getText().toString() + "#_sp_*" + pageNumber;
         Integer original_length = res.length();
         if(pageNumber == 1)
         {
@@ -519,7 +521,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putString("IDs", IDStrings);
-                edit.putString(mDevice.details.number, new Gson().toJson(mDevice));
+                edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
                 edit.commit();
 
                 // replace with finish

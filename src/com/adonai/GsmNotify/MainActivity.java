@@ -9,6 +9,7 @@ import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +62,31 @@ public class MainActivity extends Activity implements View.OnClickListener
         }
     }
 
+    // увеличиваем длительность нажатия до 500 мс
+    private View.OnTouchListener pressHolder = new View.OnTouchListener()
+    {
+        @Override
+        public boolean onTouch(final View v, MotionEvent event)
+        {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    v.setPressed(true);
+                    onClick(v);
+                    v.postDelayed(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            v.setPressed(false);
+                        }
+                    }, 500);
+                    break;
+
+            }
+            return true;
+        }
+    };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -73,26 +99,25 @@ public class MainActivity extends Activity implements View.OnClickListener
         incMessages = new MessageQueue();
         sentReceiver = new sentConfirmReceiver();
         deliveryReceiver = new deliveryConfirmReceiver();
-
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
+
         mNotifyEnable = (Button) findViewById(R.id.signal_on_button);
         mNotifyDisable = (Button) findViewById(R.id.signal_off_button);
         mRelay1Enable = (Button) findViewById(R.id.relay1_on_button);
         mRelay1Disable = (Button) findViewById(R.id.relay1_off_button);
         mRelay2Enable = (Button) findViewById(R.id.relay2_on_button);
         mRelay2Disable = (Button) findViewById(R.id.relay2_off_button);
-
-        mNotifyEnable.setOnClickListener(this);
-        mNotifyDisable.setOnClickListener(this);
-        mRelay1Enable.setOnClickListener(this);
-        mRelay1Disable.setOnClickListener(this);
-        mRelay2Enable.setOnClickListener(this);
-        mRelay2Disable.setOnClickListener(this);
-
         mGetData = (Button) findViewById(R.id.get_data_button);
-        mGetData.setOnClickListener(this);
         mGetTemperature = (Button) findViewById(R.id.get_temperature_button);
-        mGetTemperature.setOnClickListener(this);
+
+        mNotifyEnable.setOnTouchListener(pressHolder);
+        mNotifyDisable.setOnTouchListener(pressHolder);
+        mRelay1Enable.setOnTouchListener(pressHolder);
+        mRelay1Disable.setOnTouchListener(pressHolder);
+        mRelay2Enable.setOnTouchListener(pressHolder);
+        mRelay2Disable.setOnTouchListener(pressHolder);
+        mGetData.setOnTouchListener(pressHolder);
+        mGetTemperature.setOnTouchListener(pressHolder);
 
         mResultText = (EditText) findViewById(R.id.result_text);
 
@@ -156,7 +181,8 @@ public class MainActivity extends Activity implements View.OnClickListener
         String gson = mPrefs.getString(mAddressID, "");
         if (!gson.equals(""))
         {
-            mDevice = new Gson().fromJson(gson, Device.class);
+            mDevice = new Device();
+            mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             setTitle(mDevice.details.name);
         } else
             finish();

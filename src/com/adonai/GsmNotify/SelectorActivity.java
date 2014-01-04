@@ -22,14 +22,14 @@ public class SelectorActivity extends Activity implements View.OnClickListener
         LL.setOrientation(LinearLayout.VERTICAL);
 
         String[] IDs = mPrefs.getString("IDs", "").split(";");
-        Gson conv = new Gson();
         for(String ID : IDs)
         {
             String gson = mPrefs.getString(ID, "");
             if(gson.equals(""))
                 continue;
 
-            Device dev = conv.fromJson(gson, Device.class);
+            Device dev = new Device();
+            dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             Button viewer = new Button(this);
             viewer.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
             viewer.setText(dev.details.name);
