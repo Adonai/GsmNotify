@@ -3,9 +3,17 @@ package com.adonai.GsmNotify;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,8 +22,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener
 {
@@ -166,6 +180,28 @@ public class MainActivity extends Activity implements View.OnClickListener
         registerReceiver(sentReceiver, new IntentFilter(SENT));
         //--- When the SMS has been delivered. ---
         registerReceiver(deliveryReceiver, new IntentFilter(DELIVERED));
+
+        try {
+            String current = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            String stored = mPrefs.getString("version", "");
+            if(!current.equals(stored))
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                TextView message = new TextView(this);
+                message.setGravity(Gravity.CENTER_HORIZONTAL);
+                message.setPadding(10, 10, 10, 10);
+                message.setText(Html.fromHtml(getString(R.string.release_notes)));
+                builder.setTitle(R.string.release_notes_title).setView(message);
+                builder.setNeutralButton(android.R.string.ok, null);
+                builder.create().show();
+
+                SharedPreferences.Editor updater = mPrefs.edit();
+                updater.putString("version", current);
+                updater.commit();
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+            // always valid - it's ours
+        }
     }
 
     @Override
@@ -252,9 +288,12 @@ public class MainActivity extends Activity implements View.OnClickListener
                                 break;
                             case 1: // remove_device
                             {
-                                String IDStrings = mPrefs.getString("IDs", "");
+                                List<String> IDStrings = new ArrayList<>();
+                                Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
+                                IDStrings.remove(mAddressID);
+
                                 SharedPreferences.Editor edit = mPrefs.edit();
-                                edit.putString("IDs", IDStrings.replace(mAddressID + ";", ""));
+                                edit.putString("IDs", Utils.join(IDStrings, ";"));
                                 edit.remove(mAddressID);
                                 edit.commit();
 
