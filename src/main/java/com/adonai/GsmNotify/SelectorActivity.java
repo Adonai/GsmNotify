@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
 import com.google.gson.Gson;
 
 public class SelectorActivity extends Activity implements View.OnClickListener
@@ -18,8 +20,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
 
-        LinearLayout LL = new LinearLayout(this);
-        LL.setOrientation(LinearLayout.VERTICAL);
+        ScrollView scrollView = new ScrollView(this);
+        LinearLayout deviceList = new LinearLayout(this);
+        deviceList.setOrientation(LinearLayout.VERTICAL);
 
         String[] IDs = mPrefs.getString("IDs", "").split(";");
         for(String ID : IDs)
@@ -35,7 +38,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener
             viewer.setText(dev.details.name);
             viewer.setTag(ID);
             viewer.setOnClickListener(this);
-            LL.addView(viewer);
+            deviceList.addView(viewer);
         }
         Button addNew = new Button(this);
         addNew.setText(R.string.add_device);
@@ -49,11 +52,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener
                 finish();
             }
         });
-        LL.addView(addNew);
+        deviceList.addView(addNew);
+        scrollView.addView(deviceList);
 
-
-        setContentView(LL);
-
+        setContentView(scrollView);
 }
 
     @Override
