@@ -206,13 +206,13 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             mEditDevice.setVisibility(View.VISIBLE);
         }
 
-        mSettingsPages[0] = new SettingsPage1(mDevice);
-        mSettingsPages[1] = new SettingsPage2(mDevice);
-        mSettingsPages[2] = new SettingsPage3(mDevice);
-        mSettingsPages[3] = new SettingsPage4(mDevice);
-        mSettingsPages[4] = new SettingsPage5(mDevice);
-        mSettingsPages[5] = new SettingsPage6(mDevice);
-        mSettingsPages[6] = new SettingsPage7(mDevice);
+        mSettingsPages[0] = SettingsPage1.newInstance(mDevice);
+        mSettingsPages[1] = SettingsPage2.newInstance(mDevice);
+        mSettingsPages[2] = SettingsPage3.newInstance(mDevice);
+        mSettingsPages[3] = SettingsPage4.newInstance(mDevice);
+        mSettingsPages[4] = SettingsPage5.newInstance(mDevice);
+        mSettingsPages[5] = SettingsPage6.newInstance(mDevice);
+        mSettingsPages[6] = SettingsPage7.newInstance(mDevice);
     }
 
     @Override

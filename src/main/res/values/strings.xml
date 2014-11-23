@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Signal</string>
+    <string name="app_name" translatable="false">Signal</string>
     <string name="home_notification">Home notification</string>
     <string name="notify_enable">Enable notify</string>
-    <string name="notify_disable">DIsable notify</string>
+    <string name="notify_disable">Disable notify</string>
     <string name="Relay_1">Relay 1</string>
     <string name="Relay_1_disable">Relay 1 disable</string>
     <string name="Relay_1_enable">Relay 1 enable</string>
@@ -97,9 +97,9 @@
     <string name="output_number">Номер выхода</string>
     <string name="input_number">Номер входа</string>
     <string name="plus_seven">+7</string>
-    <string name="tc_15dot0">15.0</string>
-    <string name="tc_30dot0">30.0</string>
-    <string name="tc_28dot0">28.0</string>
+    <string name="tc_15dot0" translatable="false">15.0</string>
+    <string name="tc_30dot0" translatable="false">30.0</string>
+    <string name="tc_28dot0" translatable="false">28.0</string>
     <string name="setting_temp_mode">Установка режима Т.К.</string>
     <string name="enter_0_for_delete">Введите 0 для удаления</string>
     <string name="manage_device">Управление</string>

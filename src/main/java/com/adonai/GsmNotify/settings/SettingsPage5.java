@@ -22,9 +22,10 @@ public class SettingsPage5 extends SettingsFragment
     EditText mTMin, mTMax;
     ThreeStateCheckBox mSendSms, mActivateAlert, mActivateInnerSound;
 
-    public SettingsPage5(Device source)
-    {
-        super(source);
+    public static SettingsPage5 newInstance(Device source) {
+        SettingsPage5 fragment = new SettingsPage5();
+        fragment.mSource = source;
+        return fragment;
     }
 
     @Override

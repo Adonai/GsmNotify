@@ -25,9 +25,10 @@ public class SettingsPage3 extends SettingsFragment
 
     Integer mCurrentInput;
 
-    public SettingsPage3(Device source)
-    {
-        super(source);
+    public static SettingsPage3 newInstance(Device source) {
+        SettingsPage3 fragment = new SettingsPage3();
+        fragment.mSource = source;
+        return fragment;
     }
 
     @Override

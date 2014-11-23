@@ -10,12 +10,8 @@ public abstract class SettingsFragment extends Fragment
 {
     protected Device mSource;
 
-    public SettingsFragment(Device source)
-    {
-        mSource = source;
-    }
-
-    public static <T extends Object> T getValue(String value, T defaultValue)
+    @SuppressWarnings("unchecked")
+    public static <T> T getValue(String value, T defaultValue)
     {
         T result;
         try

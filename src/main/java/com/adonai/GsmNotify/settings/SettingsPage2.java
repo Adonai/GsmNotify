@@ -19,9 +19,10 @@ public class SettingsPage2 extends SettingsFragment
     TableLayout mPhones;
     EditText mRecallCycles, mRecallWait, mBalanceNumber;
 
-    public SettingsPage2(Device source)
-    {
-        super(source);
+    public static SettingsPage2 newInstance(Device source) {
+        SettingsPage2 fragment = new SettingsPage2();
+        fragment.mSource = source;
+        return fragment;
     }
 
     @Override

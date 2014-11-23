@@ -22,9 +22,10 @@ public class SettingsPage4 extends SettingsFragment
     ViewFlipper mFlipper;
     Integer mCurrentOutput;
 
-    public SettingsPage4(Device source)
-    {
-        super(source);
+    public static SettingsPage4 newInstance(Device source) {
+        SettingsPage4 fragment = new SettingsPage4();
+        fragment.mSource = source;
+        return fragment;
     }
 
     @Override

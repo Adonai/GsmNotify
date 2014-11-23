@@ -11,9 +11,10 @@ import com.adonai.contrib.ThreeStateButton;
 
 public class SettingsPage6 extends SettingsFragment
 {
-    public SettingsPage6(Device source)
-    {
-        super(source);
+    public static SettingsPage6 newInstance(Device source) {
+        SettingsPage6 fragment = new SettingsPage6();
+        fragment.mSource = source;
+        return fragment;
     }
 
     ThreeStateButton mTempReport, mInfoReport;

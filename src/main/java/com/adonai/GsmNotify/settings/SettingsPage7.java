@@ -16,9 +16,10 @@ import com.adonai.GsmNotify.SettingsActivity;
  */
 public class SettingsPage7 extends SettingsFragment
 {
-    public SettingsPage7(Device source)
-    {
-        super(source);
+    public static SettingsPage7 newInstance(Device source) {
+        SettingsPage7 fragment = new SettingsPage7();
+        fragment.mSource = source;
+        return fragment;
     }
 
     Button mReboot;

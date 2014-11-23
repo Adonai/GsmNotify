@@ -23,9 +23,10 @@ public class SettingsPage1 extends SettingsFragment
     ThreeStateCheckBox mSmsAtDisarm, mSmsAtWrongKey, mSmsAtArm;
     EditText mPassword;
 
-    public SettingsPage1(Device source)
-    {
-        super(source);
+    public static SettingsPage1 newInstance(Device source) {
+        SettingsPage1 fragment = new SettingsPage1();
+        fragment.mSource = source;
+        return fragment;
     }
 
     @Override
