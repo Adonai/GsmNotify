@@ -1,3 +1,7 @@
-*.class
-gen/*
-out/*
+.gradle
+/local.properties
+/.idea
+/build
+*.iml
+*.ipr
+*.iws
