@@ -69,7 +69,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
     Device mDevice;
 
-    public class sentConfirmReceiver extends BroadcastReceiver {
+    public class SentConfirmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
@@ -97,7 +97,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         }
     }
 
-    public class deliveryConfirmReceiver extends BroadcastReceiver {
+    public class DeliveryConfirmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
@@ -119,8 +119,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         setContentView(R.layout.device_settings);
 
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
-        sentReceiver = new sentConfirmReceiver();
-        deliveryReceiver = new deliveryConfirmReceiver();
+        sentReceiver = new SentConfirmReceiver();
+        deliveryReceiver = new DeliveryConfirmReceiver();
         mFragmentManager = getSupportFragmentManager();
 
         mPager = (ViewPager) findViewById(R.id.settings_page_holder);
@@ -453,33 +453,25 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                         Pair<Boolean, String> toSend = compileDiff(step);
                         if (toSend.first) {
                             hasSomethingChanged = true;
-                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mDevice.details.number, null, toSend.second, sentPI, deliveredPI);
+                            sendSms(toSend.second);
                             mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
                         }
                         break;
                     }
-                    case 6: // temp control
-                    {
+                    case 6: { // temp control
                         pd.setMessage(getString(R.string.setting_temp_mode));
                         if (mDevice.tempMode != null) {
                             String res = "*" + mDevice.details.password + "#" + (mDevice.tempMode == 1 ? "_th" : "_tb") + "#";
-                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mDevice.details.number, null, res, sentPI, deliveredPI);
+                            sendSms(res);
                             mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
                         }
                         break;
                     }
-                    case 7: // report control
-                    {
+                    case 7: { // report control
                         pd.setMessage(getString(R.string.setting_reports_mode));
                         if (mDevice.enableInfoReport != null || mDevice.enableTempReport != null) {
                             String res = "*" + mDevice.details.password + "#";
@@ -490,11 +482,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                                 res += mDevice.enableTempReport ? "_tempon" : "_tempoff";
                             }
                             res += "#";
-
-                            PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                            PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                            SmsManager sms = SmsManager.getDefault();
-                            sms.sendTextMessage(mDevice.details.number, null, res, sentPI, deliveredPI);
+                            sendSms(res);
                             mHandler.sendEmptyMessageDelayed(HANDLE_RESET, SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendEmptyMessage(HANDLE_RESET);
@@ -507,17 +495,11 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             case HANDLE_RESET: {
                 if (hasSomethingChanged) {
                     pd.setMessage(getString(R.string.resetting_device));
-
-                    PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                    PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_fullrst#", sentPI, deliveredPI);
+                    sendSms("*" + mDevice.details.password + "#_fullrst#");
                     mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
                 } else {
                     mHandler.sendEmptyMessage(HANDLE_FINISH);
                 }
-
-
                 break;
             }
             case HANDLE_FINISH: {
@@ -543,10 +525,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
             case HANDLE_FORCE_RESET: {
                 pd = ProgressDialog.show(this, getString(R.string.wait_please), getString(R.string.resetting_device), true, false);
-                PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-                PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_fullrst#", sentPI, deliveredPI);
+                sendSms("*" + mDevice.details.password + "#_fullrst#");
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -557,5 +536,19 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
         }
         return true;
+    }
+
+    private void sendSms(String text) {
+        PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+        SmsManager sms = SmsManager.getDefault();
+        ArrayList<String> splitted = sms.divideMessage(text);
+        ArrayList<PendingIntent> sendIntents = new ArrayList<>(splitted.size());
+        ArrayList<PendingIntent> deliverIntents = new ArrayList<>(splitted.size());
+        for(int partIndex = 0; partIndex < splitted.size(); ++partIndex) {
+            sendIntents.add(sentPI);
+            deliverIntents.add(deliveredPI);
+        }
+        sms.sendMultipartTextMessage(mDevice.details.number, null, splitted, sendIntents, deliverIntents);
     }
 }

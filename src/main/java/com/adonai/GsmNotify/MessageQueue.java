@@ -11,8 +11,7 @@ public class MessageQueue extends ArrayList<String> {
 
     @Override
     public boolean add(String object) {
-        if (size() < 5)    // нам нужно всего 5 сообщений макс. в списке
-        {
+        if (size() < 5) {   // нам нужно всего 5 сообщений макс. в списке
             times.add(sdf.format(Calendar.getInstance().getTime()));
             return super.add(object);
         } else {
@@ -25,8 +24,7 @@ public class MessageQueue extends ArrayList<String> {
     }
 
     @Override
-    public String toString() // формат вывода
-    {
+    public String toString() { // формат вывода
         String res = "";
         for (int i = 0; i < size(); i++) {
             res = times.get(i) + '\n' + get(i) + "\n\n" + res;

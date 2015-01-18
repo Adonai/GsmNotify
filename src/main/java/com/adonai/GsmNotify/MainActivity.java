@@ -266,8 +266,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             case 0: //  add_device
                                 startActivity(intent);
                                 break;
-                            case 1: // remove_device
-                            {
+                            case 1: { // remove_device
                                 List<String> IDStrings = new ArrayList<>();
                                 Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
                                 IDStrings.remove(mAddressID);
@@ -277,12 +276,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 edit.remove(mAddressID);
                                 edit.commit();
 
-                                if (IDs.length != 1) // если есть еще устройства, даем выбор
-                                {
+                                if (IDs.length != 1) { // если есть еще устройства, даем выбор
                                     Intent selector = new Intent(MainActivity.this, SelectorActivity.class);
                                     startActivity(selector);
-                                } else // если нет, надо добавить
-                                {
+                                } else { // если нет, надо добавить
                                     startActivity(intent);
                                 }
                                 finish();
@@ -301,7 +298,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     settingsSelector.setItems(new CharSequence[]{getString(R.string.add_device), getString(R.string.remove_device)}, listener);
                 }
                 settingsSelector.create().show();
-
                 return true;
         }
 
