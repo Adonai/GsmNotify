@@ -16,8 +16,7 @@ import com.adonai.GsmNotify.R;
  *
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  */
-public class ThreeStateButton extends CheckBox
-{
+public class ThreeStateButton extends CheckBox {
 
     public static final int STATE_UNKNOWN = 0;
     public static final int STATE_NO = 2;
@@ -28,8 +27,7 @@ public class ThreeStateButton extends CheckBox
     private Paint redPaint;
     private Paint greenPaint;
 
-    public interface OnStateChangedListener
-    {
+    public interface OnStateChangedListener {
         void onStateChanged(View v, int newState);
     }
 
@@ -38,8 +36,7 @@ public class ThreeStateButton extends CheckBox
     /**
      * @param context
      */
-    public ThreeStateButton(Context context)
-    {
+    public ThreeStateButton(Context context) {
         super(context);
         initConfig();
     }
@@ -48,8 +45,7 @@ public class ThreeStateButton extends CheckBox
      * @param context
      * @param attrs
      */
-    public ThreeStateButton(Context context, AttributeSet attrs)
-    {
+    public ThreeStateButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         initConfig();
     }
@@ -59,25 +55,23 @@ public class ThreeStateButton extends CheckBox
      * @param attrs
      * @param defStyle
      */
-    public ThreeStateButton(Context context, AttributeSet attrs, int defStyle)
-    {
+    public ThreeStateButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initConfig();
     }
 
-    private void nextState()
-    {
+    private void nextState() {
         state++;
         state = state % ThreeStateButton.NUMBER_OF_STATES;
         //this.setPressed(false);
         // forces to redraw the view
         invalidate();
-        if (onStateChangedListener != null)
+        if (onStateChangedListener != null) {
             onStateChangedListener.onStateChanged(this, state);
+        }
     }
 
-    private void initConfig()
-    {
+    private void initConfig() {
         // initialize variables
         state = ThreeStateButton.STATE_UNKNOWN;
         redPaint = new Paint();
@@ -91,10 +85,8 @@ public class ThreeStateButton extends CheckBox
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER) && (event.getAction() == KeyEvent.ACTION_UP))
-        {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER) && (event.getAction() == KeyEvent.ACTION_UP)) {
             nextState();
             this.setPressed(false);
         }
@@ -102,18 +94,15 @@ public class ThreeStateButton extends CheckBox
     }
 
     @Override
-    public boolean performClick()
-    {
+    public boolean performClick() {
         nextState();
         return true;
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        switch (state)
-        {
+        switch (state) {
             case STATE_NO:
                 // draw an X using redPaint
                 canvas.drawText("✗", (canvas.getWidth() - redPaint.measureText("✗")) / 2.0f, canvas.getHeight() * 0.68f, redPaint);
@@ -132,18 +121,15 @@ public class ThreeStateButton extends CheckBox
         }
     }
 
-    public void setOnStateChangedListener(OnStateChangedListener listener)
-    {
+    public void setOnStateChangedListener(OnStateChangedListener listener) {
         onStateChangedListener = listener;
     }
 
-    public int getState()
-    {
+    public int getState() {
         return state;
     }
 
-    public void setState(int state)
-    {
+    public void setState(int state) {
         this.state = state;
         // forces to redraw the view
         invalidate();

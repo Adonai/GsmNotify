@@ -15,8 +15,7 @@ import com.adonai.GsmNotify.R;
 import com.adonai.contrib.ThreeStateButton;
 import com.adonai.contrib.ThreeStateCheckBox;
 
-public class SettingsPage3 extends SettingsFragment
-{
+public class SettingsPage3 extends SettingsFragment {
     RadioGroup mInputNum;
     ViewFlipper mFlipper;
     EditText mTimeToWait, mTimeToRearm;
@@ -32,8 +31,7 @@ public class SettingsPage3 extends SettingsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.settings_fragment_3, container, false);
         assert layout != null;
@@ -41,23 +39,27 @@ public class SettingsPage3 extends SettingsFragment
         mFlipper = (ViewFlipper) layout.findViewById(R.id.input_flipper);
 
         mInputNum = (RadioGroup) layout.findViewById(R.id.input_selector);
-        mInputNum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        mInputNum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch (checkedId)
-                {
-                    case R.id.input_1_radio: mFlipper.setDisplayedChild(0); break;
-                    case R.id.input_2_radio: mFlipper.setDisplayedChild(1); break;
-                    case R.id.input_3_radio: mFlipper.setDisplayedChild(2); break;
-                    case R.id.input_4_radio: mFlipper.setDisplayedChild(3); break;
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.input_1_radio:
+                        mFlipper.setDisplayedChild(0);
+                        break;
+                    case R.id.input_2_radio:
+                        mFlipper.setDisplayedChild(1);
+                        break;
+                    case R.id.input_3_radio:
+                        mFlipper.setDisplayedChild(2);
+                        break;
+                    case R.id.input_4_radio:
+                        mFlipper.setDisplayedChild(3);
+                        break;
                 }
             }
         });
 
-        for(int i = 0; i < mInputNum.getChildCount(); ++i)
-        {
+        for (int i = 0; i < mInputNum.getChildCount(); ++i) {
             final Device.InputSettings curr = mSource.inputs[i];
 
             View input = inflater.inflate(R.layout.input_setting, mFlipper, false);
@@ -71,89 +73,83 @@ public class SettingsPage3 extends SettingsFragment
             mSmsText = (EditText) input.findViewById(R.id.sms_text_edit);
 
             // Handlers
-            mTimeToWait.addTextChangedListener(new TextWatcher()
-            {
+            mTimeToWait.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
+                public void afterTextChanged(Editable s) {
                     curr.timeToWaitBeforeCall = getValue(s.toString(), 0);
                 }
             });
-            mTimeToRearm.addTextChangedListener(new TextWatcher()
-            {
+            mTimeToRearm.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
+                public void afterTextChanged(Editable s) {
                     curr.timeToRearm = getValue(s.toString(), 0);
                 }
             });
-            mConstantControl.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-            {
+            mConstantControl.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
                 @Override
-                public void onStateChanged(View v, int newState)
-                {
-                    switch (newState)
-                    {
-                        case ThreeStateButton.STATE_UNKNOWN: curr.constantControl = null; break;
-                        case ThreeStateButton.STATE_NO: curr.constantControl = false; break;
-                        case ThreeStateButton.STATE_YES: curr.constantControl = true; break;
+                public void onStateChanged(View v, int newState) {
+                    switch (newState) {
+                        case ThreeStateButton.STATE_UNKNOWN:
+                            curr.constantControl = null;
+                            break;
+                        case ThreeStateButton.STATE_NO:
+                            curr.constantControl = false;
+                            break;
+                        case ThreeStateButton.STATE_YES:
+                            curr.constantControl = true;
+                            break;
                     }
                 }
             });
-            mInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-            {
+            mInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
                 @Override
-                public void onStateChanged(View v, int newState)
-                {
-                    switch (newState)
-                    {
-                        case ThreeStateButton.STATE_UNKNOWN: curr.innerSound = null; break;
-                        case ThreeStateButton.STATE_NO: curr.innerSound = false; break;
-                        case ThreeStateButton.STATE_YES: curr.innerSound = true; break;
+                public void onStateChanged(View v, int newState) {
+                    switch (newState) {
+                        case ThreeStateButton.STATE_UNKNOWN:
+                            curr.innerSound = null;
+                            break;
+                        case ThreeStateButton.STATE_NO:
+                            curr.innerSound = false;
+                            break;
+                        case ThreeStateButton.STATE_YES:
+                            curr.innerSound = true;
+                            break;
                     }
                 }
             });
-            mSmsText.addTextChangedListener(new TextWatcher()
-            {
+            mSmsText.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
+                public void afterTextChanged(Editable s) {
                     curr.smsText = s.toString();
                 }
             });

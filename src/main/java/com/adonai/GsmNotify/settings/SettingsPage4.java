@@ -13,8 +13,7 @@ import android.widget.ViewFlipper;
 import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
 
-public class SettingsPage4 extends SettingsFragment
-{
+public class SettingsPage4 extends SettingsFragment {
 
     RadioGroup mOutputNum;
     RadioGroup mOutputMode;
@@ -29,8 +28,7 @@ public class SettingsPage4 extends SettingsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.settings_fragment_4, container, false);
         assert layout != null;
@@ -38,21 +36,21 @@ public class SettingsPage4 extends SettingsFragment
         mFlipper = (ViewFlipper) layout.findViewById(R.id.output_flipper);
 
         mOutputNum = (RadioGroup) layout.findViewById(R.id.output_selector);
-        mOutputNum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        mOutputNum.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch (checkedId)
-                {
-                    case R.id.output_1_radio: mFlipper.setDisplayedChild(0); break;
-                    case R.id.output_2_radio: mFlipper.setDisplayedChild(1); break;
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.output_1_radio:
+                        mFlipper.setDisplayedChild(0);
+                        break;
+                    case R.id.output_2_radio:
+                        mFlipper.setDisplayedChild(1);
+                        break;
                 }
             }
         });
 
-        for(int i = 0; i < mOutputNum.getChildCount(); ++i)
-        {
+        for (int i = 0; i < mOutputNum.getChildCount(); ++i) {
             final Device.OutputSettings curr = mSource.outputs[i];
 
             View output = inflater.inflate(R.layout.output_setting, mFlipper, false);
@@ -64,57 +62,54 @@ public class SettingsPage4 extends SettingsFragment
             mEnableOnAlert = (EditText) output.findViewById(R.id.enable_on_alert_edit);
 
             // Handlers
-            mOutputMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-            {
+            mOutputMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId)
-                {
-                    switch (checkedId)
-                    {
-                        case R.id.output_1_mode_radio: curr.outputMode = 1; break;
-                        case R.id.output_2_mode_radio: curr.outputMode = 2; break;
-                        case R.id.output_3_mode_radio: curr.outputMode = 3; break;
-                        case R.id.output_4_mode_radio: curr.outputMode = 4; break;
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.output_1_mode_radio:
+                            curr.outputMode = 1;
+                            break;
+                        case R.id.output_2_mode_radio:
+                            curr.outputMode = 2;
+                            break;
+                        case R.id.output_3_mode_radio:
+                            curr.outputMode = 3;
+                            break;
+                        case R.id.output_4_mode_radio:
+                            curr.outputMode = 4;
+                            break;
                     }
                 }
             });
-            mEnableOnDisarm.addTextChangedListener(new TextWatcher()
-            {
+            mEnableOnDisarm.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
+                public void afterTextChanged(Editable s) {
                     curr.timeToEnableOnDisarm = getValue(s.toString(), 0);
                 }
             });
-            mEnableOnAlert.addTextChangedListener(new TextWatcher()
-            {
+            mEnableOnAlert.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
+                public void afterTextChanged(Editable s) {
                     curr.timeToEnableOnAlert = getValue(s.toString(), 0);
                 }
             });

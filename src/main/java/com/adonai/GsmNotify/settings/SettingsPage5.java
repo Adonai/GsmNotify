@@ -14,8 +14,7 @@ import com.adonai.GsmNotify.R;
 import com.adonai.contrib.ThreeStateButton;
 import com.adonai.contrib.ThreeStateCheckBox;
 
-public class SettingsPage5 extends SettingsFragment
-{
+public class SettingsPage5 extends SettingsFragment {
     ThreeStateCheckBox mTcEnable;
     EditText mTempLimit;
     RadioGroup mTcModeGroup;
@@ -29,8 +28,7 @@ public class SettingsPage5 extends SettingsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.settings_fragment_5, container, false);
         assert layout != null;
@@ -44,52 +42,50 @@ public class SettingsPage5 extends SettingsFragment
         mTMin = (EditText) layout.findViewById(R.id.tc_min);
         mTMax = (EditText) layout.findViewById(R.id.tc_max);
 
-        if(mSource.tMin != null)
+        if (mSource.tMin != null) {
             mTMin.setText(String.valueOf(mSource.tMin));
-        if(mSource.tMax != null)
+        }
+        if (mSource.tMax != null) {
             mTMax.setText(String.valueOf(mSource.tMax));
+        }
 
         // Handlers
-        mTcEnable.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mTcEnable.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.enableTC = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.enableTC = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.enableTC = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.enableTC = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.enableTC = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.enableTC = true;
+                        break;
                 }
             }
         });
-        mTempLimit.addTextChangedListener(new TextWatcher()
-        {
+        mTempLimit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.tempLimit = getValue(s.toString(), 28.0);
             }
         });
-        mTcModeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        mTcModeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch (checkedId)
-                {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
                     case R.id.tc_mode_0:
                         mSource.tempMode = 0;
                         break;
@@ -99,82 +95,83 @@ public class SettingsPage5 extends SettingsFragment
                 }
             }
         });
-        mSendSms.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mSendSms.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcSendSms = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.tcSendSms = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.tcSendSms = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.tcSendSms = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.tcSendSms = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.tcSendSms = true;
+                        break;
                 }
             }
         });
-        mActivateAlert.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mActivateAlert.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcActivateAlert = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.tcActivateAlert = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.tcActivateAlert = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.tcActivateAlert = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.tcActivateAlert = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.tcActivateAlert = true;
+                        break;
                 }
             }
         });
-        mActivateInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mActivateInnerSound.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.tcActivateInnerSound = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.tcActivateInnerSound = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.tcActivateInnerSound = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.tcActivateInnerSound = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.tcActivateInnerSound = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.tcActivateInnerSound = true;
+                        break;
                 }
             }
         });
-        mTMin.addTextChangedListener(new TextWatcher()
-        {
+        mTMin.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.tMin = getValue(s.toString(), 15.0);
             }
         });
-        mTMax.addTextChangedListener(new TextWatcher()
-        {
+        mTMax.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.tMax = getValue(s.toString(), 30.0);
             }
         });

@@ -11,12 +11,11 @@ import android.widget.ScrollView;
 
 import com.google.gson.Gson;
 
-public class SelectorActivity extends Activity implements View.OnClickListener
-{
+public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
 
@@ -25,11 +24,11 @@ public class SelectorActivity extends Activity implements View.OnClickListener
         deviceList.setOrientation(LinearLayout.VERTICAL);
 
         String[] IDs = mPrefs.getString("IDs", "").split(";");
-        for(String ID : IDs)
-        {
+        for (String ID : IDs) {
             String gson = mPrefs.getString(ID, "");
-            if(gson.equals(""))
+            if (gson.equals("")) {
                 continue;
+            }
 
             Device dev = new Device();
             dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
@@ -42,11 +41,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener
         }
         Button addNew = new Button(this);
         addNew.setText(R.string.add_device);
-        addNew.setOnClickListener(new View.OnClickListener()
-        {
+        addNew.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 finish();
@@ -56,11 +53,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener
         scrollView.addView(deviceList);
 
         setContentView(scrollView);
-}
+    }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         Intent starter = new Intent(this, MainActivity.class).putExtra("ID", v.getTag().toString());
         startActivity(starter);
         finish();

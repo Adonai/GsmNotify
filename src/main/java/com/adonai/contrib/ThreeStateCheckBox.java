@@ -12,10 +12,9 @@ import com.adonai.GsmNotify.R;
 
 
 /**
- * A Compound Button built with a ThreeStateButton and a TextView. 
+ * A Compound Button built with a ThreeStateButton and a TextView.
  *
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
- *
  */
 public class ThreeStateCheckBox extends LinearLayout {
 
@@ -23,6 +22,7 @@ public class ThreeStateCheckBox extends LinearLayout {
     private TextView label;
     private String labelText;
     private int state;
+
     /**
      * @param context
      */
@@ -54,8 +54,9 @@ public class ThreeStateCheckBox extends LinearLayout {
         // get attributes
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateCheckBox, 0, 0);
         labelText = a.getString(R.styleable.ThreeStateCheckBox_label);
-        if (labelText == null)
+        if (labelText == null) {
             labelText = "";
+        }
         state = a.getInt(R.styleable.ThreeStateCheckBox_state, ThreeStateButton.STATE_UNKNOWN);
         // free TypedArray
         a.recycle();
@@ -73,7 +74,7 @@ public class ThreeStateCheckBox extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        ((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
+        ((Activity) getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
 
         // get views and set their values
         box = (ThreeStateButton) findViewById(R.id.box);

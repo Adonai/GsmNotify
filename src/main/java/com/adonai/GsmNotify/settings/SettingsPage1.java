@@ -14,8 +14,7 @@ import com.adonai.GsmNotify.R;
 import com.adonai.contrib.ThreeStateButton;
 import com.adonai.contrib.ThreeStateCheckBox;
 
-public class SettingsPage1 extends SettingsFragment
-{
+public class SettingsPage1 extends SettingsFragment {
     EditText mTimeToArm;
     RadioGroup mInputManager;
     ThreeStateCheckBox mSendSMS;
@@ -30,8 +29,7 @@ public class SettingsPage1 extends SettingsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -48,33 +46,26 @@ public class SettingsPage1 extends SettingsFragment
         mPassword = (EditText) layout.findViewById(R.id.new_password_edit);
 
         // Handlers
-        mTimeToArm.addTextChangedListener(new TextWatcher()
-        {
+        mTimeToArm.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.timeToArm = getValue(s.toString(), 0);
             }
         });
-        mInputManager.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        mInputManager.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch (checkedId)
-                {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
                     case -1:
                     case R.id.manage_input_1:
                         mSource.inputManager = 1;
@@ -88,95 +79,99 @@ public class SettingsPage1 extends SettingsFragment
                 }
             }
         });
-        mSendSMS.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mSendSMS.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.sendSmsOnPowerLoss = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.sendSmsOnPowerLoss = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.sendSmsOnPowerLoss = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.sendSmsOnPowerLoss = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.sendSmsOnPowerLoss = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.sendSmsOnPowerLoss = true;
+                        break;
                 }
             }
         });
-        mTimeToWait.addTextChangedListener(new TextWatcher()
-        {
+        mTimeToWait.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.timeToWaitOnPowerLoss = getValue(s.toString(), 0);
             }
         });
-        mSmsAtArm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mSmsAtArm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtArm = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.smsAtArm = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.smsAtArm = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.smsAtArm = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.smsAtArm = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.smsAtArm = true;
+                        break;
                 }
             }
         });
-        mSmsAtDisarm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mSmsAtDisarm.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtDisarm = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.smsAtDisarm = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.smsAtDisarm = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.smsAtDisarm = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.smsAtDisarm = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.smsAtDisarm = true;
+                        break;
                 }
             }
         });
-        mSmsAtWrongKey.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-        {
+        mSmsAtWrongKey.setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
             @Override
-            public void onStateChanged(View v, int newState)
-            {
-                switch (newState)
-                {
-                    case ThreeStateButton.STATE_UNKNOWN: mSource.smsAtWrongKey = null; break;
-                    case ThreeStateButton.STATE_NO: mSource.smsAtWrongKey = false; break;
-                    case ThreeStateButton.STATE_YES: mSource.smsAtWrongKey = true; break;
+            public void onStateChanged(View v, int newState) {
+                switch (newState) {
+                    case ThreeStateButton.STATE_UNKNOWN:
+                        mSource.smsAtWrongKey = null;
+                        break;
+                    case ThreeStateButton.STATE_NO:
+                        mSource.smsAtWrongKey = false;
+                        break;
+                    case ThreeStateButton.STATE_YES:
+                        mSource.smsAtWrongKey = true;
+                        break;
                 }
             }
         });
-        mPassword.addTextChangedListener(new TextWatcher()
-        {
+        mPassword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.details.password = s.toString();
             }
         });

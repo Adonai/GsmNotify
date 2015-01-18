@@ -31,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener
-{
+public class MainActivity extends Activity implements View.OnClickListener {
     String SENT = "SMS_SENT_NOTIFY_MAIN";
     String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
     MessageQueue incMessages;
@@ -47,50 +46,54 @@ public class MainActivity extends Activity implements View.OnClickListener
     Button mGetData, mGetTemperature;
     EditText mResultText;
 
-    public  class sentConfirmReceiver extends BroadcastReceiver
-    {
+    public class sentConfirmReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context arg0, Intent arg1)
-        {
-            switch (getResultCode())
-            {
-                case Activity.RESULT_OK: Toast.makeText(MainActivity.this, getString(R.string.sms_sent_success), Toast.LENGTH_SHORT).show(); break;
-                case SmsManager.RESULT_ERROR_GENERIC_FAILURE: Toast.makeText(MainActivity.this, getString(R.string.generic_failure), Toast.LENGTH_SHORT).show(); break;
-                case SmsManager.RESULT_ERROR_NO_SERVICE: Toast.makeText(MainActivity.this, getString(R.string.no_service), Toast.LENGTH_SHORT).show(); break;
-                case SmsManager.RESULT_ERROR_NULL_PDU: Toast.makeText(MainActivity.this, getString(R.string.null_message), Toast.LENGTH_SHORT).show(); break;
-                case SmsManager.RESULT_ERROR_RADIO_OFF: Toast.makeText(getBaseContext(), getString(R.string.radio_off), Toast.LENGTH_SHORT).show(); break;
+        public void onReceive(Context arg0, Intent arg1) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(MainActivity.this, getString(R.string.sms_sent_success), Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                    Toast.makeText(MainActivity.this, getString(R.string.generic_failure), Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                    Toast.makeText(MainActivity.this, getString(R.string.no_service), Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NULL_PDU:
+                    Toast.makeText(MainActivity.this, getString(R.string.null_message), Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                    Toast.makeText(getBaseContext(), getString(R.string.radio_off), Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     }
 
-    public  class deliveryConfirmReceiver extends BroadcastReceiver
-    {
+    public class deliveryConfirmReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context arg0, Intent arg1)
-        {
-            switch (getResultCode())
-            {
-                case Activity.RESULT_OK: Toast.makeText(MainActivity.this, getString(R.string.sms_deliver_success), Toast.LENGTH_SHORT).show(); break;
-                case Activity.RESULT_CANCELED: Toast.makeText(MainActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show(); break;
+        public void onReceive(Context arg0, Intent arg1) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(MainActivity.this, getString(R.string.sms_deliver_success), Toast.LENGTH_SHORT).show();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Toast.makeText(MainActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     }
 
     // увеличиваем длительность нажатия до 500 мс
-    private View.OnTouchListener pressHolder = new View.OnTouchListener()
-    {
+    private View.OnTouchListener pressHolder = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(final View v, MotionEvent event)
-        {
+        public boolean onTouch(final View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     v.setPressed(true);
                     onClick(v);
-                    v.postDelayed(new Runnable()
-                    {
+                    v.postDelayed(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             v.setPressed(false);
                         }
                     }, 500);
@@ -103,8 +106,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -136,12 +138,11 @@ public class MainActivity extends Activity implements View.OnClickListener
         mResultText = (EditText) findViewById(R.id.result_text);
 
 
-        if(getIntent().hasExtra("ID")) // запускаем из настроек
+        if (getIntent().hasExtra("ID")) // запускаем из настроек
         {
             mAddressID = getIntent().getStringExtra("ID");
             extractParams();
-        }
-        else if(getIntent().hasExtra("number")) // запускаем из ресивера
+        } else if (getIntent().hasExtra("number")) // запускаем из ресивера
         {
             mAddressID = getIntent().getStringExtra("number");
             extractParams();
@@ -150,18 +151,14 @@ public class MainActivity extends Activity implements View.OnClickListener
         } else // запускаем сами
         {
             String[] IDs = mPrefs.getString("IDs", "").split(";");
-            if (IDs.length > 1)
-            {
+            if (IDs.length > 1) {
                 Intent selector = new Intent(this, SelectorActivity.class);
                 startActivity(selector);
                 finish();
-            }
-            else if(IDs[0].length() != 0)
-            {
+            } else if (IDs[0].length() != 0) {
                 mAddressID = IDs[0];
                 extractParams();
-            }
-            else // first launch
+            } else // first launch
             {
                 Toast.makeText(getApplicationContext(), R.string.first_launch, Toast.LENGTH_LONG).show();
                 Intent firstLaunch = new Intent(this, SettingsActivity.class);
@@ -172,8 +169,7 @@ public class MainActivity extends Activity implements View.OnClickListener
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         //--- When the SMS has been sent ---
@@ -184,8 +180,7 @@ public class MainActivity extends Activity implements View.OnClickListener
         try {
             String current = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             String stored = mPrefs.getString("version", "");
-            if(!current.equals(stored))
-            {
+            if (!current.equals(stored)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 TextView message = new TextView(this);
                 message.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -205,52 +200,43 @@ public class MainActivity extends Activity implements View.OnClickListener
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
         unregisterReceiver(sentReceiver);
         unregisterReceiver(deliveryReceiver);
     }
 
-    private void extractParams()
-    {
+    private void extractParams() {
         String gson = mPrefs.getString(mAddressID, "");
-        if (!gson.equals(""))
-        {
+        if (!gson.equals("")) {
             mDevice = new Device();
             mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             setTitle(mDevice.details.name);
-        } else
+        } else {
             finish();
+        }
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         //setIntent(intent);
 
-        if(intent.hasExtra("number"))
-        {
-            if(intent.getStringExtra("number").equals(mAddressID))
-            {
+        if (intent.hasExtra("number")) {
+            if (intent.getStringExtra("number").equals(mAddressID)) {
                 String newMessage = intent.getStringExtra("text");
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
                 mScroll.fling(10000);
-            }
-            else
-            {
+            } else {
                 incMessages.clear();
                 incMessages.add(intent.getStringExtra("text"));
                 mAddressID = intent.getStringExtra("number");
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
             }
-        }
-        else
-        {
-            if(intent.hasExtra("ID")) // запускаем из настроек
+        } else {
+            if (intent.hasExtra("ID")) // запускаем из настроек
             {
                 mAddressID = intent.getStringExtra("ID");
                 extractParams();
@@ -259,30 +245,24 @@ public class MainActivity extends Activity implements View.OnClickListener
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.settings_menu:
                 AlertDialog.Builder settingsSelector = new AlertDialog.Builder(this);
                 final String[] IDs = mPrefs.getString("IDs", "").split(";");
 
-                DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
-                {
+                DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                        switch (i)
-                        {
+                        switch (i) {
                             case 0: //  add_device
                                 startActivity(intent);
                                 break;
@@ -297,13 +277,14 @@ public class MainActivity extends Activity implements View.OnClickListener
                                 edit.remove(mAddressID);
                                 edit.commit();
 
-                                if(IDs.length != 1) // если есть еще устройства, даем выбор
+                                if (IDs.length != 1) // если есть еще устройства, даем выбор
                                 {
                                     Intent selector = new Intent(MainActivity.this, SelectorActivity.class);
                                     startActivity(selector);
-                                }
-                                else // если нет, надо добавить
+                                } else // если нет, надо добавить
+                                {
                                     startActivity(intent);
+                                }
                                 finish();
                                 break;
                             }
@@ -314,10 +295,11 @@ public class MainActivity extends Activity implements View.OnClickListener
                     }
                 };
 
-                if (IDs.length > 1 || IDs.length == 1 && IDs[0].length() != 0)
+                if (IDs.length > 1 || IDs.length == 1 && IDs[0].length() != 0) {
                     settingsSelector.setItems(new CharSequence[]{getString(R.string.add_device), getString(R.string.remove_device), getString(R.string.edit_device)}, listener);
-                else
+                } else {
                     settingsSelector.setItems(new CharSequence[]{getString(R.string.add_device), getString(R.string.remove_device)}, listener);
+                }
                 settingsSelector.create().show();
 
                 return true;
@@ -327,13 +309,11 @@ public class MainActivity extends Activity implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
         PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
         SmsManager sms = SmsManager.getDefault();
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.relay1_on_button:
                 sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_1=1#", sentPI, deliveredPI);
                 break;

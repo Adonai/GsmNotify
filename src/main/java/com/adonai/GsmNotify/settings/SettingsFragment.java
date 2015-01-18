@@ -6,22 +6,18 @@ import com.adonai.GsmNotify.Device;
 
 import java.lang.reflect.Method;
 
-public abstract class SettingsFragment extends Fragment
-{
+public abstract class SettingsFragment extends Fragment {
     protected Device mSource;
 
     @SuppressWarnings("unchecked")
-    public static <T> T getValue(String value, T defaultValue)
-    {
+    public static <T> T getValue(String value, T defaultValue) {
         T result;
-        try
-        {
+        try {
 
             final Method valueOf = defaultValue.getClass().getMethod("valueOf", String.class);
             result = (T) valueOf.invoke(null, value);
             return result;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             result = defaultValue;
         }
         return result;

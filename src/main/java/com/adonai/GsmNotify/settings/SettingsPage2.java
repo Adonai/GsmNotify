@@ -14,8 +14,7 @@ import com.adonai.GsmNotify.Device;
 import com.adonai.GsmNotify.R;
 import com.adonai.contrib.ThreeStateButton;
 
-public class SettingsPage2 extends SettingsFragment
-{
+public class SettingsPage2 extends SettingsFragment {
     TableLayout mPhones;
     EditText mRecallCycles, mRecallWait, mBalanceNumber;
 
@@ -26,8 +25,7 @@ public class SettingsPage2 extends SettingsFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
         View layout = inflater.inflate(R.layout.settings_fragment_2, container, false);
@@ -39,130 +37,123 @@ public class SettingsPage2 extends SettingsFragment
         mBalanceNumber = (EditText) layout.findViewById(R.id.balance_number_edit);
 
         // Handlers
-        for (int i = 0; i < mSource.phones.length; ++i)
-        {
+        for (int i = 0; i < mSource.phones.length; ++i) {
             final int index = i;
             TableRow currentRow = (TableRow) mPhones.getChildAt(i + 1);
-            ((EditText)currentRow.getChildAt(1)).addTextChangedListener(new TextWatcher()
-            {
+            ((EditText) currentRow.getChildAt(1)).addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count)
-                {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s)
-                {
-                    if(s.toString().equals("0"))
+                public void afterTextChanged(Editable s) {
+                    if (s.toString().equals("0")) {
                         mSource.phones[index].phoneNum = "+++++++++++";
-                    else
+                    } else {
                         mSource.phones[index].phoneNum = s.toString();
-                }
-            });
-            ((ThreeStateButton)currentRow.getChildAt(2)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-            {
-                @Override
-                public void onStateChanged(View v, int newState)
-                {
-                    switch (newState)
-                    {
-                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].info = null; break;
-                        case ThreeStateButton.STATE_NO: mSource.phones[index].info = false; break;
-                        case ThreeStateButton.STATE_YES: mSource.phones[index].info = true; break;
                     }
                 }
             });
-            ((ThreeStateButton)currentRow.getChildAt(3)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-            {
+            ((ThreeStateButton) currentRow.getChildAt(2)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
                 @Override
-                public void onStateChanged(View v, int newState)
-                {
-                    switch (newState)
-                    {
-                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].manage = null; break;
-                        case ThreeStateButton.STATE_NO: mSource.phones[index].manage = false; break;
-                        case ThreeStateButton.STATE_YES: mSource.phones[index].manage = true; break;
+                public void onStateChanged(View v, int newState) {
+                    switch (newState) {
+                        case ThreeStateButton.STATE_UNKNOWN:
+                            mSource.phones[index].info = null;
+                            break;
+                        case ThreeStateButton.STATE_NO:
+                            mSource.phones[index].info = false;
+                            break;
+                        case ThreeStateButton.STATE_YES:
+                            mSource.phones[index].info = true;
+                            break;
                     }
                 }
             });
-            ((ThreeStateButton)currentRow.getChildAt(4)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener()
-            {
+            ((ThreeStateButton) currentRow.getChildAt(3)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
                 @Override
-                public void onStateChanged(View v, int newState)
-                {
-                    switch (newState)
-                    {
-                        case ThreeStateButton.STATE_UNKNOWN: mSource.phones[index].confirm = null; break;
-                        case ThreeStateButton.STATE_NO: mSource.phones[index].confirm = false; break;
-                        case ThreeStateButton.STATE_YES: mSource.phones[index].confirm = true; break;
+                public void onStateChanged(View v, int newState) {
+                    switch (newState) {
+                        case ThreeStateButton.STATE_UNKNOWN:
+                            mSource.phones[index].manage = null;
+                            break;
+                        case ThreeStateButton.STATE_NO:
+                            mSource.phones[index].manage = false;
+                            break;
+                        case ThreeStateButton.STATE_YES:
+                            mSource.phones[index].manage = true;
+                            break;
+                    }
+                }
+            });
+            ((ThreeStateButton) currentRow.getChildAt(4)).setOnStateChangedListener(new ThreeStateButton.OnStateChangedListener() {
+                @Override
+                public void onStateChanged(View v, int newState) {
+                    switch (newState) {
+                        case ThreeStateButton.STATE_UNKNOWN:
+                            mSource.phones[index].confirm = null;
+                            break;
+                        case ThreeStateButton.STATE_NO:
+                            mSource.phones[index].confirm = false;
+                            break;
+                        case ThreeStateButton.STATE_YES:
+                            mSource.phones[index].confirm = true;
+                            break;
                     }
                 }
             });
         }
-        mRecallCycles.addTextChangedListener(new TextWatcher()
-        {
+        mRecallCycles.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.recallCycles = getValue(s.toString(), 1);
             }
         });
-        mRecallWait.addTextChangedListener(new TextWatcher()
-        {
+        mRecallWait.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.recallWait = getValue(s.toString(), 30);
             }
         });
-        mBalanceNumber.addTextChangedListener(new TextWatcher()
-        {
+        mBalanceNumber.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 mSource.checkBalanceNum = s.toString();
             }
         });

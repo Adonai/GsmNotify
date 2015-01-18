@@ -14,8 +14,7 @@ import com.adonai.GsmNotify.SettingsActivity;
 /**
  * Created by adonai on 26.11.13.
  */
-public class SettingsPage7 extends SettingsFragment
-{
+public class SettingsPage7 extends SettingsFragment {
     public static SettingsPage7 newInstance(Device source) {
         SettingsPage7 fragment = new SettingsPage7();
         fragment.mSource = source;
@@ -25,8 +24,7 @@ public class SettingsPage7 extends SettingsFragment
     Button mReboot;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.settings_fragment_7, container, false);
         assert layout != null;
@@ -34,13 +32,10 @@ public class SettingsPage7 extends SettingsFragment
         mReboot = (Button) layout.findViewById(R.id.reset_device_button);
 
         // Handlers
-        mReboot.setOnClickListener(new View.OnClickListener()
-        {
+        mReboot.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(getActivity() instanceof SettingsActivity)
-                {
+            public void onClick(View v) {
+                if (getActivity() instanceof SettingsActivity) {
                     Message reset = new Message();
                     reset.what = SettingsActivity.HANDLE_FORCE_RESET;
                     ((SettingsActivity) getActivity()).handleMessage(reset);
