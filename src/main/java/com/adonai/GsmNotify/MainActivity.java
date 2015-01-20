@@ -282,7 +282,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 } else { // если нет, надо добавить
                                     startActivity(intent);
                                 }
-                                finish();
+                                //finish();
                                 break;
                             }
                             case 2: // edit_device

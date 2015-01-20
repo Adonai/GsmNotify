@@ -46,7 +46,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             public void onClick(View v) {
                 Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
         deviceList.addView(addNew);
@@ -59,6 +59,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         Intent starter = new Intent(this, MainActivity.class).putExtra("ID", v.getTag().toString());
         startActivity(starter);
-        finish();
+        //finish();
     }
 }
