@@ -23,7 +23,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.0"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.adonai.GsmNotify"
@@ -64,4 +64,5 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:21.0.3'                     // support library
     compile 'com.google.code.gson:gson:2.3'                             // Json (De)Serializer
+    compile 'com.j256.ormlite:ormlite-android:4.48'
 }

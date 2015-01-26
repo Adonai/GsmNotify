@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class MessageQueue extends ArrayList<String> {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
     ArrayList<String> times = new ArrayList<>();
 
     @Override

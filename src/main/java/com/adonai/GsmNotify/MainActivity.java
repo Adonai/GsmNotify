@@ -1,5 +1,6 @@
 package com.adonai.GsmNotify;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -24,9 +25,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adonai.GsmNotify.database.DbProvider;
+import com.adonai.GsmNotify.entities.HistoryEntry;
 import com.google.gson.Gson;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,6 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DbProvider.setHelper(this);
         setContentView(R.layout.main);
 
         //mScroll = (ScrollView) findViewById(R.id.scroll_bar);
@@ -168,6 +176,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DbProvider.releaseHelper();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -221,22 +235,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onNewIntent(intent);
         //setIntent(intent);
 
-        if (intent.hasExtra("number")) {
+        if (intent.hasExtra("number")) { // запущено из сервиса SMS
+            String newMessage = intent.getStringExtra("text");
             if (intent.getStringExtra("number").equals(mAddressID)) {
-                String newMessage = intent.getStringExtra("text");
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
                 //mScroll.fling(10000);
             } else {
                 incMessages.clear();
-                incMessages.add(intent.getStringExtra("text"));
+                incMessages.add(newMessage);
                 mAddressID = intent.getStringExtra("number");
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
             }
+
+            // add to history
+            HistoryEntry he = new HistoryEntry();
+            he.setDeviceName(mDevice.details.name);
+            he.setEventDate(Calendar.getInstance().getTime());
+            he.setSmsText(newMessage);
+            DbProvider.getHelper().getHistoryDao().create(he);
+
         } else {
-            if (intent.hasExtra("ID")) // запускаем из настроек
-            {
+            if (intent.hasExtra("ID")) { // запускаем из настроек
                 mAddressID = intent.getStringExtra("ID");
                 extractParams();
             }
@@ -253,11 +274,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.settings_menu:
+            case R.id.settings_menu: {
                 AlertDialog.Builder settingsSelector = new AlertDialog.Builder(this);
                 final String[] IDs = mPrefs.getString("IDs", "").split(";");
 
                 DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -269,6 +291,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 List<String> IDStrings = new ArrayList<>();
                                 Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
                                 IDStrings.remove(mAddressID);
+
+                                // deleting from database
+                                try {
+                                    RuntimeExceptionDao<HistoryEntry, Long> dao = DbProvider.getHelper().getHistoryDao();
+                                    DeleteBuilder<HistoryEntry, Long> stmt = dao.deleteBuilder();
+                                    stmt.where().eq("deviceName", mDevice.details.name);
+                                    dao.delete(stmt.prepare());
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
 
                                 SharedPreferences.Editor edit = mPrefs.edit();
                                 edit.putString("IDs", Utils.join(IDStrings, ";"));
@@ -297,6 +329,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     settingsSelector.setItems(new CharSequence[]{getString(R.string.add_device), getString(R.string.remove_device)}, listener);
                 }
                 settingsSelector.create().show();
+                return true;
+            }
+            case R.id.device_history:
+                HistoryListFragment hlf = HistoryListFragment.newInstance(mDevice.details.name);
+                hlf.show(getFragmentManager(), "HistoryDialog_" + mDevice.details.name);
                 return true;
         }
 
