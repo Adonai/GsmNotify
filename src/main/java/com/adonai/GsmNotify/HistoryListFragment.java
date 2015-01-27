@@ -1,19 +1,22 @@
 package com.adonai.GsmNotify;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.entities.HistoryEntry;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -41,13 +44,12 @@ public class HistoryListFragment extends DialogFragment {
         return hlf;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog, container);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog, null);
 
         mListView = (ListView) layout.findViewById(R.id.history_listview);
-        String device = getArguments().getString(NAME_KEY);
+        final String device = getArguments().getString(NAME_KEY);
 
         try {
             final List<HistoryEntry> entries = DbProvider.getHelper().getHistoryDao().queryBuilder().orderBy("eventDate", false).where().eq("deviceName", device).query();
@@ -71,13 +73,28 @@ public class HistoryListFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        return layout;
-    }
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog_header, null);
+        ImageView deleteButton = (ImageView) header.findViewById(R.id.delete_history);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // deleting from database
+                try {
+                    RuntimeExceptionDao<HistoryEntry, Long> dao = DbProvider.getHelper().getHistoryDao();
+                    DeleteBuilder<HistoryEntry, Long> stmt = dao.deleteBuilder();
+                    stmt.where().eq("deviceName", device);
+                    dao.delete(stmt.prepare());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog temp =  super.onCreateDialog(savedInstanceState);
-        temp.setTitle(R.string.history);
-        return temp;
+                HistoryListFragment.this.dismiss();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(layout);
+        builder.setCustomTitle(header);
+        return builder.create();
     }
 }

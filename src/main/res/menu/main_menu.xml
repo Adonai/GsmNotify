@@ -3,15 +3,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/settings_menu"
           android:title="@string/settings"
-          android:titleCondensed="@string/settings"
           android:icon="@android:drawable/ic_menu_preferences"
           android:showAsAction="never"
           android:orderInCategory="100" />
 
     <item android:id="@+id/device_history"
           android:title="@string/history"
-          android:titleCondensed="@string/history"
           android:icon="@android:drawable/ic_menu_agenda"
           android:showAsAction="never"
-          android:orderInCategory="100" />
+          android:orderInCategory="101" />
+
+    <item android:id="@+id/notify_on_sms"
+          android:title="@string/notify_on_sms"
+          android:icon="@android:drawable/ic_menu_info_details"
+          android:showAsAction="never"
+          android:checkable="true"
+          android:checked="true"
+          android:orderInCategory="102" />
 </menu>

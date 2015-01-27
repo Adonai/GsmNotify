@@ -18,6 +18,14 @@ public class DbProvider {
         databaseHelper = OpenHelperManager.getHelper(context, PersistManager.class);
     }
 
+    public static PersistManager getTempHelper(Context context) {
+        return OpenHelperManager.getHelper(context, PersistManager.class);
+    }
+
+    public static void releaseTempHelper() {
+        OpenHelperManager.releaseHelper();
+    }
+
     public static void releaseHelper() {
         OpenHelperManager.releaseHelper();
         databaseHelper = null;

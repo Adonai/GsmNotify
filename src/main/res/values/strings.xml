@@ -118,4 +118,7 @@
     <string name="release_notes_title">Заметки к релизу</string>
     <string name="release_notes"><![CDATA[<b>Внимание!</b> <br/> Просьба пересоздать все ранее созданные устройства, т.к. формат сохраняемых в телефоне данных изменен. <br/> В новой версии информация о текущих настройках устройства не сохраняется, посылаются все настройки сразу.]]></string>
     <string name="history">History</string>
+    <string name="delete_history">Delete history</string>
+    <string name="notify_on_sms">Notify on SMS</string>
+    <string name="warning">Warning!</string>
 </resources>

@@ -114,4 +114,7 @@
     <string name="release_notes"><![CDATA[<b>Внимание!</b> <br/> Просьба пересоздать все ранее созданные устройства, т.к. формат сохраняемых в телефоне данных изменен. <br/> В новой версии информация о текущих настройках устройства не сохраняется, посылаются все настройки сразу.]]></string>
     <string name="Relay_1">Реле 1</string>
     <string name="history">История</string>
+    <string name="delete_history">Удалить историю</string>
+    <string name="notify_on_sms">Открывать при SMS</string>
+    <string name="warning">Внимание!</string>
 </resources>

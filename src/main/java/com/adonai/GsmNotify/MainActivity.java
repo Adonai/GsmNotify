@@ -10,11 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.text.Html;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adonai.GsmNotify.database.DbProvider;
@@ -33,10 +29,10 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressLint("CommitPrefEdits")
 public class MainActivity extends Activity implements View.OnClickListener {
     String SENT = "SMS_SENT_NOTIFY_MAIN";
     String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
@@ -51,6 +47,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     Button mNotifyEnable, mNotifyDisable, mRelay1Enable, mRelay1Disable, mRelay2Enable, mRelay2Disable;
     Button mGetData, mGetTemperature;
     EditText mResultText;
+
+    static boolean isRunning;
 
     public class sentConfirmReceiver extends BroadcastReceiver {
         @Override
@@ -190,26 +188,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //--- When the SMS has been delivered. ---
         registerReceiver(deliveryReceiver, new IntentFilter(DELIVERED));
 
-        try {
-            String current = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            String stored = mPrefs.getString("version", "");
-            if (!current.equals(stored)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                TextView message = new TextView(this);
-                message.setGravity(Gravity.CENTER_HORIZONTAL);
-                message.setPadding(10, 10, 10, 10);
-                message.setText(Html.fromHtml(getString(R.string.release_notes)));
-                builder.setTitle(R.string.release_notes_title).setView(message);
-                builder.setNeutralButton(android.R.string.ok, null);
-                builder.create().show();
-
-                SharedPreferences.Editor updater = mPrefs.edit();
-                updater.putString("version", current);
-                updater.commit();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // always valid - it's ours
-        }
+        isRunning = true;
     }
 
     @Override
@@ -217,6 +196,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onStop();
         unregisterReceiver(sentReceiver);
         unregisterReceiver(deliveryReceiver);
+
+        isRunning = false;
     }
 
     private void extractParams() {
@@ -225,6 +206,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             mDevice = new Device();
             mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             setTitle(mDevice.details.name);
+
+            // added for compatibility with older versions
+            if(mDevice.details.notifyOnSms == null) {
+                mDevice.details.notifyOnSms = true;
+            }
+
+            invalidateOptionsMenu();
         } else {
             finish();
         }
@@ -248,14 +236,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
             }
-
-            // add to history
-            HistoryEntry he = new HistoryEntry();
-            he.setDeviceName(mDevice.details.name);
-            he.setEventDate(Calendar.getInstance().getTime());
-            he.setSmsText(newMessage);
-            DbProvider.getHelper().getHistoryDao().create(he);
-
         } else {
             if (intent.hasExtra("ID")) { // запускаем из настроек
                 mAddressID = intent.getStringExtra("ID");
@@ -272,6 +252,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem smsOption = menu.findItem(R.id.notify_on_sms);
+        if(mDevice != null) {
+            smsOption.setChecked(mDevice.details.notifyOnSms);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu: {
@@ -279,7 +269,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 final String[] IDs = mPrefs.getString("IDs", "").split(";");
 
                 DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -334,6 +323,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.device_history:
                 HistoryListFragment hlf = HistoryListFragment.newInstance(mDevice.details.name);
                 hlf.show(getFragmentManager(), "HistoryDialog_" + mDevice.details.name);
+                return true;
+            case R.id.notify_on_sms:
+                mDevice.details.notifyOnSms = !mDevice.details.notifyOnSms;
+
+                // write to prefs
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
+                edit.commit();
+
+                // update menu checked state
+                invalidateOptionsMenu();
                 return true;
         }
 
