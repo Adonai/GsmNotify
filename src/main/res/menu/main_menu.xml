@@ -12,12 +12,4 @@
           android:icon="@android:drawable/ic_menu_agenda"
           android:showAsAction="never"
           android:orderInCategory="101" />
-
-    <item android:id="@+id/notify_on_sms"
-          android:title="@string/notify_on_sms"
-          android:icon="@android:drawable/ic_menu_info_details"
-          android:showAsAction="never"
-          android:checkable="true"
-          android:checked="true"
-          android:orderInCategory="102" />
 </menu>

@@ -20,6 +20,8 @@ import java.util.Calendar;
 public class SMSReceiveService extends Service {
     final public static String PREFERENCES = "devicePrefs";
 
+    final public static String OPEN_ON_SMS_KEY = "open.on.sms";
+
     Activity boundListener;
     SharedPreferences preferences;
 
@@ -53,6 +55,7 @@ public class SMSReceiveService extends Service {
         if (intent != null && intent.hasExtra("number")) {
             String[] IDs = preferences.getString("IDs", "").split(";");
             String current = preferences.getString("currentEdit", "");
+            boolean shouldNotify = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
             for (String deviceId : IDs) {
                 if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1)) && !deviceId.equals(current)) { // +7 / 8 handling
                     String text = intent.getStringExtra("text");
@@ -72,7 +75,7 @@ public class SMSReceiveService extends Service {
                         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
 
                         // should send to activity now?
-                        if (!MainActivity.isRunning && settings.notifyOnSms != null && !settings.notifyOnSms) { // if we have it and it's false
+                        if (!MainActivity.isRunning && !shouldNotify) { // if we have it and it's false
 
                             // just make a notification
                             Notification.Builder builder = new Notification.Builder(this);

@@ -23,7 +23,6 @@ public class Device {
         public String name;
         public String number;
         public String password;
-        public Boolean notifyOnSms;
     }
 
     // Common

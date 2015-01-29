@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -60,5 +63,42 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         Intent starter = new Intent(this, MainActivity.class).putExtra("ID", v.getTag().toString());
         startActivity(starter);
         //finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.selector_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem smsOption = menu.findItem(R.id.notify_on_sms);
+        boolean shouldOpen = mPrefs.getBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, true);
+        smsOption.setChecked(shouldOpen);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.notify_on_sms:
+                boolean shouldOpen = mPrefs.getBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, true);
+                shouldOpen = !shouldOpen;
+
+                // write to prefs
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, shouldOpen);
+                edit.commit();
+
+                // update menu checked state
+                invalidateOptionsMenu();
+                return true;
+        }
+
+        return false;
     }
 }

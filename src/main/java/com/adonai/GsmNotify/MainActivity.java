@@ -207,11 +207,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             setTitle(mDevice.details.name);
 
-            // added for compatibility with older versions
-            if(mDevice.details.notifyOnSms == null) {
-                mDevice.details.notifyOnSms = true;
-            }
-
             invalidateOptionsMenu();
         } else {
             finish();
@@ -253,15 +248,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem smsOption = menu.findItem(R.id.notify_on_sms);
-        if(mDevice != null) {
-            smsOption.setChecked(mDevice.details.notifyOnSms);
-        }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu: {
@@ -323,17 +309,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.device_history:
                 HistoryListFragment hlf = HistoryListFragment.newInstance(mDevice.details.name);
                 hlf.show(getFragmentManager(), "HistoryDialog_" + mDevice.details.name);
-                return true;
-            case R.id.notify_on_sms:
-                mDevice.details.notifyOnSms = !mDevice.details.notifyOnSms;
-
-                // write to prefs
-                SharedPreferences.Editor edit = mPrefs.edit();
-                edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
-                edit.commit();
-
-                // update menu checked state
-                invalidateOptionsMenu();
                 return true;
         }
 
