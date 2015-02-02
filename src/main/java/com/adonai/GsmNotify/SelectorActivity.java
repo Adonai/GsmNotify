@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,7 +19,6 @@ import static android.widget.LinearLayout.LayoutParams;
 
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
-    LinearLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +68,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             }
         });
         mainLayout.addView(addNew);
-    }
-
-    /**
-     * Retrieves true height of the linear layout in pixels
-     * <br/>
-     * Layout should have MATCH_PARENT in LP
-     * @return pixels
-     */
-    private int getLayoutHeight(ViewGroup view) {
-        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, View.MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, View.MeasureSpec.EXACTLY);
-        view.measure(widthMeasureSpec, heightMeasureSpec);
-        return view.getMeasuredHeight();
     }
 
     private void preparePhoneUI(String[] deviceIds) {

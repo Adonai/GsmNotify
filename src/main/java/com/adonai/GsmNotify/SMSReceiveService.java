@@ -82,7 +82,7 @@ public class SMSReceiveService extends Service {
                             builder.setSmallIcon(R.drawable.app_icon);
                             builder.setAutoCancel(true);
                             builder.setContentTitle(getString(R.string.warning));
-                            builder.setContentText(deviceId + ": " + text);
+                            builder.setContentText(settings.name + ": " + text);
 
                             final Intent notificationClicker = new Intent(this, MainActivity.class);
                             notificationClicker.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
