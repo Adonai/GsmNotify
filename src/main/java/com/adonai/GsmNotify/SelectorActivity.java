@@ -8,35 +8,99 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
+
+import static android.widget.LinearLayout.LayoutParams;
 
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
+    LinearLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String[] IDs = mPrefs.getString("IDs", "").split(";");
+        if(Utils.isTablet(this)) {
+            prepareTabletUI(IDs);
+        } else {
+            preparePhoneUI(IDs);
+        }
+    }
+
+    private void prepareTabletUI(String[] deviceIds) {
+        ColumnLinearLayout mainLayout = new ColumnLinearLayout(this);
+        setContentView(mainLayout);
+
+        for (String devId : deviceIds) {
+            String gson = mPrefs.getString(devId, "");
+            if (gson.isEmpty()) {
+                continue;
+            }
+
+            Device dev = new Device();
+            dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            Button openDevice = new Button(this);
+            openDevice.setWidth(LayoutParams.MATCH_PARENT);
+            openDevice.setText(dev.details.name);
+            openDevice.setTag(devId);
+            openDevice.setOnClickListener(this);
+            mainLayout.addView(openDevice);
+        }
+
+        Button addNew = new Button(this);
+        addNew.setText(R.string.add_device);
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                //finish();
+            }
+        });
+        mainLayout.addView(addNew);
+    }
+
+    /**
+     * Retrieves true height of the linear layout in pixels
+     * <br/>
+     * Layout should have MATCH_PARENT in LP
+     * @return pixels
+     */
+    private int getLayoutHeight(ViewGroup view) {
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, View.MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(LayoutParams.MATCH_PARENT, View.MeasureSpec.EXACTLY);
+        view.measure(widthMeasureSpec, heightMeasureSpec);
+        return view.getMeasuredHeight();
+    }
+
+    private void preparePhoneUI(String[] deviceIds) {
         ScrollView scrollView = new ScrollView(this);
         LinearLayout deviceList = new LinearLayout(this);
         deviceList.setOrientation(LinearLayout.VERTICAL);
 
-        String[] IDs = mPrefs.getString("IDs", "").split(";");
-        for (String ID : IDs) {
+
+        for (String ID : deviceIds) {
             String gson = mPrefs.getString(ID, "");
-            if (gson.equals("")) {
+            if (gson.isEmpty()) {
                 continue;
             }
 
             Device dev = new Device();
             dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             Button viewer = new Button(this);
-            viewer.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+            viewer.setWidth(LayoutParams.MATCH_PARENT);
             viewer.setText(dev.details.name);
             viewer.setTag(ID);
             viewer.setOnClickListener(this);
