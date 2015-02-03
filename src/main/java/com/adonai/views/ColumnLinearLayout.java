@@ -45,10 +45,12 @@ public class ColumnLinearLayout extends ViewGroup {
                 child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST));
                 viewHeight = child.getMeasuredHeight();
                 int buttonsInAColumn = childHeight / viewHeight;
-                columnCount = childrenCount / buttonsInAColumn + 1;
+                columnCount = childrenCount / (buttonsInAColumn + 1) + 1; // increase on overflow of current column
                 viewWidth = childWidth / columnCount;
             }
 
+            // fix text alignment
+            child.measure(MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(viewHeight, MeasureSpec.EXACTLY));
             child.layout(curLeft, curTop, curLeft + viewWidth, curTop + viewHeight);
             curTop += viewHeight;
 

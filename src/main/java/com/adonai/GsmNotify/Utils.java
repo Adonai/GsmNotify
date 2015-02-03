@@ -12,8 +12,7 @@ public class Utils {
         Iterator<String> iter = s.iterator();
         while (iter.hasNext()) {
             String current = iter.next();
-            if (current.equals("")) // skip empty parts
-            {
+            if (current.isEmpty()) {
                 continue;
             }
 
@@ -34,6 +33,6 @@ public class Utils {
         float yInches = metrics.heightPixels / metrics.ydpi;
         float xInches = metrics.widthPixels / metrics.xdpi;
         double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-        return diagonalInches >= 5;
+        return diagonalInches >= 6;
     }
 }

@@ -1,63 +1,102 @@
 package com.adonai.GsmNotify;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.adonai.GsmNotify.database.DbProvider;
+import com.adonai.GsmNotify.database.PersistManager;
+import com.adonai.GsmNotify.entities.HistoryEntry;
+import com.adonai.GsmNotify.misc.AbstractAsyncLoader;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.widget.LinearLayout.LayoutParams;
 
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
 
+    private final static int STATUS_LOADER = 0;
+    private StatusRetrieverCallback mLocalArchiveParseCallback = new StatusRetrieverCallback();
+
+    private String[] mDeviceIds;
+    private ViewGroup mMainLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
+
+        if(Utils.isTablet(this)) {
+            getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
+        }
+    }
+
+    enum DeviceStatus {
+        ARMED,
+        DISARMED,
+        ALARM,
+        UNKNOWN
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        String[] IDs = mPrefs.getString("IDs", "").split(";");
+        mDeviceIds = mPrefs.getString("IDs", "").split(";");
+        Arrays.sort(mDeviceIds);
+
         if(Utils.isTablet(this)) {
-            prepareTabletUI(IDs);
+            prepareTabletUI();
         } else {
-            preparePhoneUI(IDs);
+            preparePhoneUI();
         }
     }
 
-    private void prepareTabletUI(String[] deviceIds) {
-        ColumnLinearLayout mainLayout = new ColumnLinearLayout(this);
-        setContentView(mainLayout);
+    private void prepareTabletUI() {
+        mMainLayout = new ColumnLinearLayout(this);
+        setContentView(mMainLayout);
 
-        for (String devId : deviceIds) {
+        for (String devId : mDeviceIds) {
             String gson = mPrefs.getString(devId, "");
+
             if (gson.isEmpty()) {
                 continue;
             }
 
-            Device dev = new Device();
-            dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
             Button openDevice = new Button(this);
             openDevice.setWidth(LayoutParams.MATCH_PARENT);
-            openDevice.setText(dev.details.name);
+            openDevice.setText(details.name);
             openDevice.setTag(devId);
+            openDevice.setMaxLines(1);
+            openDevice.setEllipsize(TextUtils.TruncateAt.END);
             openDevice.setOnClickListener(this);
-            mainLayout.addView(openDevice);
+            mMainLayout.addView(openDevice);
         }
 
         Button addNew = new Button(this);
+        addNew.setMaxLines(1);
+        addNew.setEllipsize(TextUtils.TruncateAt.END);
         addNew.setText(R.string.add_device);
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,16 +106,18 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 //finish();
             }
         });
-        mainLayout.addView(addNew);
+        mMainLayout.addView(addNew);
+
+        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
     }
 
-    private void preparePhoneUI(String[] deviceIds) {
+    private void preparePhoneUI() {
         ScrollView scrollView = new ScrollView(this);
         LinearLayout deviceList = new LinearLayout(this);
         deviceList.setOrientation(LinearLayout.VERTICAL);
 
 
-        for (String ID : deviceIds) {
+        for (String ID : mDeviceIds) {
             String gson = mPrefs.getString(ID, "");
             if (gson.isEmpty()) {
                 continue;
@@ -149,5 +190,91 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         }
 
         return false;
+    }
+
+    private class StatusRetrieverCallback implements LoaderManager.LoaderCallbacks<List<DeviceStatus>> {
+
+        @Override
+        public Loader<List<DeviceStatus>> onCreateLoader(int i, Bundle bundle) {
+            return new AbstractAsyncLoader<List<DeviceStatus>>(SelectorActivity.this) {
+
+                @Override
+                protected void onForceLoad() {
+                    if(mDeviceIds != null) {
+                        super.onForceLoad();
+                    }
+                }
+
+                @NonNull
+                @Override
+                public List<DeviceStatus> loadInBackground() {
+                    List<DeviceStatus> devStatuses = new ArrayList<>(mDeviceIds.length);
+
+                    PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
+                    for (String deviceId : mDeviceIds) {
+                        DeviceStatus currentStatus = DeviceStatus.UNKNOWN;
+
+                        String gson = mPrefs.getString(deviceId, "");
+                        if (gson.isEmpty()) {
+                            devStatuses.add(currentStatus);
+                            continue;
+                        }
+
+                        Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
+                        try {
+                            HistoryEntry he = manager.getHistoryDao().queryBuilder()
+                                    .orderBy("eventDate", false).where().eq("deviceName", details.name).queryForFirst();
+                            if(he != null) {
+                                String lowercaseSms = he.getSmsText().toLowerCase();
+                                if (lowercaseSms.contains("на ")) { // armed
+                                    currentStatus = DeviceStatus.ARMED;
+                                } else if (lowercaseSms.contains(" с ")) { // disarmed
+                                    currentStatus = DeviceStatus.DISARMED;
+                                } else if (lowercaseSms.contains("внимание")) {
+                                    currentStatus = DeviceStatus.ALARM;
+                                }
+                            }
+                        } catch (SQLException sqle) {
+                            currentStatus = DeviceStatus.UNKNOWN;
+                        }
+                        devStatuses.add(currentStatus);
+                    }
+                    DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
+                    return devStatuses;
+                }
+            };
+        }
+
+        @Override
+        @SuppressWarnings("deprecation")
+        public void onLoadFinished(Loader<List<DeviceStatus>> loader, List<DeviceStatus> statusesRetrieved) {
+            int childCount = mMainLayout.getChildCount();
+            int currentButtonIndex = 0;
+            for(DeviceStatus status : statusesRetrieved) {
+                Button child = (Button) mMainLayout.getChildAt(currentButtonIndex++);
+
+                Drawable newBackground = child.getBackground().mutate();
+                switch (status) {
+                    case ARMED:
+                        newBackground.setColorFilter(getResources().getColor(R.color.light_yellow), PorterDuff.Mode.MULTIPLY);
+                        break;
+                    case DISARMED:
+                        newBackground.setColorFilter(getResources().getColor(R.color.light_green), PorterDuff.Mode.MULTIPLY);
+                        break;
+                    case ALARM:
+                        newBackground.setColorFilter(getResources().getColor(R.color.light_red), PorterDuff.Mode.MULTIPLY);
+                        break;
+                    case UNKNOWN:
+                        // leave the same
+                        break;
+                }
+                child.setBackgroundDrawable(newBackground);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<DeviceStatus>> loader) {
+
+        }
     }
 }
