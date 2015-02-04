@@ -8,6 +8,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 
 import com.adonai.GsmNotify.database.DbProvider;
@@ -24,6 +27,7 @@ public class SMSReceiveService extends Service {
 
     Activity boundListener;
     SharedPreferences preferences;
+    Bitmap largeNotifIcon;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -41,6 +45,12 @@ public class SMSReceiveService extends Service {
         super.onCreate();
         preferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         DbProvider.setHelper(this);
+
+        Bitmap appIcon = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+        Resources res = getResources();
+        int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
+        int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
+        largeNotifIcon = Bitmap.createScaledBitmap(appIcon, width, height, false);
     }
 
     @Override
@@ -80,6 +90,7 @@ public class SMSReceiveService extends Service {
                             // just make a notification
                             Notification.Builder builder = new Notification.Builder(this);
                             builder.setSmallIcon(R.drawable.app_icon);
+                            builder.setLargeIcon(largeNotifIcon);
                             builder.setAutoCancel(true);
                             builder.setContentTitle(getString(R.string.warning));
                             builder.setContentText(settings.name + ": " + text);
