@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+
 import static android.widget.LinearLayout.LayoutParams;
 
 public class SelectorActivity extends Activity implements View.OnClickListener {
@@ -30,6 +32,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         String[] IDs = mPrefs.getString("IDs", "").split(";");
+        Arrays.sort(IDs);
         if(Utils.isTablet(this)) {
             prepareTabletUI(IDs);
         } else {

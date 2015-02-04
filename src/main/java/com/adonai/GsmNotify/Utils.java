@@ -34,6 +34,6 @@ public class Utils {
         float yInches = metrics.heightPixels / metrics.ydpi;
         float xInches = metrics.widthPixels / metrics.xdpi;
         double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-        return diagonalInches >= 5;
+        return diagonalInches >= 6;
     }
 }
