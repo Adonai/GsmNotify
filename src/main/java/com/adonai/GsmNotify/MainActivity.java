@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     static boolean isRunning;
 
-    public class sentConfirmReceiver extends BroadcastReceiver {
+    private class SentConfirmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    public class deliveryConfirmReceiver extends BroadcastReceiver {
+    private class DeliveryConfirmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
@@ -118,8 +118,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //mScroll = (ScrollView) findViewById(R.id.scroll_bar);
 
         incMessages = new MessageQueue();
-        sentReceiver = new sentConfirmReceiver();
-        deliveryReceiver = new deliveryConfirmReceiver();
+        sentReceiver = new SentConfirmReceiver();
+        deliveryReceiver = new DeliveryConfirmReceiver();
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
 
         mNotifyEnable = (Button) findViewById(R.id.signal_on_button);

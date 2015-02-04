@@ -187,6 +187,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 // update menu checked state
                 invalidateOptionsMenu();
                 return true;
+            case R.id.query_all_devices:
+                getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+                return true;
         }
 
         return false;
@@ -256,13 +259,13 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 Drawable newBackground = child.getBackground().mutate();
                 switch (status) {
                     case ARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.light_yellow), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.ADD);
                         break;
                     case DISARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.light_green), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.ADD);
                         break;
                     case ALARM:
-                        newBackground.setColorFilter(getResources().getColor(R.color.light_red), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.ADD);
                         break;
                     case UNKNOWN:
                         // leave the same

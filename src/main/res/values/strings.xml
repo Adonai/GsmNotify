@@ -121,4 +121,5 @@
     <string name="delete_history">Delete history</string>
     <string name="notify_on_sms">Notify on SMS</string>
     <string name="warning">Warning!</string>
+    <string name="query_all_devices">Query all devices</string>
 </resources>
