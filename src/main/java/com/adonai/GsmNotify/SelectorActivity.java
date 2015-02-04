@@ -2,6 +2,7 @@ package com.adonai.GsmNotify;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,7 +11,10 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,8 +51,17 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     private ViewGroup mMainLayout;
 
     static boolean isRunning;
+    static boolean isStatusChecking;
 
     private BroadcastReceiver sentReceiver, deliveryReceiver;
+    private Handler mUiHandler;
+    private Handler.Callback mStatusWalkCallback = new StatusWalkCallback();
+
+    private static final int HANDLE_START         = 0;
+    private static final int HANDLE_SEND          = 1;
+    private static final int HANDLE_ACK           = 2;
+    private static final int HANDLE_TIMEOUT       = 3;
+    private static final int HANDLE_FINISH        = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         if(Utils.isTablet(this)) {
             getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
         }
+
+        mUiHandler = new Handler(mStatusWalkCallback);
     }
 
     enum DeviceStatus {
@@ -96,6 +111,17 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         isRunning = false;
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra("number")) { // запущено из сервиса SMS
+            String message = intent.getStringExtra("text");
+            if(message.toLowerCase().contains("шлейфы")) { // it's a status-message
+                mUiHandler.sendMessage(mUiHandler.obtainMessage(HANDLE_ACK, intent.getStringExtra("number")));
+            }
+        }
+    }
+
     private void prepareTabletUI() {
         mMainLayout = new ColumnLinearLayout(this);
         setContentView(mMainLayout);
@@ -112,6 +138,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             openDevice.setWidth(LayoutParams.MATCH_PARENT);
             openDevice.setText(details.name);
             openDevice.setTag(devId);
+            openDevice.setTag(R.integer.device_details, details);
             openDevice.setMaxLines(1);
             openDevice.setEllipsize(TextUtils.TruncateAt.END);
             openDevice.setOnClickListener(this);
@@ -147,12 +174,12 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 continue;
             }
 
-            Device dev = new Device();
-            dev.details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
             Button viewer = new Button(this);
             viewer.setWidth(LayoutParams.MATCH_PARENT);
-            viewer.setText(dev.details.name);
+            viewer.setText(details.name);
             viewer.setTag(ID);
+            viewer.setTag(R.integer.device_details, details);
             viewer.setOnClickListener(this);
             deviceList.addView(viewer);
         }
@@ -193,6 +220,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         boolean shouldOpen = mPrefs.getBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, true);
         smsOption.setChecked(shouldOpen);
 
+        MenuItem queryOption = menu.findItem(R.id.query_all_devices);
+        queryOption.setVisible(Utils.isTablet(this));
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -212,7 +242,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 invalidateOptionsMenu();
                 return true;
             case R.id.query_all_devices:
-                getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+                mUiHandler.removeCallbacksAndMessages(null);
+                mUiHandler.sendEmptyMessage(HANDLE_START);
                 return true;
         }
 
@@ -303,5 +334,64 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         public void onLoaderReset(Loader<List<DeviceStatus>> loader) {
 
         }
+    }
+
+    private class StatusWalkCallback implements Handler.Callback {
+        private int currentQueried;
+
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case HANDLE_START:
+                    currentQueried = 0;
+                    mUiHandler.sendEmptyMessage(HANDLE_SEND);
+                    isStatusChecking = true;
+                    return true;
+                case HANDLE_SEND: {
+                    Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
+                    Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
+                    deviceOpenButton.setText("→ " + deviceOpenButton.getText() + " ←");
+                    sendStatusQuerySms(details);
+                    mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, Utils.SMS_DEFAULT_TIMEOUT);
+                    return true;
+                }
+                case HANDLE_ACK: {
+                    String number = (String) msg.obj;
+                    if(number.equals(mDeviceIds[currentQueried])) { // it's current queried device's status message!
+                        mUiHandler.removeMessages(HANDLE_TIMEOUT);
+                        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+
+                        // restore old name
+                        Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
+                        Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
+                        deviceOpenButton.setText(details.name);
+
+                        if(mDeviceIds.length > ++currentQueried) { // query next
+                            mUiHandler.sendEmptyMessage(HANDLE_SEND);
+                        } else { // finish
+                            mUiHandler.sendEmptyMessage(HANDLE_FINISH);
+                        }
+                    }
+                    return true;
+                }
+                case HANDLE_TIMEOUT: { // stop
+                    Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
+                    Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
+                    deviceOpenButton.setText(details.name);
+                } /* fall-through */
+                case HANDLE_FINISH: {
+                    isStatusChecking = false;
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public void sendStatusQuerySms(Device.CommonSettings details) {
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.DELIVERED), 0);
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(details.number, null, "*" + details.password + "#_info#", sentPI, deliveredPI);
     }
 }

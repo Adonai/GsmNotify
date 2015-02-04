@@ -84,6 +84,16 @@ public class SMSReceiveService extends Service {
                         manager.getHistoryDao().create(he);
                         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
 
+                        // this is a status checker, don't notify anyone else
+                        if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
+                            Intent starter = new Intent(this, SelectorActivity.class);
+                            starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    .putExtra("number", deviceId)
+                                    .putExtra("text", text);
+                            startActivity(starter);
+                            break;
+                        }
+
                         // should send to activity now?
                         if (!MainActivity.isRunning && !shouldNotify) { // if we have it and it's false
 

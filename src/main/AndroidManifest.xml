@@ -29,6 +29,7 @@
         <activity
             android:name="SelectorActivity"
             android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         <service

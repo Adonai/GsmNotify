@@ -45,7 +45,6 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     final public static int HANDLE_RESET = 3;
     final public static int HANDLE_FORCE_RESET = 4;
 
-    final public static int SMS_DEFAULT_TIMEOUT = 20000;
 
     Boolean hasSomethingChanged = false;
 
@@ -450,7 +449,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                         if (toSend.first) {
                             hasSomethingChanged = true;
                             sendSms(toSend.second);
-                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
+                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), Utils.SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
                         }
@@ -461,7 +460,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                         if (mDevice.tempMode != null) {
                             String res = "*" + mDevice.details.password + "#" + (mDevice.tempMode == 1 ? "_th" : "_tb") + "#";
                             sendSms(res);
-                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), SMS_DEFAULT_TIMEOUT);
+                            mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_STEP, ++step), Utils.SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendMessage(mHandler.obtainMessage(HANDLE_STEP, ++step));
                         }
@@ -479,7 +478,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                             }
                             res += "#";
                             sendSms(res);
-                            mHandler.sendEmptyMessageDelayed(HANDLE_RESET, SMS_DEFAULT_TIMEOUT);
+                            mHandler.sendEmptyMessageDelayed(HANDLE_RESET, Utils.SMS_DEFAULT_TIMEOUT);
                         } else {
                             mHandler.sendEmptyMessage(HANDLE_RESET);
                         }
@@ -492,7 +491,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 if (hasSomethingChanged) {
                     pd.setMessage(getString(R.string.resetting_device));
                     sendSms("*" + mDevice.details.password + "#_fullrst#");
-                    mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, SMS_DEFAULT_TIMEOUT);
+                    mHandler.sendEmptyMessageDelayed(HANDLE_FINISH, Utils.SMS_DEFAULT_TIMEOUT);
                 } else {
                     mHandler.sendEmptyMessage(HANDLE_FINISH);
                 }
@@ -527,7 +526,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     public void run() {
                         pd.dismiss();
                     }
-                }, SMS_DEFAULT_TIMEOUT);
+                }, Utils.SMS_DEFAULT_TIMEOUT);
                 break;
             }
         }

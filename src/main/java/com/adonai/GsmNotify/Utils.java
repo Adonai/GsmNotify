@@ -8,8 +8,10 @@ import java.util.Iterator;
 
 public class Utils {
 
-    static String SENT = "SMS_SENT_NOTIFY_MAIN";
-    static String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
+    final static String SENT = "SMS_SENT_NOTIFY_MAIN";
+    final static String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
+
+    final static int SMS_DEFAULT_TIMEOUT = 20000;
 
     static String join(Collection<String> s, String delimiter) {
         StringBuilder builder = new StringBuilder();
