@@ -31,9 +31,13 @@ public class Utils {
         DisplayMetrics metrics = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        float yInches = metrics.heightPixels / metrics.ydpi;
-        float xInches = metrics.widthPixels / metrics.xdpi;
-        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
-        return diagonalInches >= 6;
+        int widthPixels = metrics.widthPixels;
+        int heightPixels = metrics.heightPixels;
+
+        float widthDp = widthPixels / metrics.density;
+        float heightDp = heightPixels / metrics.density;
+        float smallestWidth = Math.min(widthDp, heightDp);
+
+        return  smallestWidth > 600;
     }
 }
