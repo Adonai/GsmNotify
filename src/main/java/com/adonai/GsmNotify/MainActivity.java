@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,6 +22,8 @@ import android.widget.Toast;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.entities.HistoryEntry;
+import com.adonai.GsmNotify.misc.DeliveryConfirmReceiver;
+import com.adonai.GsmNotify.misc.SentConfirmReceiver;
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.DeleteBuilder;
@@ -34,8 +35,6 @@ import java.util.List;
 
 @SuppressLint("CommitPrefEdits")
 public class MainActivity extends Activity implements View.OnClickListener {
-    String SENT = "SMS_SENT_NOTIFY_MAIN";
-    String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
     MessageQueue incMessages;
 
     String mAddressID;
@@ -49,43 +48,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     EditText mResultText;
 
     static boolean isRunning;
-
-    private class SentConfirmReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            switch (getResultCode()) {
-                case Activity.RESULT_OK:
-                    Toast.makeText(MainActivity.this, getString(R.string.sms_sent_success), Toast.LENGTH_SHORT).show();
-                    break;
-                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                    Toast.makeText(MainActivity.this, getString(R.string.generic_failure), Toast.LENGTH_SHORT).show();
-                    break;
-                case SmsManager.RESULT_ERROR_NO_SERVICE:
-                    Toast.makeText(MainActivity.this, getString(R.string.no_service), Toast.LENGTH_SHORT).show();
-                    break;
-                case SmsManager.RESULT_ERROR_NULL_PDU:
-                    Toast.makeText(MainActivity.this, getString(R.string.null_message), Toast.LENGTH_SHORT).show();
-                    break;
-                case SmsManager.RESULT_ERROR_RADIO_OFF:
-                    Toast.makeText(getBaseContext(), getString(R.string.radio_off), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    }
-
-    private class DeliveryConfirmReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            switch (getResultCode()) {
-                case Activity.RESULT_OK:
-                    Toast.makeText(MainActivity.this, getString(R.string.sms_deliver_success), Toast.LENGTH_SHORT).show();
-                    break;
-                case Activity.RESULT_CANCELED:
-                    Toast.makeText(MainActivity.this, getString(R.string.result_canceled), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    }
 
     // увеличиваем длительность нажатия до 500 мс
     private View.OnTouchListener pressHolder = new View.OnTouchListener() {
@@ -118,8 +80,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         //mScroll = (ScrollView) findViewById(R.id.scroll_bar);
 
         incMessages = new MessageQueue();
-        sentReceiver = new SentConfirmReceiver();
-        deliveryReceiver = new DeliveryConfirmReceiver();
+        sentReceiver = new SentConfirmReceiver(this);
+        deliveryReceiver = new DeliveryConfirmReceiver(this);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
 
         mNotifyEnable = (Button) findViewById(R.id.signal_on_button);
@@ -184,9 +146,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onStart();
 
         //--- When the SMS has been sent ---
-        registerReceiver(sentReceiver, new IntentFilter(SENT));
+        registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
         //--- When the SMS has been delivered. ---
-        registerReceiver(deliveryReceiver, new IntentFilter(DELIVERED));
+        registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
 
         isRunning = true;
     }
@@ -317,8 +279,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.DELIVERED), 0);
         SmsManager sms = SmsManager.getDefault();
         switch (view.getId()) {
             case R.id.relay1_on_button:

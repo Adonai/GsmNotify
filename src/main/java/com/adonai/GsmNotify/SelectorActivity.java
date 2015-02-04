@@ -2,7 +2,9 @@ package com.adonai.GsmNotify;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -23,6 +25,8 @@ import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
 import com.adonai.GsmNotify.entities.HistoryEntry;
 import com.adonai.GsmNotify.misc.AbstractAsyncLoader;
+import com.adonai.GsmNotify.misc.DeliveryConfirmReceiver;
+import com.adonai.GsmNotify.misc.SentConfirmReceiver;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
 
@@ -42,10 +46,17 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     private String[] mDeviceIds;
     private ViewGroup mMainLayout;
 
+    static boolean isRunning;
+
+    private BroadcastReceiver sentReceiver, deliveryReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
+
+        sentReceiver = new SentConfirmReceiver(this);
+        deliveryReceiver = new DeliveryConfirmReceiver(this);
 
         if(Utils.isTablet(this)) {
             getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
@@ -70,6 +81,19 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         } else {
             preparePhoneUI();
         }
+
+        //--- When the SMS has been sent ---
+        registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
+        //--- When the SMS has been delivered. ---
+        registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
+
+        isRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRunning = false;
     }
 
     private void prepareTabletUI() {

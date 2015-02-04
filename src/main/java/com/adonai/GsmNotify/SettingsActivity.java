@@ -47,10 +47,6 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
     final public static int SMS_DEFAULT_TIMEOUT = 20000;
 
-
-    String SENT = "SMS_SENT_NOTIFY";
-    String DELIVERED = "SMS_DELIVERED_NOTIFY";
-
     Boolean hasSomethingChanged = false;
 
     BroadcastReceiver sentReceiver, deliveryReceiver;
@@ -225,9 +221,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     protected void onStart() {
         super.onStart();
         //--- When the SMS has been sent ---
-        registerReceiver(sentReceiver, new IntentFilter(SENT));
+        registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
         //--- When the SMS has been delivered. ---
-        registerReceiver(deliveryReceiver, new IntentFilter(DELIVERED));
+        registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
     }
 
     @Override
@@ -539,8 +535,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     }
 
     private void sendSms(String text) {
-        PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(SENT), 0);
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(DELIVERED), 0);
+        PendingIntent sentPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(Utils.SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(SettingsActivity.this, 0, new Intent(Utils.DELIVERED), 0);
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> splitted = sms.divideMessage(text);
         ArrayList<PendingIntent> sendIntents = new ArrayList<>(splitted.size());

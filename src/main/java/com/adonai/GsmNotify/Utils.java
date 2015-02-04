@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class Utils {
+
+    static String SENT = "SMS_SENT_NOTIFY_MAIN";
+    static String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
+
     static String join(Collection<String> s, String delimiter) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iter = s.iterator();
