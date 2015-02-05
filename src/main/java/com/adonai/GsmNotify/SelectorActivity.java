@@ -1,9 +1,11 @@
 package com.adonai.GsmNotify;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
@@ -244,6 +246,29 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             case R.id.query_all_devices:
                 mUiHandler.removeCallbacksAndMessages(null);
                 mUiHandler.sendEmptyMessage(HANDLE_START);
+                return true;
+            case R.id.show_alarm_history:
+                AlarmHistoryListFragment hlf = AlarmHistoryListFragment.newInstance();
+                hlf.show(getFragmentManager(), "AlarmHistoryListDialog");
+                return true;
+            case R.id.clear_all_history:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.clear_all_history).setMessage(R.string.clear_all_history_confirm);
+                builder.setNegativeButton(android.R.string.cancel, null)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
+                                try {
+                                    manager.getHistoryDao().deleteBuilder().delete();
+                                    getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
+                            }
+                        });
+                builder.create().show();
                 return true;
         }
 
