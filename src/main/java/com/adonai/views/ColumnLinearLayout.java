@@ -36,7 +36,7 @@ public class ColumnLinearLayout extends ViewGroup {
         int curLeft = childLeft;
         int curTop = childTop;
 
-        int columnCount = 0, viewHeight = 0, viewWidth = 0;
+        int buttonsInAColumn = 0, columnCount = 0, viewHeight = 0, viewWidth = 0;
         //walk through each child, and arrange it from left to right
         for (int i = 0; i < childrenCount; i++) {
             View child = getChildAt(i);
@@ -44,9 +44,15 @@ public class ColumnLinearLayout extends ViewGroup {
             if (columnCount == 0) {
                 child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST));
                 viewHeight = child.getMeasuredHeight();
-                int buttonsInAColumn = childHeight / viewHeight;
+                buttonsInAColumn = childHeight / viewHeight;
                 columnCount = childrenCount / (buttonsInAColumn + 1) + 1; // increase on overflow of current column
                 viewWidth = childWidth / columnCount;
+
+                if(columnCount >= 5) { // width of views will be too small
+                    columnCount = 5;
+                    buttonsInAColumn = childrenCount / columnCount;
+                    viewWidth = childWidth / columnCount;
+                }
             }
 
             // fix text alignment
@@ -55,7 +61,7 @@ public class ColumnLinearLayout extends ViewGroup {
             curTop += viewHeight;
 
             // check if next button would be too fat
-            if (curTop + viewHeight > childHeight) { // start next column
+            if ((i + 1) % buttonsInAColumn == 0) { // start next column
                 curTop = childTop;
                 curLeft += viewWidth;
             }
