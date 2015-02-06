@@ -65,58 +65,58 @@ public class SMSReceiveService extends Service {
         if (intent != null && intent.hasExtra("number")) {
             String[] IDs = preferences.getString("IDs", "").split(";");
             String current = preferences.getString("currentEdit", "");
-            boolean shouldNotify = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
+            boolean shouldOpen = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
             for (String deviceId : IDs) {
-                if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1)) && !deviceId.equals(current)) { // +7 / 8 handling
-                    String text = intent.getStringExtra("text");
+                if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1))) { // +7 / 8 handling
 
-                    // check notify on sms is set
-                    String gson = preferences.getString(deviceId, "");
-                    if (!gson.equals("")) {
-                        Device.CommonSettings settings = new Gson().fromJson(gson, Device.CommonSettings.class);
-
-                        // add to history
-                        PersistManager manager = DbProvider.getTempHelper(this);
-                        HistoryEntry he = new HistoryEntry();
-                        he.setDeviceName(settings.name);
-                        he.setEventDate(Calendar.getInstance().getTime());
-                        he.setSmsText(text);
-                        manager.getHistoryDao().create(he);
-                        DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
-
-                        // this is a status checker, don't notify anyone else
-                        if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
-                            Intent starter = new Intent(this, SelectorActivity.class);
-                            starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra("number", deviceId)
-                                    .putExtra("text", text);
-                            startActivity(starter);
-                            break;
-                        }
-
-                        // should send to activity now?
-                        if (!MainActivity.isRunning && !shouldNotify) { // if we have it and it's false
-
-                            // just make a notification
-                            Notification.Builder builder = new Notification.Builder(this);
-                            builder.setSmallIcon(R.drawable.app_icon);
-                            builder.setLargeIcon(largeNotifIcon);
-                            builder.setAutoCancel(true);
-                            builder.setContentTitle(getString(R.string.warning));
-                            builder.setContentText(settings.name + ": " + text);
-
-                            final Intent notificationClicker = new Intent(this, MainActivity.class);
-                            notificationClicker.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra("number", deviceId)
-                                    .putExtra("text", text);
-                            builder.setContentIntent(PendingIntent.getActivity(this, 0, notificationClicker, 0));
-
-                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            mNotificationManager.notify(100501, builder.getNotification());
-                            break;
-                        }
+                    // stop searching if we know we're editing it now
+                    if(deviceId.equals(current)) {
+                        break;
                     }
 
+                    String text = intent.getStringExtra("text");
+                    String gson = preferences.getString(deviceId, "");
+                    if (gson.isEmpty()) {
+                        continue;
+                    }
+
+                    Device.CommonSettings settings = new Gson().fromJson(gson, Device.CommonSettings.class);
+                    addHistoryEntry(text, settings);
+
+                    // this is a status checker, don't notify anyone else
+                    if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
+                        Intent starter = new Intent(this, SelectorActivity.class);
+                        starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                .putExtra("number", deviceId)
+                                .putExtra("text", text);
+                        startActivity(starter);
+                        break;
+                    }
+
+                    // should send to activity now?
+                    // if we're viewing another device, or shouldn't open at all
+                    if (MainActivity.isRunning || !shouldOpen) {
+
+                        // just make a notification
+                        Notification.Builder builder = new Notification.Builder(this);
+                        builder.setSmallIcon(R.drawable.app_icon);
+                        builder.setLargeIcon(largeNotifIcon);
+                        builder.setAutoCancel(true);
+                        builder.setContentTitle(getString(R.string.warning));
+                        builder.setContentText(settings.name + ": " + text);
+
+                        final Intent notificationClicker = new Intent(this, MainActivity.class);
+                        notificationClicker.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                .putExtra("number", deviceId)
+                                .putExtra("text", text);
+                        builder.setContentIntent(PendingIntent.getActivity(this, 0, notificationClicker, 0));
+
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(100501, builder.getNotification());
+                        break;
+                    }
+
+                    // if we're here, we're not checking status, not editing device and not in main window
                     Intent starter = new Intent(this, MainActivity.class);
                     starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra("number", deviceId)
@@ -126,5 +126,16 @@ public class SMSReceiveService extends Service {
             }
         }
         return START_STICKY;
+    }
+
+    private void addHistoryEntry(String text, Device.CommonSettings deviceDetails) {
+        // add to history
+        PersistManager manager = DbProvider.getTempHelper(this);
+        HistoryEntry he = new HistoryEntry();
+        he.setDeviceName(deviceDetails.name);
+        he.setEventDate(Calendar.getInstance().getTime());
+        he.setSmsText(text);
+        manager.getHistoryDao().create(he);
+        DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
     }
 }
