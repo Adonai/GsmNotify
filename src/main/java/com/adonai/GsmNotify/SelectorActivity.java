@@ -118,7 +118,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         super.onNewIntent(intent);
         if (intent.hasExtra("number")) { // запущено из сервиса SMS
             String message = intent.getStringExtra("text");
-            if(message.toLowerCase().contains("шлейфы")) { // it's a status-message
+            if(message.toLowerCase().contains(getString(R.string.status_matcher))) { // it's a status-message
                 mUiHandler.sendMessage(mUiHandler.obtainMessage(HANDLE_ACK, intent.getStringExtra("number")));
             }
         }
@@ -309,11 +309,11 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                     .orderBy("eventDate", false).where().eq("deviceName", details.name).queryForFirst();
                             if(he != null) {
                                 String lowercaseSms = he.getSmsText().toLowerCase();
-                                if (lowercaseSms.contains("на ")) { // armed
+                                if (lowercaseSms.contains(getString(R.string.armed_matcher))) { // armed
                                     currentStatus = DeviceStatus.ARMED;
-                                } else if (lowercaseSms.contains(" с ")) { // disarmed
+                                } else if (lowercaseSms.contains(getString(R.string.disarmed_matcher))) { // disarmed
                                     currentStatus = DeviceStatus.DISARMED;
-                                } else if (lowercaseSms.contains("внимание")) {
+                                } else if (lowercaseSms.contains(getString(R.string.alarm_matcher))) {
                                     currentStatus = DeviceStatus.ALARM;
                                 }
                             }

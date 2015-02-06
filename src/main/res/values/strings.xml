@@ -126,4 +126,8 @@
     <string name="alarm_history">Alarm history</string>
     <string name="clear_all_history">Clear all history</string>
     <string name="clear_all_history_confirm">Are you sure to clear all history from all devices?</string>
+    <string name="armed_matcher">armed</string>
+    <string name="disarmed_matcher">disarmed</string>
+    <string name="alarm_matcher">alarm</string>
+    <string name="status_matcher">status</string>
 </resources>

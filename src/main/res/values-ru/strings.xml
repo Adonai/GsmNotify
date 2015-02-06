@@ -122,4 +122,8 @@
     <string name="alarm_history">История тревог</string>
     <string name="clear_all_history">Очистить всю историю</string>
     <string name="clear_all_history_confirm">Это действие удалит всю историю сообщений со всех устройств. Вы уверены?</string>
+    <string name="armed_matcher">на </string>
+    <string name="disarmed_matcher"> с </string>
+    <string name="alarm_matcher">внимание</string>
+    <string name="status_matcher">шлейфы</string>
 </resources>
