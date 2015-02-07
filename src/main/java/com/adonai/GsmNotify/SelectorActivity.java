@@ -137,6 +137,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(sentReceiver);
+        unregisterReceiver(deliveryReceiver);
         isRunning = false;
     }
 
