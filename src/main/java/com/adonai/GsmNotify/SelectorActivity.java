@@ -18,6 +18,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +40,11 @@ import com.google.gson.Gson;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams;
 
@@ -50,6 +55,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     private StatusRetrieverCallback mLocalArchiveParseCallback = new StatusRetrieverCallback();
 
     private String[] mDeviceIds;
+    Map<String, Device.CommonSettings> mDeviceSettingsMap;
     private ViewGroup mMainLayout;
 
     static boolean isRunning;
@@ -90,8 +96,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        mDeviceIds = mPrefs.getString("IDs", "").split(";");
-        //Arrays.sort(mDeviceIds);
+        sortDevices();
 
         if(Utils.isTablet(this)) {
             prepareTabletUI();
@@ -105,6 +110,28 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
 
         isRunning = true;
+    }
+
+    private void sortDevices() {
+        long a = System.currentTimeMillis();
+        mDeviceIds = mPrefs.getString("IDs", "").split(";");
+        mDeviceSettingsMap = new HashMap<>(mDeviceIds.length);
+        for(String devId : mDeviceIds) {
+            String gson = mPrefs.getString(devId, "");
+            Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            mDeviceSettingsMap.put(devId, details);
+        }
+
+        Arrays.sort(mDeviceIds, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                Device.CommonSettings detailsLeft = mDeviceSettingsMap.get(lhs);
+                Device.CommonSettings detailsRight = mDeviceSettingsMap.get(rhs);
+
+                return  detailsLeft.name.compareTo(detailsRight.name);
+            }
+        });
+        Log.e("timetrace", String.valueOf(System.currentTimeMillis() - a));
     }
 
     @Override
@@ -131,13 +158,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         setContentView(scrollView);
 
         for (String devId : mDeviceIds) {
-            String gson = mPrefs.getString(devId, "");
-
-            if (gson.isEmpty()) {
-                continue;
-            }
-
-            Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            Device.CommonSettings details = mDeviceSettingsMap.get(devId);
             Button openDevice = new Button(this);
             openDevice.setWidth(LayoutParams.MATCH_PARENT);
             openDevice.setText(details.name);
@@ -158,12 +179,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
 
 
         for (String ID : mDeviceIds) {
-            String gson = mPrefs.getString(ID, "");
-            if (gson.isEmpty()) {
-                continue;
-            }
-
-            Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
+            Device.CommonSettings details = mDeviceSettingsMap.get(ID);
             Button viewer = new Button(this);
             viewer.setWidth(LayoutParams.MATCH_PARENT);
             viewer.setText(details.name);
@@ -288,13 +304,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     for (String deviceId : mDeviceIds) {
                         DeviceStatus currentStatus = DeviceStatus.UNKNOWN;
 
-                        String gson = mPrefs.getString(deviceId, "");
-                        if (gson.isEmpty()) {
-                            devStatuses.add(currentStatus);
-                            continue;
-                        }
-
-                        Device.CommonSettings details = new Gson().fromJson(gson, Device.CommonSettings.class);
+                        Device.CommonSettings details = mDeviceSettingsMap.get(deviceId);
                         try {
                             HistoryEntry he = manager.getHistoryDao().queryBuilder()
                                     .orderBy("eventDate", false).where().eq("deviceName", details.name).queryForFirst();

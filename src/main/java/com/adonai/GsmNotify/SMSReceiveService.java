@@ -76,10 +76,6 @@ public class SMSReceiveService extends Service {
 
                     String text = intent.getStringExtra("text");
                     String gson = preferences.getString(deviceId, "");
-                    if (gson.isEmpty()) {
-                        continue;
-                    }
-
                     Device.CommonSettings settings = new Gson().fromJson(gson, Device.CommonSettings.class);
                     addHistoryEntry(text, settings);
 
