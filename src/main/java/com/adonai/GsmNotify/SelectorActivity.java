@@ -125,8 +125,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     }
 
     private void prepareTabletUI() {
+        ScrollView scrollView = new ScrollView(this);
         mMainLayout = new ColumnLinearLayout(this);
-        setContentView(mMainLayout);
+        scrollView.addView(mMainLayout);
+        setContentView(scrollView);
 
         for (String devId : mDeviceIds) {
             String gson = mPrefs.getString(devId, "");

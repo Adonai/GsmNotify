@@ -32,10 +32,12 @@ public class SelectorActivityTest extends ActivityInstrumentationTestCase2<Setti
 
     @UiThreadTest
     public void testDeviceCreate() {
-        mName.setText(randomString());
-        mPassword.setText(randomPassword().toString());
-        mNumber.setText(randomNumber().toString());
-        mAddDeviceButton.performClick();
+        for(int i = 0; i < 50; ++i) {
+            mName.setText(randomString());
+            mPassword.setText(randomPassword().toString());
+            mNumber.setText(randomNumber().toString());
+            mAddDeviceButton.performClick();
+        }
     }
 
     private String randomString() {
