@@ -1,5 +1,6 @@
 package com.adonai.GsmNotify;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressLint("CommitPrefEdits")
 public class SettingsActivity extends FragmentActivity implements View.OnClickListener, Handler.Callback {
     final public static int HANDLE_STEP = 1;
     final public static int HANDLE_FINISH = 2;
@@ -242,29 +244,31 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 break;
             }
             case R.id.device_apply_button: {
-                if (mDevicePassword.getText().toString().length() > 0 && mDeviceNumber.getText().toString().length() > 0 && mDeviceName.getText().toString().length() > 0) // all fields are filled in
-                {
+                String newNumber = mDeviceNumber.getText().toString();
+                String newPassword = mDevicePassword.getText().toString();
+                String newName = mDeviceName.getText().toString();
+                if (!newPassword.isEmpty() && !newNumber.isEmpty() && !newName.isEmpty()) { // all fields are filled in
                     List<String> IDStrings = new ArrayList<>();
                     Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
 
-                    if (IDStrings.contains(mDeviceNumber.getText().toString()) && !(mDevice.details.number != null && mDeviceNumber.getText().toString().equals(mDevice.details.number))) // we have already that number and that's not us
-                    {
+                    if (IDStrings.contains(newNumber) && !newNumber.equals(mDevice.details.number)) {
+                        // we have already that number and that's not us
                         Toast.makeText(this, R.string.existing_device, Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     // we assume we have all the views created
                     EditText password = (EditText) mSettingsPages[0].getView().findViewById(R.id.new_password_edit);
-                    password.setText(mDevicePassword.getText().toString());
-
-                    mDevice.details.name = mDeviceName.getText().toString();
-                    mDevice.details.number = mDeviceNumber.getText().toString();
+                    password.setText(newPassword);
 
                     SharedPreferences.Editor edit = mPrefs.edit();
                     if (mDevice.details.number != null) {
                         IDStrings.remove(mDevice.details.number);
                         edit.remove(mDevice.details.number);
                     }
+
+                    mDevice.details.name = newName;
+                    mDevice.details.number = newNumber;
 
                     IDStrings.add(mDevice.details.number);
                     edit.putString("IDs", Utils.join(IDStrings, ";"));

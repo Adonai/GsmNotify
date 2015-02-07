@@ -340,6 +340,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                         break;
                     case UNKNOWN:
                         // leave the same
+                        newBackground.clearColorFilter();
                         break;
                 }
                 child.setBackgroundDrawable(newBackground);
