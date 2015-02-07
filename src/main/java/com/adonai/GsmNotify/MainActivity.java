@@ -75,7 +75,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DbProvider.setHelper(this);
-        setContentView(R.layout.main);
+        if(Utils.isTablet(this)) {
+            setContentView(R.layout.main_tablet);
+        } else {
+            setContentView(R.layout.main_phone);
+        }
 
         //mScroll = (ScrollView) findViewById(R.id.scroll_bar);
 
