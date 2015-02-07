@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
@@ -38,7 +39,6 @@ import com.google.gson.Gson;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static android.widget.LinearLayout.LayoutParams;
@@ -46,7 +46,7 @@ import static android.widget.LinearLayout.LayoutParams;
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
 
-    private final static int STATUS_LOADER = 0;
+    public final static int STATUS_LOADER = 0;
     private StatusRetrieverCallback mLocalArchiveParseCallback = new StatusRetrieverCallback();
 
     private String[] mDeviceIds;
@@ -91,7 +91,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
         mDeviceIds = mPrefs.getString("IDs", "").split(";");
-        Arrays.sort(mDeviceIds);
+        //Arrays.sort(mDeviceIds);
 
         if(Utils.isTablet(this)) {
             prepareTabletUI();
@@ -148,21 +148,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             openDevice.setOnClickListener(this);
             mMainLayout.addView(openDevice);
         }
-
-        Button addNew = new Button(this);
-        addNew.setMaxLines(1);
-        addNew.setEllipsize(TextUtils.TruncateAt.END);
-        addNew.setText(R.string.add_device);
-        addNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                //finish();
-            }
-        });
-        mMainLayout.addView(addNew);
-
         getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
     }
 
@@ -187,17 +172,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             viewer.setOnClickListener(this);
             deviceList.addView(viewer);
         }
-        Button addNew = new Button(this);
-        addNew.setText(R.string.add_device);
-        addNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
-                startActivity(intent);
-                //finish();
-            }
-        });
-        deviceList.addView(addNew);
         scrollView.addView(deviceList);
 
         setContentView(scrollView);
@@ -228,6 +202,14 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         queryOption.setVisible(Utils.isTablet(this));
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Utils.isTablet(SelectorActivity.this)) {
+            getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+        }
     }
 
     @Override
@@ -263,7 +245,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                 PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
                                 try {
                                     manager.getHistoryDao().deleteBuilder().delete();
-                                    getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+                                    if(Utils.isTablet(SelectorActivity.this)) {
+                                        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
+                                    }
                                 } catch (SQLException e) {
                                     e.printStackTrace();
                                 }
@@ -271,6 +255,11 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                             }
                         });
                 builder.create().show();
+                return true;
+            case R.id.add_device:
+                Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                //finish();
                 return true;
         }
 
@@ -379,7 +368,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
                     deviceOpenButton.setText("→ " + deviceOpenButton.getText() + " ←");
                     sendStatusQuerySms(details);
-                    mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, Utils.SMS_DEFAULT_TIMEOUT);
+                    mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, Utils.SMS_ROUNDTRIP_TIMEOUT);
                     return true;
                 }
                 case HANDLE_ACK: {
@@ -387,31 +376,34 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     if(number.equals(mDeviceIds[currentQueried])) { // it's current queried device's status message!
                         mUiHandler.removeMessages(HANDLE_TIMEOUT);
                         getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
-
-                        // restore old name
-                        Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
-                        Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
-                        deviceOpenButton.setText(details.name);
-
-                        if(mDeviceIds.length > ++currentQueried) { // query next
-                            mUiHandler.sendEmptyMessage(HANDLE_SEND);
-                        } else { // finish
-                            mUiHandler.sendEmptyMessage(HANDLE_FINISH);
-                        }
+                        continueQueryIfNeeded();
                     }
                     return true;
                 }
-                case HANDLE_TIMEOUT: { // stop
-                    Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
-                    Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
-                    deviceOpenButton.setText(details.name);
-                } /* fall-through */
+                case HANDLE_TIMEOUT: { // device didn't answer
+                    Toast.makeText(SelectorActivity.this, R.string.sms_wait_timeout, Toast.LENGTH_LONG).show();
+                    continueQueryIfNeeded();
+                    return true;
+                }
                 case HANDLE_FINISH: {
                     isStatusChecking = false;
                     return true;
                 }
             }
             return false;
+        }
+
+        private void continueQueryIfNeeded() {
+            // restore old name
+            Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
+            Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
+            deviceOpenButton.setText(details.name);
+
+            if(mDeviceIds.length > ++currentQueried) { // query next
+                mUiHandler.sendEmptyMessage(HANDLE_SEND);
+            } else { // finish
+                mUiHandler.sendEmptyMessage(HANDLE_FINISH);
+            }
         }
     }
 

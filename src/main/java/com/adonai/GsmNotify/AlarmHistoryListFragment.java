@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
 import com.adonai.GsmNotify.entities.HistoryEntry;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -46,7 +49,8 @@ public class AlarmHistoryListFragment extends DialogFragment {
         mListView = (ListView) layout.findViewById(R.id.history_listview);
         try {
             PersistManager manager = DbProvider.getTempHelper(getActivity());
-            final List<HistoryEntry> entries = manager.getHistoryDao().queryBuilder().orderBy("eventDate", false).where().like("smsText", "%Внимание%").query();
+            final List<HistoryEntry> entries = manager.getHistoryDao().queryBuilder().orderBy("eventDate", false)
+                    .where().like("smsText", getActivity().getString(R.string.alarm_db_matcher)).query();
             DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
             ListAdapter entryAdapter = new ArrayAdapter<HistoryEntry>(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, entries) {
                 @Override
@@ -68,9 +72,35 @@ public class AlarmHistoryListFragment extends DialogFragment {
             e.printStackTrace();
         }
 
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog_header, null);
+        TextView title = (TextView) header.findViewById(R.id.header_title);
+        title.setText(R.string.alarm_history);
+        ImageView deleteButton = (ImageView) header.findViewById(R.id.delete_history);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // deleting from database
+                try {
+                    PersistManager manager = DbProvider.getTempHelper(getActivity());
+                    RuntimeExceptionDao<HistoryEntry, Long> dao = manager.getHistoryDao();
+                    DeleteBuilder<HistoryEntry, Long> stmt = dao.deleteBuilder();
+                    stmt.where().like("smsText", getActivity().getString(R.string.alarm_db_matcher));
+                    dao.delete(stmt.prepare());
+                    DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
+                    if(Utils.isTablet(getActivity())) {
+                        getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                AlarmHistoryListFragment.this.dismiss();
+            }
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(layout);
-        builder.setTitle(R.string.alarm_history);
+        builder.setCustomTitle(header);
         return builder.create();
     }
 }

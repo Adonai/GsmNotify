@@ -52,10 +52,10 @@ public class SelectorActivityTest extends ActivityInstrumentationTestCase2<Setti
     }
 
     private Long randomNumber() {
-        return new Random().nextLong() % 99999999999l;
+        return Math.abs(new Random().nextLong() % 99999999999l);
     }
 
     private Integer randomPassword() {
-        return new Random().nextInt() % 9999;
+        return Math.abs(new Random().nextInt() % 9999);
     }
 }

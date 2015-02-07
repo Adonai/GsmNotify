@@ -126,4 +126,6 @@
     <string name="disarmed_matcher"> с </string>
     <string name="alarm_matcher">внимание</string>
     <string name="status_matcher">шлейфы</string>
+    <string name="alarm_db_matcher">%Внимание%</string>
+    <string name="sms_wait_timeout">Превышено время ожидания для ответа устройства, продолжаем опрос</string>
 </resources>

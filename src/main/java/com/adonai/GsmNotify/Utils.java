@@ -12,6 +12,7 @@ public class Utils {
     final static String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
 
     final static int SMS_DEFAULT_TIMEOUT = 20000;
+    final static int SMS_ROUNDTRIP_TIMEOUT = 60000;
 
     static String join(Collection<String> s, String delimiter) {
         StringBuilder builder = new StringBuilder();
