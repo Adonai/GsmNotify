@@ -37,7 +37,6 @@ import java.util.List;
 public class MainActivity extends Activity implements View.OnClickListener {
     MessageQueue incMessages;
 
-    String mAddressID;
     SharedPreferences mPrefs;
     BroadcastReceiver sentReceiver, deliveryReceiver;
     Device mDevice;
@@ -48,6 +47,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     EditText mResultText;
 
     static boolean isRunning;
+    static String deviceNumber;
 
     // увеличиваем длительность нажатия до 500 мс
     private View.OnTouchListener pressHolder = new View.OnTouchListener() {
@@ -109,28 +109,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mResultText = (EditText) findViewById(R.id.result_text);
 
 
-        if (getIntent().hasExtra("ID")) // запускаем из настроек
-        {
-            mAddressID = getIntent().getStringExtra("ID");
+        if (getIntent().hasExtra("ID")) { // запускаем из настроек
+            deviceNumber = getIntent().getStringExtra("ID");
             extractParams();
-        } else if (getIntent().hasExtra("number")) // запускаем из ресивера
-        {
-            mAddressID = getIntent().getStringExtra("number");
+        } else if (getIntent().hasExtra("number")) { // запускаем из ресивера
+            deviceNumber = getIntent().getStringExtra("number");
             extractParams();
 
             mResultText.setText(getIntent().getStringExtra("text"));
-        } else // запускаем сами
-        {
+        } else { // запускаем сами
             String[] IDs = mPrefs.getString("IDs", "").split(";");
             if (IDs.length > 1) {
                 Intent selector = new Intent(this, SelectorActivity.class);
                 startActivity(selector);
                 finish();
             } else if (IDs[0].length() != 0) {
-                mAddressID = IDs[0];
+                deviceNumber = IDs[0];
                 extractParams();
-            } else // first launch
-            {
+            } else { // first launch
                 Toast.makeText(getApplicationContext(), R.string.first_launch, Toast.LENGTH_LONG).show();
                 Intent firstLaunch = new Intent(this, SettingsActivity.class);
                 startActivity(firstLaunch);
@@ -155,6 +151,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
 
         isRunning = true;
+
+        // stop ringing
+        Intent broadcastIntent = new Intent(this, SMSReceiveService.class);
+        broadcastIntent.putExtra("stop_alarm", true);
+        startService(broadcastIntent);
     }
 
     @Override
@@ -167,7 +168,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void extractParams() {
-        String gson = mPrefs.getString(mAddressID, "");
+        String gson = mPrefs.getString(deviceNumber, "");
         if (!gson.equals("")) {
             mDevice = new Device();
             mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
@@ -186,20 +187,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         if (intent.hasExtra("number")) { // запущено из сервиса SMS
             String newMessage = intent.getStringExtra("text");
-            if (intent.getStringExtra("number").equals(mAddressID)) {
+            if (intent.getStringExtra("number").equals(deviceNumber)) {
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
                 //mScroll.fling(10000);
             } else {
                 incMessages.clear();
                 incMessages.add(newMessage);
-                mAddressID = intent.getStringExtra("number");
+                deviceNumber = intent.getStringExtra("number");
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
             }
         } else {
             if (intent.hasExtra("ID")) { // запускаем из настроек
-                mAddressID = intent.getStringExtra("ID");
+                deviceNumber = intent.getStringExtra("ID");
                 extractParams();
             }
         }
@@ -231,7 +232,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             case 1: { // remove_device
                                 List<String> IDStrings = new ArrayList<>();
                                 Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
-                                IDStrings.remove(mAddressID);
+                                IDStrings.remove(deviceNumber);
 
                                 // deleting from database
                                 try {
@@ -245,7 +246,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                                 SharedPreferences.Editor edit = mPrefs.edit();
                                 edit.putString("IDs", Utils.join(IDStrings, ";"));
-                                edit.remove(mAddressID);
+                                edit.remove(deviceNumber);
                                 edit.commit();
 
                                 if (IDs.length != 1) { // если есть еще устройства, даем выбор
@@ -258,7 +259,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 break;
                             }
                             case 2: // edit_device
-                                startActivity(intent.putExtra("ID", mAddressID));
+                                startActivity(intent.putExtra("ID", deviceNumber));
                                 break;
                         }
                     }

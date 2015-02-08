@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams;
+import static com.adonai.GsmNotify.Utils.*;
 
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
@@ -79,18 +80,11 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         sentReceiver = new SentConfirmReceiver(this);
         deliveryReceiver = new DeliveryConfirmReceiver(this);
 
-        if(Utils.isTablet(this)) {
+        if(isTablet(this)) {
             getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
         }
 
         mUiHandler = new Handler(mStatusWalkCallback);
-    }
-
-    enum DeviceStatus {
-        ARMED,
-        DISARMED,
-        ALARM,
-        UNKNOWN
     }
 
     @Override
@@ -98,16 +92,16 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         super.onStart();
         sortDevices();
 
-        if(Utils.isTablet(this)) {
+        if(isTablet(this)) {
             prepareTabletUI();
         } else {
             preparePhoneUI();
         }
 
         //--- When the SMS has been sent ---
-        registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
+        registerReceiver(sentReceiver, new IntentFilter(SENT));
         //--- When the SMS has been delivered. ---
-        registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
+        registerReceiver(deliveryReceiver, new IntentFilter(DELIVERED));
 
         isRunning = true;
     }
@@ -216,8 +210,12 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         boolean shouldOpen = mPrefs.getBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, true);
         smsOption.setChecked(shouldOpen);
 
+        MenuItem soundOption = menu.findItem(R.id.notify_with_sound);
+        boolean shouldRing = mPrefs.getBoolean(SMSReceiveService.RING_ON_SMS_KEY, false);
+        soundOption.setChecked(shouldRing);
+
         MenuItem queryOption = menu.findItem(R.id.query_all_devices);
-        queryOption.setVisible(Utils.isTablet(this));
+        queryOption.setVisible(isTablet(this));
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -225,7 +223,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if(Utils.isTablet(SelectorActivity.this)) {
+        if(isTablet(SelectorActivity.this)) {
             getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
         }
     }
@@ -233,7 +231,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.notify_on_sms:
+            case R.id.notify_on_sms: {
                 boolean shouldOpen = mPrefs.getBoolean(SMSReceiveService.OPEN_ON_SMS_KEY, true);
                 shouldOpen = !shouldOpen;
 
@@ -245,6 +243,20 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 // update menu checked state
                 invalidateOptionsMenu();
                 return true;
+            }
+            case R.id.notify_with_sound: {
+                boolean shouldRing = mPrefs.getBoolean(SMSReceiveService.RING_ON_SMS_KEY, false);
+                shouldRing = !shouldRing;
+
+                // write to prefs
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, shouldRing);
+                edit.commit();
+
+                // update menu checked state
+                invalidateOptionsMenu();
+                return true;
+            }
             case R.id.query_all_devices:
                 mUiHandler.removeCallbacksAndMessages(null);
                 mUiHandler.sendEmptyMessage(HANDLE_START);
@@ -263,7 +275,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                 PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
                                 try {
                                     manager.getHistoryDao().deleteBuilder().delete();
-                                    if(Utils.isTablet(SelectorActivity.this)) {
+                                    if(isTablet(SelectorActivity.this)) {
                                         getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
                                     }
                                 } catch (SQLException e) {
@@ -305,20 +317,13 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
                     for (String deviceId : mDeviceIds) {
                         DeviceStatus currentStatus = DeviceStatus.UNKNOWN;
-
                         Device.CommonSettings details = mDeviceSettingsMap.get(deviceId);
                         try {
                             HistoryEntry he = manager.getHistoryDao().queryBuilder()
                                     .orderBy("eventDate", false).where().eq("deviceName", details.name).queryForFirst();
                             if(he != null) {
                                 String lowercaseSms = he.getSmsText().toLowerCase();
-                                if (lowercaseSms.contains(getString(R.string.armed_matcher))) { // armed
-                                    currentStatus = DeviceStatus.ARMED;
-                                } else if (lowercaseSms.contains(getString(R.string.disarmed_matcher))) { // disarmed
-                                    currentStatus = DeviceStatus.DISARMED;
-                                } else if (lowercaseSms.contains(getString(R.string.alarm_matcher))) {
-                                    currentStatus = DeviceStatus.ALARM;
-                                }
+                                currentStatus = getStatusBySms(SelectorActivity.this, lowercaseSms);
                             }
                         } catch (SQLException sqle) {
                             currentStatus = DeviceStatus.UNKNOWN;
@@ -381,7 +386,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
                     deviceOpenButton.setText("→ " + deviceOpenButton.getText() + " ←");
                     sendStatusQuerySms(details);
-                    mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, Utils.SMS_ROUNDTRIP_TIMEOUT);
+                    mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, SMS_ROUNDTRIP_TIMEOUT);
                     return true;
                 }
                 case HANDLE_ACK: {
@@ -421,8 +426,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     }
 
     public void sendStatusQuerySms(Device.CommonSettings details) {
-        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.SENT), 0);
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.DELIVERED), 0);
+        PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(details.number, null, "*" + details.password + "#_info#", sentPI, deliveredPI);
     }

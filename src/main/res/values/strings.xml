@@ -130,6 +130,7 @@
     <string name="disarmed_matcher">disarm</string>
     <string name="alarm_matcher">alarm</string>
     <string name="status_matcher">status</string>
-    <string name="alarm_db_matcher">%Alarm%</string>
+    <string name="alarm_db_matcher">%larm%</string>
     <string name="sms_wait_timeout">Timeout waiting for device to answer</string>
+    <string name="notify_with_sound">Ring on SMS</string>
 </resources>

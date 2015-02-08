@@ -5,13 +5,18 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
@@ -24,9 +29,12 @@ public class SMSReceiveService extends Service {
     final public static String PREFERENCES = "devicePrefs";
 
     final public static String OPEN_ON_SMS_KEY = "open.on.sms";
+    final public static String RING_ON_SMS_KEY = "ring.on.sms";
 
     Activity boundListener;
     SharedPreferences preferences;
+    BroadcastReceiver mScreenStateReceiver;
+    ToneGenerator mToneGenerator;
     Bitmap largeNotifIcon;
 
     @Override
@@ -44,19 +52,26 @@ public class SMSReceiveService extends Service {
     public void onCreate() {
         super.onCreate();
         preferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        DbProvider.setHelper(this);
+        mToneGenerator = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
 
         Bitmap appIcon = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
         Resources res = getResources();
         int height = (int) res.getDimension(android.R.dimen.notification_large_icon_height);
         int width = (int) res.getDimension(android.R.dimen.notification_large_icon_width);
         largeNotifIcon = Bitmap.createScaledBitmap(appIcon, width, height, false);
+
+        mScreenStateReceiver = new ScreenOnReceiver();
+        IntentFilter screenStateFilter = new IntentFilter();
+        screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
+        screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(mScreenStateReceiver, screenStateFilter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DbProvider.releaseHelper();
+        mToneGenerator.release();
+        unregisterReceiver(mScreenStateReceiver);
     }
 
     @SuppressWarnings("deprecation")
@@ -65,6 +80,7 @@ public class SMSReceiveService extends Service {
         if (intent != null && intent.hasExtra("number")) {
             String[] IDs = preferences.getString("IDs", "").split(";");
             String current = preferences.getString("currentEdit", "");
+            boolean shouldPlaySound = preferences.getBoolean(RING_ON_SMS_KEY, false);
             boolean shouldOpen = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
             for (String deviceId : IDs) {
                 if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1))) { // +7 / 8 handling
@@ -89,9 +105,24 @@ public class SMSReceiveService extends Service {
                         break;
                     }
 
+                    // if we're here, we're not checking status
+
+                    // main window characteristics
+                    boolean isSameNow = TextUtils.equals(MainActivity.deviceNumber, deviceId);
+                    boolean isOpen = MainActivity.isRunning;
+
+                    // not a status but an actual answer, play sound!
+                    if(shouldPlaySound && !text.contains(getString(R.string.status_matcher))) {
+                        Utils.DeviceStatus currentStatus = Utils.getStatusBySms(this, text.toLowerCase());
+                        // don't play alarm if we're now viewing same device
+                        //if(!(isOpen && isSameNow && currentStatus == Utils.DeviceStatus.ALARM)) {
+                            playSound(currentStatus);
+                        //}
+                    }
+
                     // should send to activity now?
                     // if we're viewing another device, or shouldn't open at all
-                    if (MainActivity.isRunning || !shouldOpen) {
+                    if (isOpen && !isSameNow || !shouldOpen) {
 
                         // just make a notification
                         Notification.Builder builder = new Notification.Builder(this);
@@ -113,6 +144,8 @@ public class SMSReceiveService extends Service {
                     }
 
                     // if we're here, we're not checking status, not editing device and not in main window
+
+                    // open activity
                     Intent starter = new Intent(this, MainActivity.class);
                     starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             .putExtra("number", deviceId)
@@ -121,6 +154,12 @@ public class SMSReceiveService extends Service {
                 }
             }
         }
+
+        // stop alarm tone if playing one
+        if(intent != null && intent.hasExtra("stop_alarm")) {
+            mToneGenerator.stopTone();
+        }
+
         return START_STICKY;
     }
 
@@ -133,5 +172,19 @@ public class SMSReceiveService extends Service {
         he.setSmsText(text);
         manager.getHistoryDao().create(he);
         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
+    }
+
+    private void playSound(Utils.DeviceStatus status) {
+        switch (status) {
+            case ARMED:
+                mToneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_REORDER, 250);
+                return;
+            case DISARMED:
+                mToneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_REORDER, 1000);
+                return;
+            case ALARM:
+                mToneGenerator.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK, 10000);
+                return;
+        }
     }
 }
