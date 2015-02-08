@@ -151,11 +151,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
 
         isRunning = true;
+    }
 
-        // stop ringing
-        Intent broadcastIntent = new Intent(this, SMSReceiveService.class);
-        broadcastIntent.putExtra("stop_alarm", true);
-        startService(broadcastIntent);
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus) {
+            // stop ringing
+            Intent broadcastIntent = new Intent(this, SMSReceiveService.class);
+            broadcastIntent.putExtra("stop_alarm", true);
+            startService(broadcastIntent);
+        }
     }
 
     @Override

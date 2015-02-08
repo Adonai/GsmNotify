@@ -15,7 +15,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.adonai.GsmNotify.database.DbProvider;
@@ -25,17 +27,21 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
-public class SMSReceiveService extends Service {
+public class SMSReceiveService extends Service implements Handler.Callback {
     final public static String PREFERENCES = "devicePrefs";
 
     final public static String OPEN_ON_SMS_KEY = "open.on.sms";
     final public static String RING_ON_SMS_KEY = "ring.on.sms";
+
+    final private static int TICK_RING = 0;
 
     Activity boundListener;
     SharedPreferences preferences;
     BroadcastReceiver mScreenStateReceiver;
     ToneGenerator mToneGenerator;
     Bitmap largeNotifIcon;
+
+    Handler mHandler;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -65,6 +71,8 @@ public class SMSReceiveService extends Service {
         screenStateFilter.addAction(Intent.ACTION_SCREEN_ON);
         screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mScreenStateReceiver, screenStateFilter);
+
+        mHandler = new Handler(this);
     }
 
     @Override
@@ -157,6 +165,7 @@ public class SMSReceiveService extends Service {
 
         // stop alarm tone if playing one
         if(intent != null && intent.hasExtra("stop_alarm")) {
+            mHandler.removeMessages(TICK_RING);
             mToneGenerator.stopTone();
         }
 
@@ -183,8 +192,17 @@ public class SMSReceiveService extends Service {
                 mToneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_REORDER, 1000);
                 return;
             case ALARM:
-                mToneGenerator.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK, 10000);
+                mHandler.sendEmptyMessage(TICK_RING);
                 return;
         }
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        // don't switch, it's simple
+        // loop alarm sound
+        mToneGenerator.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK, 10000);
+        mHandler.sendEmptyMessageDelayed(TICK_RING, 1000);
+        return true;
     }
 }
