@@ -86,17 +86,20 @@ public class SMSReceiveService extends Service implements Handler.Callback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.hasExtra("number")) {
-            String[] IDs = preferences.getString("IDs", "").split(";");
+            String smsNumber = intent.getStringExtra("number");
+            String smsText = intent.getStringExtra("text");
+
             boolean shouldPlaySound = preferences.getBoolean(RING_ON_SMS_KEY, false);
             boolean shouldOpen = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
-            for (String deviceId : IDs) {
-                if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1))) { // +7 / 8 handling
+
+            String[] IDs = preferences.getString("IDs", "").split(";");
+            for (String deviceNumber : IDs) {
+                if (deviceNumber.length() > 1 && smsNumber.endsWith(deviceNumber.substring(1))) { // +7 / 8 handling
                     // it's one of our devices
 
-                    String text = intent.getStringExtra("text");
-                    String gson = preferences.getString(deviceId, "");
+                    String gson = preferences.getString(deviceNumber, "");
                     Device.CommonSettings settings = new Gson().fromJson(gson, Device.CommonSettings.class);
-                    addHistoryEntry(text, settings);
+                    addHistoryEntry(smsText, settings);
 
                     // stop searching if we're editing it now
                     if(SettingsActivity.isRunning) {
@@ -107,8 +110,8 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                     if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
                         Intent starter = new Intent(this, SelectorActivity.class);
                         starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                .putExtra("number", deviceId)
-                                .putExtra("text", text);
+                                .putExtra("number", deviceNumber)
+                                .putExtra("text", smsText);
                         startActivity(starter);
                         break;
                     }
@@ -116,16 +119,16 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                     // if we're here, we're not checking status
 
                     // main window characteristics
-                    boolean isSameNow = TextUtils.equals(MainActivity.deviceNumber, deviceId);
+                    boolean isSameNow = TextUtils.equals(MainActivity.deviceNumber, deviceNumber);
                     boolean isOpen = MainActivity.isRunning;
 
                     // not a status but an actual answer, play sound!
-                    if(shouldPlaySound && !text.contains(getString(R.string.status_matcher))) {
-                        Utils.DeviceStatus currentStatus = Utils.getStatusBySms(this, text.toLowerCase());
+                    if(shouldPlaySound && !smsText.contains(getString(R.string.status_matcher))) {
+                        Utils.DeviceStatus currentStatus = Utils.getStatusBySms(this, smsText.toLowerCase());
                         // don't play alarm if we're now viewing same device
-                        //if(!(isOpen && isSameNow && currentStatus == Utils.DeviceStatus.ALARM)) {
+                        if(!(isOpen && isSameNow && currentStatus == Utils.DeviceStatus.ALARM)) {
                             playSound(currentStatus);
-                        //}
+                        }
                     }
 
                     // should send to activity now?
@@ -138,12 +141,12 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                         builder.setLargeIcon(largeNotifIcon);
                         builder.setAutoCancel(true);
                         builder.setContentTitle(getString(R.string.warning));
-                        builder.setContentText(settings.name + ": " + text);
+                        builder.setContentText(settings.name + ": " + smsText);
 
                         final Intent notificationClicker = new Intent(this, MainActivity.class);
                         notificationClicker.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                .putExtra("number", deviceId)
-                                .putExtra("text", text);
+                                .putExtra("number", deviceNumber)
+                                .putExtra("text", smsText);
                         builder.setContentIntent(PendingIntent.getActivity(this, 0, notificationClicker, 0));
 
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -156,8 +159,8 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                     // open activity
                     Intent starter = new Intent(this, MainActivity.class);
                     starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra("number", deviceId)
-                            .putExtra("text", text);
+                            .putExtra("number", deviceNumber)
+                            .putExtra("text", smsText);
                     startActivity(starter);
                 }
             }

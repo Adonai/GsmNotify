@@ -140,7 +140,17 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         super.onStop();
         unregisterReceiver(sentReceiver);
         unregisterReceiver(deliveryReceiver);
+
         isRunning = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // stop querying if we're exiting
+        mUiHandler.removeMessages(HANDLE_TIMEOUT);
+        mUiHandler.sendEmptyMessage(HANDLE_FINISH);
     }
 
     @Override
