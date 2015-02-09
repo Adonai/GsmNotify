@@ -1,5 +1,6 @@
 package com.adonai.GsmNotify;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -47,8 +48,14 @@ import java.util.List;
 import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams;
-import static com.adonai.GsmNotify.Utils.*;
+import static com.adonai.GsmNotify.Utils.DELIVERED;
+import static com.adonai.GsmNotify.Utils.DeviceStatus;
+import static com.adonai.GsmNotify.Utils.SENT;
+import static com.adonai.GsmNotify.Utils.SMS_ROUNDTRIP_TIMEOUT;
+import static com.adonai.GsmNotify.Utils.getStatusBySms;
+import static com.adonai.GsmNotify.Utils.isTablet;
 
+@SuppressLint("CommitPrefEdits")
 public class SelectorActivity extends Activity implements View.OnClickListener {
     SharedPreferences mPrefs;
 
@@ -165,7 +172,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             openDevice.setOnClickListener(this);
             mMainLayout.addView(openDevice);
         }
-        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
     }
 
     private void preparePhoneUI() {
@@ -223,7 +229,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if(isTablet(SelectorActivity.this)) {
+        if(isTablet(this)) {
             getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
         }
     }
@@ -339,7 +345,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         @Override
         @SuppressWarnings("deprecation")
         public void onLoadFinished(Loader<List<DeviceStatus>> loader, List<DeviceStatus> statusesRetrieved) {
-            int childCount = mMainLayout.getChildCount();
             int currentButtonIndex = 0;
             for(DeviceStatus status : statusesRetrieved) {
                 Button child = (Button) mMainLayout.getChildAt(currentButtonIndex++);
