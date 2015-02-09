@@ -219,7 +219,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
                 mResultText.setTextKeepState(incMessages.toString());
             } catch (SQLException e) {
-                e.printStackTrace();
+                Toast.makeText(this, R.string.db_cant_query_history, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -259,7 +259,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                     stmt.where().eq("deviceName", mDevice.details.name);
                                     dao.delete(stmt.prepare());
                                 } catch (SQLException e) {
-                                    e.printStackTrace();
+                                    Toast.makeText(MainActivity.this, R.string.db_cant_delete_history, Toast.LENGTH_LONG).show();
                                 }
 
                                 SharedPreferences.Editor edit = mPrefs.edit();

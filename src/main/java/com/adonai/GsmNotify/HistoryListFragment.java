@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.entities.HistoryEntry;
@@ -70,7 +71,7 @@ public class HistoryListFragment extends DialogFragment {
             };
             mListView.setAdapter(entryAdapter);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Toast.makeText(getActivity(), R.string.db_cant_query_history, Toast.LENGTH_LONG).show();
         }
 
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog_header, null);
@@ -85,7 +86,7 @@ public class HistoryListFragment extends DialogFragment {
                     stmt.where().eq("deviceName", device);
                     dao.delete(stmt.prepare());
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getActivity(), R.string.db_cant_delete_history, Toast.LENGTH_LONG).show();
                 }
 
                 HistoryListFragment.this.dismiss();

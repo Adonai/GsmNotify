@@ -279,7 +279,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                         getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
                                     }
                                 } catch (SQLException e) {
-                                    e.printStackTrace();
+                                    Toast.makeText(SelectorActivity.this, R.string.db_cant_delete_history, Toast.LENGTH_LONG).show();
                                 }
                                 DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
                             }

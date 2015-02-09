@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
@@ -68,7 +69,7 @@ public class AlarmHistoryListFragment extends DialogFragment {
             };
             mListView.setAdapter(entryAdapter);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Toast.makeText(getActivity(), R.string.db_cant_query_history, Toast.LENGTH_LONG).show();
         }
 
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog_header, null);
@@ -108,7 +109,7 @@ public class AlarmHistoryListFragment extends DialogFragment {
                         getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getActivity(), R.string.db_cant_query_history, Toast.LENGTH_LONG).show();
                 }
 
                 AlarmHistoryListFragment.this.dismiss();

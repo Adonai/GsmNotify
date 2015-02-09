@@ -135,4 +135,6 @@
     <string name="notify_with_sound">Ring on SMS</string>
     <string name="alarm_archive_mask">Al@rm</string>
     <string name="archive_suffix">(Archived)</string>
+    <string name="db_cant_query_history">Can\'t query history DB</string>
+    <string name="db_cant_delete_history">Can\'t delete from history DB</string>
 </resources>
