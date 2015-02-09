@@ -66,6 +66,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
     Device mDevice;
 
+    static boolean isRunning;
+
     public class SentConfirmReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
@@ -178,22 +180,10 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mHandler = new Handler(this);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferences.Editor edit = mPrefs.edit();
-        edit.remove("currentEdit");
-        edit.commit();
-    }
-
     private void prepareUI(String id) {
         mDevice = new Device();
 
         if (id != null) {
-            SharedPreferences.Editor edit = mPrefs.edit();
-            edit.putString("currentEdit", id);
-            edit.commit();
-
             mDevice.details = new Gson().fromJson(mPrefs.getString(id, ""), Device.CommonSettings.class);
 
             if (mDevice.details.name != null) {
@@ -226,6 +216,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
         //--- When the SMS has been delivered. ---
         registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
+
+        isRunning = true;
     }
 
     @Override
@@ -233,6 +225,8 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         super.onStop();
         unregisterReceiver(sentReceiver);
         unregisterReceiver(deliveryReceiver);
+
+        isRunning = false;
     }
 
     @Override

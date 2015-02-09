@@ -87,21 +87,21 @@ public class SMSReceiveService extends Service implements Handler.Callback {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.hasExtra("number")) {
             String[] IDs = preferences.getString("IDs", "").split(";");
-            String current = preferences.getString("currentEdit", "");
             boolean shouldPlaySound = preferences.getBoolean(RING_ON_SMS_KEY, false);
             boolean shouldOpen = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
             for (String deviceId : IDs) {
                 if (deviceId.length() > 1 && intent.getStringExtra("number").endsWith(deviceId.substring(1))) { // +7 / 8 handling
-
-                    // stop searching if we know we're editing it now
-                    if(deviceId.equals(current)) {
-                        break;
-                    }
+                    // it's one of our devices
 
                     String text = intent.getStringExtra("text");
                     String gson = preferences.getString(deviceId, "");
                     Device.CommonSettings settings = new Gson().fromJson(gson, Device.CommonSettings.class);
                     addHistoryEntry(text, settings);
+
+                    // stop searching if we're editing it now
+                    if(SettingsActivity.isRunning) {
+                        break;
+                    }
 
                     // this is a status checker, don't notify anyone else
                     if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
