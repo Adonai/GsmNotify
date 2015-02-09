@@ -133,4 +133,5 @@
     <string name="archive_suffix">(Архив)</string>
     <string name="db_cant_query_history">Ошибка запроса из базы данных истории</string>
     <string name="db_cant_delete_history">Ошибка удаления из базы данных истории</string>
+    <string name="device_additional_info">Дополнительные сведения об объекте</string>
 </resources>

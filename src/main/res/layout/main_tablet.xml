@@ -6,174 +6,186 @@
     android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     tools:ignore="RtlHardcoded,ButtonStyle">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight=".4">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10pt"
-            android:layout_marginRight="10pt"
-            android:layout_weight=".5">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20pt"
+        android:layout_marginRight="20pt"
+        android:layout_weight=".4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".5"
-                    android:orientation="horizontal">
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/relay1_on_button"
+                    android:background="@drawable/out1on_button"
+                    android:layout_weight="1"/>
 
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/relay1_on_button"
-                        android:background="@drawable/out1on_button"
-                        android:layout_weight="1"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/relay1_off_button"
-                        android:background="@drawable/out1off_button"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".5"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/relay2_on_button"
-                        android:layout_weight=".5"
-                        android:background="@drawable/out2on_button"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/relay2_off_button"
-                        android:layout_weight=".5"
-                        android:background="@drawable/out2off_button"/>
-
-                </LinearLayout>
-
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/relay1_off_button"
+                    android:background="@drawable/out1off_button"
+                    android:layout_weight="1"/>
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="0.25"/>
-
-                <LinearLayout
-                    android:orientation="vertical"
+                <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:baselineAligned="false"
-                    android:layout_weight=".5">
+                    android:id="@+id/relay2_on_button"
+                    android:layout_weight=".5"
+                    android:background="@drawable/out2on_button"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".26"/>
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/signal_on_button"
-                        android:layout_gravity="center"
-                        android:background="@drawable/arm_button"
-                        android:layout_weight=".24"/>
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/signal_off_button"
-                        android:layout_gravity="center"
-                        android:background="@drawable/disarm_buttom"
-                        android:layout_weight=".24"
-                        />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".26"/>
-
-                </LinearLayout>
-
-                <View
+                <Button
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="0.25"/>
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight=".5">
-
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:id="@+id/get_data_button"
-                android:background="@drawable/status_button"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"/>
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:id="@+id/get_temperature_button"
-                android:background="@drawable/temp_button"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="20dp"/>
+                    android:layout_height="match_parent"
+                    android:id="@+id/relay2_off_button"
+                    android:layout_weight=".5"
+                    android:background="@drawable/out2off_button"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".44"
-        android:id="@+id/result_text"
-        android:enabled="false"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:background="@drawable/sms_field"
-        android:minLines="10"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.25"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:baselineAligned="false"
+                android:layout_weight=".5">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".26"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/signal_on_button"
+                    android:layout_gravity="center"
+                    android:background="@drawable/arm_button"
+                    android:layout_weight=".24"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/signal_off_button"
+                    android:layout_gravity="center"
+                    android:background="@drawable/disarm_buttom"
+                    android:layout_weight=".24"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".26"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.25"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".08"
+            android:id="@+id/get_data_button"
+            android:background="@drawable/status_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".08"
+            android:id="@+id/get_temperature_button"
+            android:background="@drawable/temp_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight=".7"
+        android:layout_margin="10dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2"
+            android:id="@+id/device_additional_info_label"
+            android:enabled="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@drawable/sms_field"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:minLines="10"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".8"
+            android:id="@+id/result_text"
+            android:enabled="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@drawable/sms_field"
+            android:layout_marginTop="10dp"
+            android:minLines="10"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 

@@ -55,7 +55,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     ProgressDialog pd;
 
     Button mApply, mEditDevice, mManageDevice, mApplyDevice;
-    EditText mDeviceName, mDeviceNumber, mDevicePassword;
+    EditText mDeviceName, mDeviceNumber, mDevicePassword, mDeviceInfo;
     Handler mHandler;
 
     FragmentManager mFragmentManager;
@@ -171,6 +171,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mDeviceName = (EditText) findViewById(R.id.device_name_text);
         mDeviceNumber = (EditText) findViewById(R.id.device_number_text);
         mDevicePassword = (EditText) findViewById(R.id.device_password_text);
+        mDeviceInfo = (EditText) findViewById(R.id.device_additional_info_text);
 
         prepareUI(getIntent().getStringExtra("ID"));
 
@@ -247,6 +248,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 String newNumber = mDeviceNumber.getText().toString();
                 String newPassword = mDevicePassword.getText().toString();
                 String newName = mDeviceName.getText().toString();
+                String newInfo = mDeviceInfo.getText().toString();
                 if (!newPassword.isEmpty() && !newNumber.isEmpty() && !newName.isEmpty()) { // all fields are filled in
                     List<String> IDStrings = new ArrayList<>();
                     Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
@@ -259,7 +261,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
                     // we assume we have all the views created
                     EditText password = (EditText) mSettingsPages[0].getView().findViewById(R.id.new_password_edit);
-                    password.setText(newPassword);
+                    password.setText(newPassword); // implicitly changes mDevice.details.password
 
                     SharedPreferences.Editor edit = mPrefs.edit();
                     if (mDevice.details.number != null) {
@@ -269,6 +271,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
                     mDevice.details.name = newName;
                     mDevice.details.number = newNumber;
+                    mDevice.details.info = newInfo;
 
                     IDStrings.add(mDevice.details.number);
                     edit.putString("IDs", Utils.join(IDStrings, ";"));

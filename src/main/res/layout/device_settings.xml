@@ -84,6 +84,29 @@
                 android:gravity="center"
                 android:inputType="numberPassword"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/device_additional_info"
+                android:id="@+id/device_additional_info_label"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:minLines="2"
+                android:id="@+id/device_additional_info_text"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="text|textImeMultiLine"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

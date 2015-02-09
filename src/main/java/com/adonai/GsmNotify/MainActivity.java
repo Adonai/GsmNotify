@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //ScrollView mScroll;
     Button mNotifyEnable, mNotifyDisable, mRelay1Enable, mRelay1Disable, mRelay2Enable, mRelay2Disable;
     Button mGetData, mGetTemperature;
-    EditText mResultText;
+    EditText mResultText, mDeviceInfo;
 
     static boolean isRunning;
     static String deviceNumber;
@@ -107,6 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mGetTemperature.setOnTouchListener(pressHolder);
 
         mResultText = (EditText) findViewById(R.id.result_text);
+        mDeviceInfo = (EditText) findViewById(R.id.device_additional_info_text);
 
 
         if (getIntent().hasExtra("ID")) { // запускаем из настроек
@@ -179,6 +180,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             mDevice = new Device();
             mDevice.details = new Gson().fromJson(gson, Device.CommonSettings.class);
             setTitle(mDevice.details.name);
+
+            // works for tablets, show additional info
+            if(mDeviceInfo != null && mDevice.details.info != null) {
+                mDeviceInfo.setText(mDevice.details.info);
+            }
 
             invalidateOptionsMenu();
         } else {
