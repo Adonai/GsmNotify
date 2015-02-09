@@ -17,7 +17,6 @@ import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
 import com.adonai.GsmNotify.entities.HistoryEntry;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -83,9 +82,27 @@ public class AlarmHistoryListFragment extends DialogFragment {
                 try {
                     PersistManager manager = DbProvider.getTempHelper(getActivity());
                     RuntimeExceptionDao<HistoryEntry, Long> dao = manager.getHistoryDao();
+                    String dbMatcher = getString(R.string.alarm_db_matcher);
+
+                    // put alarm to archive
+                    List<HistoryEntry> alarmEntries = dao.queryBuilder().where().like("smsText", dbMatcher).query();
+                    for(HistoryEntry alarm : alarmEntries) {
+                        String originalText = alarm.getSmsText();
+                        String textToReplace = dbMatcher.substring(1, dbMatcher.length() - 1); // remove percent signs
+
+                        String maskedValue = originalText.replace(textToReplace, getString(R.string.alarm_archive_mask));
+                        String archiveSuffix =  getString(R.string.archive_suffix);
+
+                        alarm.setSmsText(maskedValue + " " + archiveSuffix);
+                        dao.update(alarm);
+                    }
+
+                    /*
+                    // just delete all the alarms
                     DeleteBuilder<HistoryEntry, Long> stmt = dao.deleteBuilder();
                     stmt.where().like("smsText", getActivity().getString(R.string.alarm_db_matcher));
                     dao.delete(stmt.prepare());
+                    */
                     DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
                     if(Utils.isTablet(getActivity())) {
                         getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();
