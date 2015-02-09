@@ -191,23 +191,35 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onNewIntent(intent);
         //setIntent(intent);
 
-        if (intent.hasExtra("number")) { // запущено из сервиса SMS
+        if (intent.hasExtra("number")) { // launched from SMS receive service or by notification click
             String newMessage = intent.getStringExtra("text");
             if (intent.getStringExtra("number").equals(deviceNumber)) {
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
                 //mScroll.fling(10000);
-            } else {
+            } else { // it's another number, switch!
                 incMessages.clear();
                 incMessages.add(newMessage);
                 deviceNumber = intent.getStringExtra("number");
                 extractParams();
                 mResultText.setTextKeepState(incMessages.toString());
             }
-        } else {
-            if (intent.hasExtra("ID")) { // запускаем из настроек
-                deviceNumber = intent.getStringExtra("ID");
-                extractParams();
+        } else if (intent.hasExtra("ID")) { // launched from selector window
+            deviceNumber = intent.getStringExtra("ID");
+            extractParams();
+
+            // prefill text from DB
+            try {
+
+                RuntimeExceptionDao<HistoryEntry, Long> dao = DbProvider.getHelper().getHistoryDao();
+                List<HistoryEntry> recentEntries = dao.queryBuilder().limit(5l).orderBy("eventDate", false)
+                        .where().eq("deviceName", mDevice.details.name).query();
+                for(HistoryEntry entry : recentEntries) {
+                    incMessages.add(entry);
+                }
+                mResultText.setTextKeepState(incMessages.toString());
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
