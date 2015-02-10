@@ -122,14 +122,14 @@
     <string name="alarm_history">История тревог</string>
     <string name="clear_all_history">Очистить всю историю</string>
     <string name="clear_all_history_confirm">Это действие удалит всю историю сообщений со всех устройств. Вы уверены?</string>
+    <string name="status_matcher">шлейфы</string>
     <string name="armed_matcher">на </string>
     <string name="disarmed_matcher"> с </string>
-    <string name="alarm_matcher">внимание</string>
-    <string name="status_matcher">шлейфы</string>
+    <string name="alarm_matcher">внимaние</string>
     <string name="alarm_db_matcher">%Внимaние%</string>
+    <string name="alarm_archive_mask">Внимание</string>
     <string name="sms_wait_timeout">Превышено время ожидания для ответа устройства, продолжаем опрос</string>
     <string name="notify_with_sound">Звон при SMS</string>
-    <string name="alarm_archive_mask">Внимание</string>
     <string name="archive_suffix">(Архив)</string>
     <string name="db_cant_query_history">Ошибка запроса из базы данных истории</string>
     <string name="db_cant_delete_history">Ошибка удаления из базы данных истории</string>

@@ -157,10 +157,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent.hasExtra("number")) { // запущено из сервиса SMS
-            String message = intent.getStringExtra("text");
-            if(message.toLowerCase().contains(getString(R.string.status_matcher))) { // it's a status-message
+            //String message = intent.getStringExtra("text");
+            //if(message.toLowerCase().contains(getString(R.string.status_matcher))) { // it's a status-message
                 mUiHandler.sendMessage(mUiHandler.obtainMessage(HANDLE_ACK, intent.getStringExtra("number")));
-            }
+            //}
         }
     }
 

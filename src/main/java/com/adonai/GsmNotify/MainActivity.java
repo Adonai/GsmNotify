@@ -221,10 +221,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void prefillHistory() {
         // prefill text from DB
         try {
-
             RuntimeExceptionDao<HistoryEntry, Long> dao = DbProvider.getHelper().getHistoryDao();
-            List<HistoryEntry> recentEntries = dao.queryBuilder().limit(5l).orderBy("eventDate", true)
+            List<HistoryEntry> recentEntries = dao.queryBuilder().orderBy("eventDate", false).limit(5l)
                     .where().eq("deviceName", mDevice.details.name).query();
+            Collections.reverse(recentEntries);
             for(HistoryEntry entry : recentEntries) {
                 incMessages.add(entry);
             }
