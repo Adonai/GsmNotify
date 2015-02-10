@@ -105,7 +105,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:inputType="text|textImeMultiLine"/>
+                android:inputType="text|textMultiLine|textImeMultiLine"/>
 
             <Button
                 android:layout_width="match_parent"

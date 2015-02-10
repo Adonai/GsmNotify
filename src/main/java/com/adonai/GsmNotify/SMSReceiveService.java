@@ -133,8 +133,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
                     // should send to activity now?
                     // if we're viewing another device, or shouldn't open at all
-                    if (isOpen && !isSameNow || !shouldOpen) {
-
+                    if (isOpen && !isSameNow || !isOpen && !shouldOpen) {
                         // just make a notification
                         Notification.Builder builder = new Notification.Builder(this);
                         builder.setSmallIcon(R.drawable.app_icon);
