@@ -157,6 +157,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent.hasExtra("number")) { // запущено из сервиса SMS
+            getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
             //String message = intent.getStringExtra("text");
             //if(message.toLowerCase().contains(getString(R.string.status_matcher))) { // it's a status-message
                 mUiHandler.sendMessage(mUiHandler.obtainMessage(HANDLE_ACK, intent.getStringExtra("number")));
@@ -408,7 +409,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     String number = (String) msg.obj;
                     if(number.equals(mDeviceIds[currentQueried])) { // it's current queried device's status message!
                         mUiHandler.removeMessages(HANDLE_TIMEOUT);
-                        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
                         continueQueryIfNeeded();
                     }
                     return true;

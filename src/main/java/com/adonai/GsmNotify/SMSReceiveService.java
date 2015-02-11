@@ -106,14 +106,18 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                         break;
                     }
 
-                    // this is a status checker, don't notify anyone else
-                    if(SelectorActivity.isRunning && SelectorActivity.isStatusChecking) {
+                    // change cell color
+                    if(SelectorActivity.isRunning) {
                         Intent starter = new Intent(this, SelectorActivity.class);
                         starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 .putExtra("number", deviceNumber)
                                 .putExtra("text", smsText);
                         startActivity(starter);
-                        break;
+
+                        // this is a status checker, don't notify anyone else
+                        if(SelectorActivity.isStatusChecking) {
+                            break;
+                        }
                     }
 
                     // if we're here, we're not checking status
