@@ -123,8 +123,8 @@
     <string name="clear_all_history">Очистить всю историю</string>
     <string name="clear_all_history_confirm">Это действие удалит всю историю сообщений со всех устройств. Вы уверены?</string>
     <string name="status_matcher">шлейфы</string>
-    <string name="armed_matcher">на </string>
-    <string name="disarmed_matcher"> с </string>
+    <string name="armed_matcher">на\u0020</string>
+    <string name="disarmed_matcher">\u0020с\u0020</string>
     <string name="alarm_matcher">внимaние</string>
     <string name="alarm_db_matcher">%Внимaние%</string>
     <string name="alarm_archive_mask">Внимание</string>
