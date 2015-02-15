@@ -23,7 +23,7 @@
             android:orientation="vertical"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_weight=".2">
+            android:layout_weight=".22">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".8"
+            android:layout_weight=".78"
             android:id="@+id/device_additional_info_text"
             android:enabled="false"
             android:textColor="@android:color/white"
