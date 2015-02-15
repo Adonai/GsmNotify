@@ -335,11 +335,14 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                         DeviceStatus currentStatus = DeviceStatus.UNKNOWN;
                         Device.CommonSettings details = mDeviceSettingsMap.get(deviceId);
                         try {
-                            HistoryEntry he = manager.getHistoryDao().queryBuilder()
-                                    .orderBy("eventDate", false).where().eq("deviceName", details.name).queryForFirst();
-                            if(he != null) {
+                            List<HistoryEntry> entriesForDevice = manager.getHistoryDao().queryBuilder()
+                                    .orderBy("eventDate", false).where().eq("deviceName", details.name).query();
+                            for(HistoryEntry he : entriesForDevice) {
                                 String lowercaseSms = he.getSmsText().toLowerCase();
                                 currentStatus = getStatusBySms(SelectorActivity.this, lowercaseSms);
+                                if(currentStatus != DeviceStatus.UNKNOWN) { // stop if we've found status
+                                    break;
+                                }
                             }
                         } catch (SQLException sqle) {
                             currentStatus = DeviceStatus.UNKNOWN;
