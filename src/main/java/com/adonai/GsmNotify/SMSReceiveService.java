@@ -1,12 +1,8 @@
 package com.adonai.GsmNotify;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -138,6 +134,8 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                     // should send to activity now?
                     // if we're viewing another device, or shouldn't open at all
                     if (isOpen && !isSameNow || !isOpen && !shouldOpen) {
+
+                        /*
                         // just make a notification
                         Notification.Builder builder = new Notification.Builder(this);
                         builder.setSmallIcon(R.drawable.app_icon);
@@ -154,6 +152,8 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         mNotificationManager.notify(100501, builder.getNotification());
+                        */
+
                         break;
                     }
 
