@@ -29,6 +29,13 @@
           android:showAsAction="ifRoom|withText"
           android:orderInCategory="105" />
 
+    <item android:id="@+id/stop_query_devices"
+          android:title="@string/stop_query_devices"
+          android:icon="@android:drawable/ic_menu_close_clear_cancel"
+          android:showAsAction="ifRoom|withText"
+          android:visible="false"
+          android:orderInCategory="105" />
+
     <item android:id="@+id/show_alarm_history"
           android:title="@string/show_alarm_history"
           android:icon="@android:drawable/ic_menu_agenda"

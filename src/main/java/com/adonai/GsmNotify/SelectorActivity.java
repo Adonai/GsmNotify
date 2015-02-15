@@ -77,7 +77,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     private static final int HANDLE_SEND          = 1;
     private static final int HANDLE_ACK           = 2;
     private static final int HANDLE_TIMEOUT       = 3;
-    private static final int HANDLE_FINISH        = 4;
+    private static final int HANDLE_TERMINATE     = 4;
+    private static final int HANDLE_FINISH        = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,7 +232,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         soundOption.setChecked(shouldRing);
 
         MenuItem queryOption = menu.findItem(R.id.query_all_devices);
-        queryOption.setVisible(isTablet(this));
+        queryOption.setVisible(isTablet(this) && !isStatusChecking);
+
+        MenuItem stopQueryOption = menu.findItem(R.id.stop_query_devices);
+        stopQueryOption.setVisible(isStatusChecking);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -276,6 +280,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             case R.id.query_all_devices:
                 mUiHandler.removeCallbacksAndMessages(null);
                 mUiHandler.sendEmptyMessage(HANDLE_START);
+                return true;
+            case R.id.stop_query_devices:
+                mUiHandler.removeCallbacksAndMessages(null);
+                mUiHandler.sendEmptyMessage(HANDLE_TERMINATE);
                 return true;
             case R.id.show_alarm_history:
                 AlarmHistoryListFragment hlf = AlarmHistoryListFragment.newInstance();
@@ -398,47 +406,50 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     currentQueried = 0;
                     mUiHandler.sendEmptyMessage(HANDLE_SEND);
                     isStatusChecking = true;
+                    invalidateOptionsMenu();
                     return true;
-                case HANDLE_SEND: {
+                case HANDLE_SEND:
                     Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
                     Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
                     deviceOpenButton.setText("→ " + deviceOpenButton.getText() + " ←");
                     sendStatusQuerySms(details);
                     mUiHandler.sendEmptyMessageDelayed(HANDLE_TIMEOUT, SMS_ROUNDTRIP_TIMEOUT);
                     return true;
-                }
-                case HANDLE_ACK: {
+                case HANDLE_ACK:
                     String number = (String) msg.obj;
                     if(number.equals(mDeviceIds[currentQueried])) { // it's current queried device's status message!
                         mUiHandler.removeMessages(HANDLE_TIMEOUT);
                         continueQueryIfNeeded();
-                    }
                     return true;
                 }
-                case HANDLE_TIMEOUT: { // device didn't answer
+                case HANDLE_TIMEOUT: // device didn't answer
                     Toast.makeText(SelectorActivity.this, R.string.sms_wait_timeout, Toast.LENGTH_LONG).show();
                     continueQueryIfNeeded();
                     return true;
-                }
-                case HANDLE_FINISH: {
+                case HANDLE_TERMINATE:
+                    restoreOldName();
+                    /* fall through */
+                case HANDLE_FINISH:
                     isStatusChecking = false;
+                    invalidateOptionsMenu();
                     return true;
-                }
             }
             return false;
         }
 
         private void continueQueryIfNeeded() {
-            // restore old name
-            Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
-            Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
-            deviceOpenButton.setText(details.name);
-
+            restoreOldName();
             if(mDeviceIds.length > ++currentQueried) { // query next
                 mUiHandler.sendEmptyMessage(HANDLE_SEND);
             } else { // finish
                 mUiHandler.sendEmptyMessage(HANDLE_FINISH);
             }
+        }
+
+        private void restoreOldName() {
+            Button deviceOpenButton = (Button) mMainLayout.getChildAt(currentQueried);
+            Device.CommonSettings details = (Device.CommonSettings) deviceOpenButton.getTag(R.integer.device_details);
+            deviceOpenButton.setText(details.name);
         }
     }
 
