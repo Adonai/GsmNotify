@@ -57,7 +57,7 @@ import static com.adonai.GsmNotify.Utils.isTablet;
 
 @SuppressLint("CommitPrefEdits")
 public class SelectorActivity extends Activity implements View.OnClickListener {
-    SharedPreferences mPrefs;
+    private SharedPreferences mPrefs;
 
     public final static int STATUS_LOADER = 0;
     private StatusRetrieverCallback mLocalArchiveParseCallback = new StatusRetrieverCallback();
@@ -235,7 +235,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         queryOption.setVisible(isTablet(this) && !isStatusChecking);
 
         MenuItem stopQueryOption = menu.findItem(R.id.stop_query_devices);
-        stopQueryOption.setVisible(isStatusChecking);
+        stopQueryOption.setVisible(isTablet(this) && isStatusChecking);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -420,8 +420,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                     if(number.equals(mDeviceIds[currentQueried])) { // it's current queried device's status message!
                         mUiHandler.removeMessages(HANDLE_TIMEOUT);
                         continueQueryIfNeeded();
+                    }
                     return true;
-                }
                 case HANDLE_TIMEOUT: // device didn't answer
                     Toast.makeText(SelectorActivity.this, R.string.sms_wait_timeout, Toast.LENGTH_LONG).show();
                     continueQueryIfNeeded();
