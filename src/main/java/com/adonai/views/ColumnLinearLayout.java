@@ -88,12 +88,12 @@ public class ColumnLinearLayout extends ViewGroup {
                 child.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST), childHeightMeasureSpec);
                 viewHeight = child.getMeasuredHeight();
                 buttonsInAColumn = height / viewHeight;
-                columnCount = childrenCount / (buttonsInAColumn + 1) + 1; // increase on overflow of current column
+                columnCount = (int) Math.max(1,  Math.ceil((double) childrenCount / buttonsInAColumn)); // at least one column
                 viewWidth = childWidth / columnCount;
 
-                if(columnCount >= 5) { // width of views will be too small
+                if(columnCount > 5) { // width of views will be too small
                     columnCount = 5;
-                    buttonsInAColumn = childrenCount / columnCount;
+                    buttonsInAColumn = (int) Math.ceil((double) childrenCount / columnCount);
                     viewWidth = childWidth / columnCount;
                 }
             }
@@ -111,7 +111,6 @@ public class ColumnLinearLayout extends ViewGroup {
             height = Math.max(height, curTop + viewHeight);
         }
 
-        height += 5; // Fudge to avoid clipping bottom of last row.
         setMeasuredDimension(width, height);
     }
 
@@ -137,12 +136,12 @@ public class ColumnLinearLayout extends ViewGroup {
             if (columnCount == 0) {
                 viewHeight = child.getMeasuredHeight();
                 buttonsInAColumn = childHeight / viewHeight;
-                columnCount = childrenCount / (buttonsInAColumn + 1) + 1; // increase on overflow of current column
+                columnCount = (int) Math.max(1,  Math.ceil((double) childrenCount / buttonsInAColumn)); // at least one column
                 viewWidth = childWidth / columnCount;
 
-                if(columnCount >= 5) { // width of views will be too small
+                if(columnCount > 5) { // width of views will be too small
                     columnCount = 5;
-                    buttonsInAColumn = childrenCount / columnCount;
+                    buttonsInAColumn = (int) Math.ceil((double) childrenCount / columnCount);
                     viewWidth = childWidth / columnCount;
                 }
             }
