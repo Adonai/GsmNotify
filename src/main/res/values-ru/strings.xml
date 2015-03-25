@@ -126,10 +126,12 @@
     <string name="armed_matcher">на\u0020</string>
     <string name="disarmed_matcher">\u0020с\u0020</string>
     <string name="alarm_matcher">внимaние</string>
+    <string name="armed_bus_alarm_matcher">тревога</string>
     <string name="alarm_db_matcher">%Внимaние%</string>
     <string name="alarm_archive_mask">Внимание</string>
     <string name="sms_wait_timeout">Превышено время ожидания для ответа устройства, продолжаем опрос</string>
     <string name="notify_with_sound">Звук при SMS</string>
+    <string name="notify_alarm_with_sound">Звук при тревоге</string>
     <string name="archive_suffix">(Архив)</string>
     <string name="db_cant_query_history">Ошибка запроса из базы данных истории</string>
     <string name="db_cant_delete_history">Ошибка удаления из базы данных истории</string>

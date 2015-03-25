@@ -195,6 +195,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             if (mDevice.details.password != null) {
                 mDevicePassword.setText(mDevice.details.password);
             }
+            if (mDevice.details.info != null) {
+                mDeviceInfo.setText(mDevice.details.info);
+            }
 
             mManageDevice.setVisibility(View.VISIBLE);
             mEditDevice.setVisibility(View.VISIBLE);

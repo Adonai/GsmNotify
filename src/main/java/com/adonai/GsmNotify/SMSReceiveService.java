@@ -16,6 +16,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.adonai.GsmNotify.Utils.DeviceStatus;
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
 import com.adonai.GsmNotify.entities.HistoryEntry;
@@ -28,6 +29,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
     final public static String OPEN_ON_SMS_KEY = "open.on.sms";
     final public static String RING_ON_SMS_KEY = "ring.on.sms";
+    final public static String RING_ON_ALARM_SMS_KEY = "ring.on.alarm.sms";
 
     final private static int TICK_RING = 0;
 
@@ -86,6 +88,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
             String smsText = intent.getStringExtra("text");
 
             boolean shouldPlaySound = preferences.getBoolean(RING_ON_SMS_KEY, false);
+            boolean shouldPlayAlarmSound = preferences.getBoolean(RING_ON_ALARM_SMS_KEY, false);
             boolean shouldOpen = preferences.getBoolean(OPEN_ON_SMS_KEY, true);
 
             String[] IDs = preferences.getString("IDs", "").split(";");
@@ -122,11 +125,13 @@ public class SMSReceiveService extends Service implements Handler.Callback {
                     boolean isSameNow = TextUtils.equals(MainActivity.deviceNumber, deviceNumber);
                     boolean isOpen = MainActivity.isRunning;
 
-                    // not a status but an actual answer, play sound!
-                    if(shouldPlaySound && !smsText.contains(getString(R.string.status_matcher))) {
-                        Utils.DeviceStatus currentStatus = Utils.getStatusBySms(this, smsText.toLowerCase());
-                        // don't play alarm if we're now viewing same device
-                        if(!(isOpen && isSameNow && currentStatus == Utils.DeviceStatus.ALARM)) {
+                    // not a status but an actual answer, play sound if we should!
+                    if(!smsText.contains(getString(R.string.status_matcher))) {
+                        DeviceStatus currentStatus = Utils.getStatusBySms(this, smsText.toLowerCase());
+                        // play sound if we opted either all sounds or we have alarm only and status resolves to alarm
+                        if((shouldPlaySound || (shouldPlayAlarmSound && currentStatus == DeviceStatus.ALARM)) && 
+                                !(isOpen && isSameNow && currentStatus == DeviceStatus.ALARM)) // don't play long alarm if we're now viewing same device
+                        { 
                             playSound(currentStatus);
                         }
                     }
@@ -189,7 +194,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
     }
 
-    private void playSound(Utils.DeviceStatus status) {
+    private void playSound(DeviceStatus status) {
         switch (status) {
             case ARMED:
                 mToneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_REORDER, 250);

@@ -56,10 +56,16 @@ public class Utils {
     }
 
     static DeviceStatus getStatusBySms(Context context, String lowercaseSms) {
-        if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
-            return DeviceStatus.ARMED;
-        } else if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
+        // сначала проверка "на охране/снято с охраны", если "снято", 
+        // то цвет ячейки зеленый (не смотря на тревоги по шлейфам), 
+        // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога", 
+        // то цвет ячейки красный, если "на охране" и нет тревог, то цвет ячейки желтый.
+        
+        if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
             return DeviceStatus.DISARMED;
+        } else if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
+            boolean anyBusHasAlarm = lowercaseSms.contains(context.getString(R.string.armed_bus_alarm_matcher));
+            return anyBusHasAlarm ? DeviceStatus.ALARM : DeviceStatus.ARMED; // either alarm on bus or armed
         } else if (lowercaseSms.contains(context.getString(R.string.alarm_matcher))) {
             return DeviceStatus.ALARM;
         } else {

@@ -231,6 +231,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         boolean shouldRing = mPrefs.getBoolean(SMSReceiveService.RING_ON_SMS_KEY, false);
         soundOption.setChecked(shouldRing);
 
+        MenuItem soundAlarmOption = menu.findItem(R.id.notify_alarm_with_sound);
+        boolean shouldAlarmRing = mPrefs.getBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, false);
+        soundAlarmOption.setChecked(shouldAlarmRing);
+
         MenuItem queryOption = menu.findItem(R.id.query_all_devices);
         queryOption.setVisible(isTablet(this) && !isStatusChecking);
 
@@ -271,6 +275,21 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 // write to prefs
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, shouldRing);
+                edit.putBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, !shouldRing); // exclusive
+                edit.commit();
+
+                // update menu checked state
+                invalidateOptionsMenu();
+                return true;
+            }
+            case R.id.notify_alarm_with_sound: {
+                boolean shouldRing = mPrefs.getBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, false);
+                shouldRing = !shouldRing;
+
+                // write to prefs
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, shouldRing);
+                edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, !shouldRing); // exclusive
                 edit.commit();
 
                 // update menu checked state
