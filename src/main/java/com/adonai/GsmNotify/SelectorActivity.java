@@ -275,7 +275,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 // write to prefs
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, shouldRing);
-                edit.putBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, !shouldRing); // exclusive
+                if(shouldRing) {
+                    edit.putBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, !shouldRing); // exclusive
+                }
                 edit.commit();
 
                 // update menu checked state
@@ -289,7 +291,9 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 // write to prefs
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putBoolean(SMSReceiveService.RING_ON_ALARM_SMS_KEY, shouldRing);
-                edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, !shouldRing); // exclusive
+                if(shouldRing) {
+                    edit.putBoolean(SMSReceiveService.RING_ON_SMS_KEY, !shouldRing); // exclusive
+                }
                 edit.commit();
 
                 // update menu checked state

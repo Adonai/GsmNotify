@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -14,6 +15,8 @@ import android.media.ToneGenerator;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.text.TextUtils;
 
 import com.adonai.GsmNotify.Utils.DeviceStatus;
@@ -22,7 +25,11 @@ import com.adonai.GsmNotify.database.PersistManager;
 import com.adonai.GsmNotify.entities.HistoryEntry;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SMSReceiveService extends Service implements Handler.Callback {
     final public static String PREFERENCES = "devicePrefs";
@@ -40,6 +47,9 @@ public class SMSReceiveService extends Service implements Handler.Callback {
     Bitmap largeNotifIcon;
 
     Handler mHandler;
+    
+    Map<String, String> contactsCache = new HashMap<>();
+    boolean cacheFilled = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -183,13 +193,38 @@ public class SMSReceiveService extends Service implements Handler.Callback {
         return START_STICKY;
     }
 
+    private void retrieveContacts() {
+        if (cacheFilled) {
+            return;
+        }
+        
+        Cursor phones = getContentResolver().query(Phone.CONTENT_URI, null, null, null, null);
+        while (phones.moveToNext()) {
+            String name = phones.getString(phones.getColumnIndex(Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(Phone.NUMBER));
+            contactsCache.put(phoneNumber, name);
+        }
+        phones.close();
+        cacheFilled = true;
+    }
+    
     private void addHistoryEntry(String text, Device.CommonSettings deviceDetails) {
+        // fill the cache if we hadn't done so
+        retrieveContacts();
+        
+        // lookup number
+        String effectiveText = text;
+        if(contactsCache.containsKey(deviceDetails.name)) {
+            // replace number with name
+            effectiveText = text.replace(deviceDetails.name, contactsCache.get(deviceDetails.name));
+        }
+        
         // add to history
         PersistManager manager = DbProvider.getTempHelper(this);
         HistoryEntry he = new HistoryEntry();
         he.setDeviceName(deviceDetails.name);
         he.setEventDate(Calendar.getInstance().getTime());
-        he.setSmsText(text);
+        he.setSmsText(effectiveText);
         manager.getHistoryDao().create(he);
         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
     }
