@@ -243,8 +243,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem smsOption = menu.findItem(R.id.work_ongoing);
+        if(mDevice != null) {
+            smsOption.setChecked(mDevice.details.workOngoing);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.work_ongoing: {
+                mDevice.details.workOngoing = !mDevice.details.workOngoing;
+
+                // write to prefs
+                SharedPreferences.Editor edit = mPrefs.edit();
+                edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
+                edit.commit();
+
+                // update menu checked state
+                invalidateOptionsMenu();
+                break;
+            }
             case R.id.settings_menu: {
                 AlertDialog.Builder settingsSelector = new AlertDialog.Builder(this);
                 final String[] IDs = mPrefs.getString("IDs", "").split(";");

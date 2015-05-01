@@ -137,4 +137,5 @@
     <string name="db_cant_delete_history">Ошибка удаления из базы данных истории</string>
     <string name="device_additional_info">Дополнительные сведения об объекте</string>
     <string name="stop_query_devices">Остановить опрос</string>
+    <string name="work_ongoing">Монтаж</string>
 </resources>

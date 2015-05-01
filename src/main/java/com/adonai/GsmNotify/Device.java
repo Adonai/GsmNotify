@@ -24,6 +24,7 @@ public class Device {
         public String number;
         public String password;
         public String info;
+        public Boolean workOngoing = false;
     }
 
     // Common

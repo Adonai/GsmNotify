@@ -36,6 +36,7 @@ import com.adonai.GsmNotify.entities.HistoryEntry;
 import com.adonai.GsmNotify.misc.AbstractAsyncLoader;
 import com.adonai.GsmNotify.misc.DeliveryConfirmReceiver;
 import com.adonai.GsmNotify.misc.SentConfirmReceiver;
+import com.adonai.contrib.ButtonWithRedTriangle;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
 
@@ -98,7 +99,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        sortDevices();
+        obtainAndSortDevices();
 
         if(isTablet(this)) {
             prepareTabletUI();
@@ -114,7 +115,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         isRunning = true;
     }
 
-    private void sortDevices() {
+    private void obtainAndSortDevices() {
         long a = System.currentTimeMillis();
         mDeviceIds = mPrefs.getString("IDs", "").split(";");
         mDeviceSettingsMap = new HashMap<>(mDeviceIds.length);
@@ -173,9 +174,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
 
         for (String devId : mDeviceIds) {
             Device.CommonSettings details = mDeviceSettingsMap.get(devId);
-            Button openDevice = new Button(this);
+            ButtonWithRedTriangle openDevice = new ButtonWithRedTriangle(this);
             openDevice.setWidth(LayoutParams.MATCH_PARENT);
             openDevice.setText(details.name);
+            openDevice.setChecked(details.workOngoing);
             openDevice.setTag(devId);
             openDevice.setTag(R.integer.device_details, details);
             openDevice.setMaxLines(1);
@@ -193,9 +195,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
 
         for (String ID : mDeviceIds) {
             Device.CommonSettings details = mDeviceSettingsMap.get(ID);
-            Button viewer = new Button(this);
+            ButtonWithRedTriangle viewer = new ButtonWithRedTriangle(this);
             viewer.setWidth(LayoutParams.MATCH_PARENT);
             viewer.setText(details.name);
+            viewer.setChecked(details.workOngoing);
             viewer.setTag(ID);
             viewer.setTag(R.integer.device_details, details);
             viewer.setOnClickListener(this);

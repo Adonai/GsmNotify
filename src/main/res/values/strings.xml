@@ -141,4 +141,5 @@
     <string name="db_cant_delete_history">Can\'t delete from history DB</string>
     <string name="device_additional_info">Device additional info</string>
     <string name="stop_query_devices">Stop device querying</string>
+    <string name="work_ongoing">Work ongoing</string>
 </resources>

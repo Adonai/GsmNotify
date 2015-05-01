@@ -30,15 +30,19 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SMSReceiveService extends Service implements Handler.Callback {
     final public static String PREFERENCES = "devicePrefs";
 
-    final public static String OPEN_ON_SMS_KEY = "open.on.sms";
-    final public static String RING_ON_SMS_KEY = "ring.on.sms";
-    final public static String RING_ON_ALARM_SMS_KEY = "ring.on.alarm.sms";
+    public static final String OPEN_ON_SMS_KEY = "open.on.sms";
+    public static final String RING_ON_SMS_KEY = "ring.on.sms";
+    public static final String RING_ON_ALARM_SMS_KEY = "ring.on.alarm.sms";
 
-    final private static int TICK_RING = 0;
+    private static final int TICK_RING = 0;
+    
+    private static final Pattern SMS_WHO_ARMED_MATCHER = Pattern.compile("(?<=from )\\+?\\d+");
 
     Activity boundListener;
     SharedPreferences preferences;
@@ -48,9 +52,6 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
     Handler mHandler;
     
-    Map<String, String> contactsCache = new HashMap<>();
-    boolean cacheFilled = false;
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -193,30 +194,33 @@ public class SMSReceiveService extends Service implements Handler.Callback {
         return START_STICKY;
     }
 
-    private void retrieveContacts() {
-        if (cacheFilled) {
-            return;
-        }
-        
+    private Map<String, String> retrieveContacts() {
         Cursor phones = getContentResolver().query(Phone.CONTENT_URI, null, null, null, null);
+        Map<String, String> contacts = new HashMap<>(phones.getCount());
         while (phones.moveToNext()) {
             String name = phones.getString(phones.getColumnIndex(Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(Phone.NUMBER));
-            contactsCache.put(phoneNumber, name);
+            contacts.put(phoneNumber, name);
         }
         phones.close();
-        cacheFilled = true;
+        return contacts;
     }
     
     private void addHistoryEntry(String text, Device.CommonSettings deviceDetails) {
-        // fill the cache if we hadn't done so
-        retrieveContacts();
-        
-        // lookup number
         String effectiveText = text;
-        if(contactsCache.containsKey(deviceDetails.name)) {
-            // replace number with name
-            effectiveText = text.replace(deviceDetails.name, contactsCache.get(deviceDetails.name));
+
+        /* lookup number of who armed the device */
+        
+        // get contacts with numbers
+        Map<String, String> contacts = retrieveContacts();
+        // lookup number of who armed from sms
+        Matcher numberMatcher = SMS_WHO_ARMED_MATCHER.matcher(text);
+        if(numberMatcher.find()) {
+            String number = numberMatcher.group();
+            if(contacts.containsKey(number)) {
+                // replace number with name
+                effectiveText = text.replace(number, contacts.get(number));
+            }
         }
         
         // add to history
