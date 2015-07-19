@@ -22,7 +22,10 @@ import android.telephony.SmsManager;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -55,7 +58,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
     ProgressDialog pd;
 
     Button mApply, mEditDevice, mManageDevice, mApplyDevice;
+    TextView mPasswordLabel;
     EditText mDeviceName, mDeviceNumber, mDevicePassword, mDeviceInfo;
+    CheckBox mIsGsmQaud;
     Handler mHandler;
 
     FragmentManager mFragmentManager;
@@ -172,8 +177,18 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         mApplyDevice.setOnClickListener(this);
         mDeviceName = (EditText) findViewById(R.id.device_name_text);
         mDeviceNumber = (EditText) findViewById(R.id.device_number_text);
+        mPasswordLabel = (TextView) findViewById(R.id.device_password_label);
         mDevicePassword = (EditText) findViewById(R.id.device_password_text);
         mDeviceInfo = (EditText) findViewById(R.id.device_additional_info_text);
+        mIsGsmQaud = (CheckBox) findViewById(R.id.gsm_qaud_checkbox);
+        mIsGsmQaud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int visibility = b ? View.GONE : View.VISIBLE;
+                mDevicePassword.setVisibility(visibility); // don't show password field if we have GSM Qaud
+                mPasswordLabel.setVisibility(visibility);
+            }
+        });
 
         prepareUI(getIntent().getStringExtra("ID"));
 
@@ -197,6 +212,10 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
             if (mDevice.details.info != null) {
                 mDeviceInfo.setText(mDevice.details.info);
+            }
+            if(mDevice.details.isGsmQaud) { // can't configure GSM Qaud
+                mEditDevice.setEnabled(false);
+                mIsGsmQaud.setChecked(true);
             }
 
             mManageDevice.setVisibility(View.VISIBLE);
@@ -246,7 +265,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 String newPassword = mDevicePassword.getText().toString();
                 String newName = mDeviceName.getText().toString();
                 String newInfo = mDeviceInfo.getText().toString();
-                if (!newPassword.isEmpty() && !newNumber.isEmpty() && !newName.isEmpty()) { // all fields are filled in
+                
+                boolean validPassword = !newPassword.isEmpty() || mIsGsmQaud.isChecked();
+                if (validPassword && !newNumber.isEmpty() && !newName.isEmpty()) { // all fields are filled in
                     List<String> IDStrings = new ArrayList<>();
                     Collections.addAll(IDStrings, mPrefs.getString("IDs", "").split(";"));
 
@@ -269,6 +290,9 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     mDevice.details.name = newName;
                     mDevice.details.number = newNumber;
                     mDevice.details.info = newInfo;
+                    mDevice.details.isGsmQaud = mIsGsmQaud.isChecked();
+                    
+                    mEditDevice.setEnabled(!mIsGsmQaud.isChecked());
 
                     IDStrings.add(mDevice.details.number);
                     edit.putString("IDs", Utils.join(IDStrings, ";"));

@@ -186,6 +186,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if(mDeviceInfo != null && mDevice.details.info != null) {
                 mDeviceInfo.setText(mDevice.details.info);
             }
+            
+            if(mDevice.details.isGsmQaud) { // no relay buttons
+                mRelay1Enable.setEnabled(false);
+                mRelay1Disable.setEnabled(false);
+                mRelay2Enable.setEnabled(false);
+                mRelay2Disable.setEnabled(false);
+            }
 
             invalidateOptionsMenu();
         } else {

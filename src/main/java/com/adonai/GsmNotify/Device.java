@@ -25,6 +25,7 @@ public class Device {
         public String password;
         public String info;
         public Boolean workOngoing = false;
+        public Boolean isGsmQaud = false;
     }
 
     // Common

@@ -142,4 +142,5 @@
     <string name="device_additional_info">Device additional info</string>
     <string name="stop_query_devices">Stop device querying</string>
     <string name="work_ongoing">Work ongoing</string>
+    <string name="is_gsm_qaud">GSM Qaud</string>
 </resources>
