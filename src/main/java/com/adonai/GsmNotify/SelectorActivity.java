@@ -177,7 +177,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             ButtonWithRedTriangle openDevice = new ButtonWithRedTriangle(this);
             openDevice.setWidth(LayoutParams.MATCH_PARENT);
             openDevice.setText(details.name);
-            openDevice.setChecked(details.workOngoing);
+            openDevice.setUpperLeft(details.workOngoing);
+            openDevice.setLowerRight(details.isGsmQaud);
             openDevice.setTag(devId);
             openDevice.setTag(R.integer.device_details, details);
             openDevice.setMaxLines(1);
@@ -198,7 +199,8 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             ButtonWithRedTriangle viewer = new ButtonWithRedTriangle(this);
             viewer.setWidth(LayoutParams.MATCH_PARENT);
             viewer.setText(details.name);
-            viewer.setChecked(details.workOngoing);
+            viewer.setUpperLeft(details.workOngoing);
+            viewer.setLowerRight(details.isGsmQaud);
             viewer.setTag(ID);
             viewer.setTag(R.integer.device_details, details);
             viewer.setOnClickListener(this);

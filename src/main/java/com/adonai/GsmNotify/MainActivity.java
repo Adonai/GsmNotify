@@ -5,12 +5,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,6 +53,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     static boolean isRunning;
     static String deviceNumber;
+    
+    static boolean isCalling;
 
     // увеличиваем длительность нажатия до 500 мс
     private View.OnTouchListener pressHolder = new View.OnTouchListener() {
@@ -81,7 +88,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             setContentView(R.layout.main_phone);
         }
 
-        //mScroll = (ScrollView) findViewById(R.id.scroll_bar);
+        QaudEndCallListener callListener = new QaudEndCallListener();
+        TelephonyManager mTM = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
 
         incMessages = new MessageQueue();
         sentReceiver = new SentConfirmReceiver(this);
@@ -339,36 +348,66 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return false;
     }
 
+    private class QaudEndCallListener extends PhoneStateListener {
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            if (isCalling && state == TelephonyManager.CALL_STATE_IDLE) {
+                isCalling = false;
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        }
+    }
+    
     @Override
     public void onClick(View view) {
         PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.SENT), 0);
         PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.DELIVERED), 0);
         SmsManager sms = SmsManager.getDefault();
-        switch (view.getId()) {
-            case R.id.relay1_on_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_1=1#", sentPI, deliveredPI);
-                break;
-            case R.id.relay1_off_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_1=0#", sentPI, deliveredPI);
-                break;
-            case R.id.relay2_on_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_2=1#", sentPI, deliveredPI);
-                break;
-            case R.id.relay2_off_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_2=0#", sentPI, deliveredPI);
-                break;
-            case R.id.get_data_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_info#", sentPI, deliveredPI);
-                break;
-            case R.id.get_temperature_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_temp#", sentPI, deliveredPI);
-                break;
-            case R.id.signal_on_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_on#", sentPI, deliveredPI);
-                break;
-            case R.id.signal_off_button:
-                sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_off#", sentPI, deliveredPI);
-                break;
+        if (mDevice.details.isGsmQaud) {
+            switch (view.getId()) {
+                case R.id.get_data_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "Info", sentPI, deliveredPI);
+                    break;
+                case R.id.get_temperature_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "Temp", sentPI, deliveredPI);
+                    break;
+                case R.id.signal_on_button:
+                case R.id.signal_off_button:
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + mDevice.details.number));
+                    isCalling = true;
+                    startActivity(intent);
+                    break;
+            }
+        } else {
+            switch (view.getId()) {
+                case R.id.relay1_on_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_1=1#", sentPI, deliveredPI);
+                    break;
+                case R.id.relay1_off_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_1=0#", sentPI, deliveredPI);
+                    break;
+                case R.id.relay2_on_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_2=1#", sentPI, deliveredPI);
+                    break;
+                case R.id.relay2_off_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_set_2=0#", sentPI, deliveredPI);
+                    break;
+                case R.id.get_data_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_info#", sentPI, deliveredPI);
+                    break;
+                case R.id.get_temperature_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_temp#", sentPI, deliveredPI);
+                    break;
+                case R.id.signal_on_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_on#", sentPI, deliveredPI);
+                    break;
+                case R.id.signal_off_button:
+                    sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_off#", sentPI, deliveredPI);
+                    break;
+            }
         }
     }
 }

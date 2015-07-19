@@ -50,7 +50,11 @@ public class AlarmHistoryListFragment extends DialogFragment {
         try {
             PersistManager manager = DbProvider.getTempHelper(getActivity());
             final List<HistoryEntry> entries = manager.getHistoryDao().queryBuilder().orderBy("eventDate", false)
-                    .where().like("smsText", getActivity().getString(R.string.alarm_db_matcher)).query();
+                    .where()
+                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher)) // usual
+                    .or()
+                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher_qaud)) // GSM Qaud
+                    .query();
             DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
             ListAdapter entryAdapter = new ArrayAdapter<HistoryEntry>(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, entries) {
                 @Override
@@ -84,14 +88,22 @@ public class AlarmHistoryListFragment extends DialogFragment {
                     PersistManager manager = DbProvider.getTempHelper(getActivity());
                     RuntimeExceptionDao<HistoryEntry, Long> dao = manager.getHistoryDao();
                     String dbMatcher = getString(R.string.alarm_db_matcher);
+                    String dbMatcherQaud = getString(R.string.alarm_db_matcher_qaud);
 
                     // put alarm to archive
-                    List<HistoryEntry> alarmEntries = dao.queryBuilder().where().like("smsText", dbMatcher).query();
+                    List<HistoryEntry> alarmEntries = dao.queryBuilder().where()
+                            .like("smsText", dbMatcher)
+                            .or()
+                            .like("smsText", dbMatcherQaud)
+                            .query();
                     for(HistoryEntry alarm : alarmEntries) {
                         String originalText = alarm.getSmsText();
                         String textToReplace = dbMatcher.substring(1, dbMatcher.length() - 1); // remove percent signs
+                        String textToReplaceQaud = dbMatcherQaud.substring(1, dbMatcherQaud.length() - 1);
 
-                        String maskedValue = originalText.replace(textToReplace, getString(R.string.alarm_archive_mask));
+                        String maskedValue = originalText
+                                .replace(textToReplace, getString(R.string.alarm_archive_mask)
+                                .replace(textToReplaceQaud, getString(R.string.alarm_archive_mask_qaud)));
                         String archiveSuffix =  getString(R.string.archive_suffix);
 
                         alarm.setSmsText(maskedValue + " " + archiveSuffix);

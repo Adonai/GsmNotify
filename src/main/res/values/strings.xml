@@ -129,13 +129,16 @@
     <string name="armed_matcher">armed</string>
     <string name="disarmed_matcher">disarm</string>
     <string name="alarm_matcher">alarm</string>
+    <string name="alarm_matcher_qaud">achtung!</string>
     <string name="armed_bus_alarm_matcher">warning</string>
     <string name="status_matcher">status</string>
     <string name="alarm_db_matcher">%Alarm%</string>
+    <string name="alarm_db_matcher_qaud">%Achtung!%</string>
     <string name="sms_wait_timeout">Timeout waiting for device to answer</string>
     <string name="notify_with_sound">Ring on SMS</string>
     <string name="notify_alarm_with_sound">Ring on alarm</string>
     <string name="alarm_archive_mask">Al@rm</string>
+    <string name="alarm_archive_mask_qaud">Ach7ung!</string>
     <string name="archive_suffix">(Archived)</string>
     <string name="db_cant_query_history">Can\'t query history DB</string>
     <string name="db_cant_delete_history">Can\'t delete from history DB</string>

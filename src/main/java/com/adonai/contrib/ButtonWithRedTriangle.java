@@ -1,9 +1,9 @@
 package com.adonai.contrib;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -18,7 +18,8 @@ import com.adonai.GsmNotify.Utils;
  */
 public class ButtonWithRedTriangle extends Button {
     
-    private boolean isChecked = false;
+    private boolean upperLeft = false;
+    private boolean lowerRight = false;
     
     public ButtonWithRedTriangle(Context context) {
         super(context);
@@ -38,10 +39,11 @@ public class ButtonWithRedTriangle extends Button {
     }
 
     @Override
+    @SuppressLint("DrawAllocation")
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(isChecked) {
+        if(upperLeft) {
             int leftPad = (int) Utils.convertDpToPixel(5, getContext());
             int topPad = (int) Utils.convertDpToPixel(6, getContext());;
             
@@ -67,13 +69,48 @@ public class ButtonWithRedTriangle extends Button {
 
             canvas.drawPath(path, paint);
         }
+
+        if(lowerRight) {
+            int rightPad = (int) Utils.convertDpToPixel(5, getContext());
+            int bottomPad = (int) Utils.convertDpToPixel(6, getContext());;
+
+            int height = getHeight();
+            int width = getWidth();
+
+            Paint paint = new Paint();
+            paint.setStrokeWidth(4);
+            paint.setColor(android.graphics.Color.RED);
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            paint.setAntiAlias(true);
+
+            Point a = new Point(width - rightPad, height - bottomPad);
+            Point b = new Point(width - rightPad - width / 10, height - bottomPad);
+            Point c = new Point(width - rightPad, height - bottomPad - height / 10);
+
+            Path path = new Path();
+            path.setFillType(Path.FillType.EVEN_ODD);
+            path.moveTo(a.x, a.y);
+            path.lineTo(b.x, b.y);
+            path.lineTo(c.x, c.y);
+            path.close();
+
+            canvas.drawPath(path, paint);
+        }
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isUpperLeft() {
+        return upperLeft;
     }
 
-    public void setChecked(boolean isChecked) {
-        this.isChecked = isChecked;
+    public void setUpperLeft(boolean upperLeft) {
+        this.upperLeft = upperLeft;
+    }
+
+    public boolean isLowerRight() {
+        return lowerRight;
+    }
+
+    public void setLowerRight(boolean lowerRight) {
+        this.lowerRight = lowerRight;
     }
 }

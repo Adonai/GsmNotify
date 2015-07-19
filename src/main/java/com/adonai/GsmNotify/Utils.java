@@ -93,7 +93,9 @@ public class Utils {
         } else if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
             boolean anyBusHasAlarm = lowercaseSms.contains(context.getString(R.string.armed_bus_alarm_matcher));
             return anyBusHasAlarm ? DeviceStatus.ALARM : DeviceStatus.ARMED; // either alarm on bus or armed
-        } else if (lowercaseSms.contains(context.getString(R.string.alarm_matcher))) {
+        } else if (lowercaseSms.contains(context.getString(R.string.alarm_matcher)) 
+                || lowercaseSms.contains(context.getString(R.string.alarm_matcher_qaud))) 
+        {
             return DeviceStatus.ALARM;
         } else {
             return DeviceStatus.UNKNOWN;
