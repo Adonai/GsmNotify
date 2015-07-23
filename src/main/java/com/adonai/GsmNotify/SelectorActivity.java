@@ -89,9 +89,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         sentReceiver = new SentConfirmReceiver(this);
         deliveryReceiver = new DeliveryConfirmReceiver(this);
 
-        if(isTablet(this)) {
-            getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
-        }
+        getLoaderManager().initLoader(STATUS_LOADER, null, mLocalArchiveParseCallback);
 
         mUiHandler = new Handler(mStatusWalkCallback);
     }
@@ -192,6 +190,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         ScrollView scrollView = new ScrollView(this);
         LinearLayout deviceList = new LinearLayout(this);
         deviceList.setOrientation(LinearLayout.VERTICAL);
+        mMainLayout = deviceList;
 
 
         for (String ID : mDeviceIds) {
@@ -252,9 +251,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if(isTablet(this)) {
-            getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
-        }
+        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
     }
 
     @Override
@@ -327,9 +324,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                 PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
                                 try {
                                     manager.getHistoryDao().deleteBuilder().delete();
-                                    if(isTablet(SelectorActivity.this)) {
-                                        getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
-                                    }
+                                    getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
                                 } catch (SQLException e) {
                                     Toast.makeText(SelectorActivity.this, R.string.db_cant_delete_history, Toast.LENGTH_LONG).show();
                                 }
