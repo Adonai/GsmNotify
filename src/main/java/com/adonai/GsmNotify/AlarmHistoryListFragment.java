@@ -53,7 +53,9 @@ public class AlarmHistoryListFragment extends DialogFragment {
                     .where()
                     .like("smsText", getActivity().getString(R.string.alarm_db_matcher)) // usual
                     .or()
-                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher_qaud)) // GSM Qaud
+                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher_qaud)) // GSM Qaud alarm
+                    .or()
+                    .like("smsText", getActivity().getString(R.string.warning_db_matcher_qaud)) // GSM Qaud warning
                     .query();
             DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
             ListAdapter entryAdapter = new ArrayAdapter<HistoryEntry>(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, entries) {
@@ -87,23 +89,28 @@ public class AlarmHistoryListFragment extends DialogFragment {
                 try {
                     PersistManager manager = DbProvider.getTempHelper(getActivity());
                     RuntimeExceptionDao<HistoryEntry, Long> dao = manager.getHistoryDao();
-                    String dbMatcher = getString(R.string.alarm_db_matcher);
-                    String dbMatcherQaud = getString(R.string.alarm_db_matcher_qaud);
+                    String dbAlarmMatcher = getString(R.string.alarm_db_matcher);
+                    String dbAlarmMatcherQaud = getString(R.string.alarm_db_matcher_qaud);
+                    String dbWarningMatcherQaud = getString(R.string.warning_db_matcher_qaud);
 
                     // put alarm to archive
                     List<HistoryEntry> alarmEntries = dao.queryBuilder().where()
-                            .like("smsText", dbMatcher)
+                            .like("smsText", dbAlarmMatcher)
                             .or()
-                            .like("smsText", dbMatcherQaud)
+                            .like("smsText", dbAlarmMatcherQaud)
+                            .or()
+                            .like("smsText", dbWarningMatcherQaud)
                             .query();
                     for(HistoryEntry alarm : alarmEntries) {
                         String originalText = alarm.getSmsText();
-                        String textToReplace = dbMatcher.substring(1, dbMatcher.length() - 1); // remove percent signs
-                        String textToReplaceQaud = dbMatcherQaud.substring(1, dbMatcherQaud.length() - 1);
+                        String alarmText = dbAlarmMatcher.substring(1, dbAlarmMatcher.length() - 1); // remove percent signs
+                        String alarmTextQaud = dbAlarmMatcherQaud.substring(1, dbAlarmMatcherQaud.length() - 1);
+                        String warningTextQaud = dbWarningMatcherQaud.substring(1, dbWarningMatcherQaud.length() - 1);
 
                         String maskedValue = originalText
-                                .replace(textToReplace, getString(R.string.alarm_archive_mask)
-                                .replace(textToReplaceQaud, getString(R.string.alarm_archive_mask_qaud)));
+                                .replace(alarmText, getString(R.string.alarm_archive_mask)
+                                .replace(alarmTextQaud, getString(R.string.alarm_archive_mask_qaud)))
+                                .replace(warningTextQaud, getString(R.string.warning_archive_mask_qaud));
                         String archiveSuffix =  getString(R.string.archive_suffix);
 
                         alarm.setSmsText(maskedValue + " " + archiveSuffix);

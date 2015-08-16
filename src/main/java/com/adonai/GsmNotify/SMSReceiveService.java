@@ -138,7 +138,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
                     // not a status but an actual answer, play sound if we should!
                     if(!smsText.contains(getString(R.string.status_matcher))) {
-                        DeviceStatus currentStatus = Utils.getStatusBySms(this, smsText.toLowerCase());
+                        DeviceStatus currentStatus = Utils.getStatusBySms(this, settings, smsText.toLowerCase());
                         // play sound if we opted either all sounds or we have alarm only and status resolves to alarm
                         if((shouldPlaySound || (shouldPlayAlarmSound && currentStatus == DeviceStatus.ALARM)) && 
                                 !(isOpen && isSameNow && currentStatus == DeviceStatus.ALARM)) // don't play long alarm if we're now viewing same device

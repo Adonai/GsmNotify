@@ -82,23 +82,34 @@ public class Utils {
         return px / (metrics.densityDpi / 160f);
     }
 
-    static DeviceStatus getStatusBySms(Context context, String lowercaseSms) {
+    static DeviceStatus getStatusBySms(Context context, Device.CommonSettings details, String lowercaseSms) {
         // сначала проверка "на охране/снято с охраны", если "снято", 
         // то цвет ячейки зеленый (несмотря на тревоги по шлейфам), 
         // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога", 
         // то цвет ячейки красный, если "на охране" и нет тревог, то цвет ячейки желтый.
-        
-        if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
-            return DeviceStatus.DISARMED;
-        } else if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
-            boolean anyBusHasAlarm = lowercaseSms.contains(context.getString(R.string.armed_bus_alarm_matcher));
-            return anyBusHasAlarm ? DeviceStatus.ALARM : DeviceStatus.ARMED; // either alarm on bus or armed
-        } else if (lowercaseSms.contains(context.getString(R.string.alarm_matcher)) 
-                || lowercaseSms.startsWith(context.getString(R.string.alarm_matcher_qaud))) 
-        {
-            return DeviceStatus.ALARM;
-        } else {
-            return DeviceStatus.UNKNOWN;
+        if(details.isGsmQaud) { // GSM Qaud
+            if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
+                return DeviceStatus.DISARMED;
+            } else if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
+                boolean anyBusHasAlarm = lowercaseSms.contains(context.getString(R.string.armed_bus_alarm_matcher));
+                return anyBusHasAlarm ? DeviceStatus.ALARM : DeviceStatus.ARMED; // either alarm on bus or armed
+            } else if (lowercaseSms.startsWith(context.getString(R.string.alarm_matcher_qaud)) // alarm
+                    || lowercaseSms.contains(context.getString(R.string.warning_matcher_qaud))) {
+                return DeviceStatus.ALARM;
+            } else {
+                return DeviceStatus.UNKNOWN;
+            }
+        } else { // Signal XM/XL
+            if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
+                return DeviceStatus.DISARMED;
+            } else if (lowercaseSms.contains(context.getString(R.string.armed_matcher))) { // armed
+                boolean anyBusHasAlarm = lowercaseSms.contains(context.getString(R.string.armed_bus_alarm_matcher));
+                return anyBusHasAlarm ? DeviceStatus.ALARM : DeviceStatus.ARMED; // either alarm on bus or armed
+            } else if (lowercaseSms.contains(context.getString(R.string.alarm_matcher))) {
+                return DeviceStatus.ALARM;
+            } else {
+                return DeviceStatus.UNKNOWN;
+            }
         }
     }
 }

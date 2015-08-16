@@ -240,10 +240,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
         soundAlarmOption.setChecked(shouldAlarmRing);
 
         MenuItem queryOption = menu.findItem(R.id.query_all_devices);
-        queryOption.setVisible(isTablet(this) && !isStatusChecking);
+        queryOption.setVisible(!isStatusChecking);
 
         MenuItem stopQueryOption = menu.findItem(R.id.stop_query_devices);
-        stopQueryOption.setVisible(isTablet(this) && isStatusChecking);
+        stopQueryOption.setVisible(isStatusChecking);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -370,7 +370,7 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                     .orderBy("eventDate", false).where().eq("deviceName", details.name).query();
                             for(HistoryEntry he : entriesForDevice) {
                                 String lowercaseSms = he.getSmsText().toLowerCase();
-                                currentStatus = getStatusBySms(SelectorActivity.this, lowercaseSms);
+                                currentStatus = getStatusBySms(SelectorActivity.this, details, lowercaseSms);
                                 if(currentStatus != DeviceStatus.UNKNOWN) { // stop if we've found status
                                     break;
                                 }
