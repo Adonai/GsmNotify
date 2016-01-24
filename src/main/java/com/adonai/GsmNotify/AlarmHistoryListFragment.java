@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by adonai on 26.01.15.
+ * Shows and archives history for alarms
  */
 public class AlarmHistoryListFragment extends DialogFragment {
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
@@ -49,13 +49,10 @@ public class AlarmHistoryListFragment extends DialogFragment {
         mListView = (ListView) layout.findViewById(R.id.history_listview);
         try {
             PersistManager manager = DbProvider.getTempHelper(getActivity());
-            final List<HistoryEntry> entries = manager.getHistoryDao().queryBuilder().orderBy("eventDate", false)
-                    .where()
-                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher)) // usual
-                    .or()
-                    .like("smsText", getActivity().getString(R.string.alarm_db_matcher_qaud)) // GSM Qaud alarm
-                    .or()
-                    .like("smsText", getActivity().getString(R.string.warning_db_matcher_qaud)) // GSM Qaud warning
+            final List<HistoryEntry> entries = manager.getHistoryDao().queryBuilder()
+                    .orderBy("eventDate", false)
+                    .where().eq("status", Utils.DeviceStatus.ALARM)
+                    .and().eq("archived", false)
                     .query();
             DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
             ListAdapter entryAdapter = new ArrayAdapter<HistoryEntry>(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, entries) {
@@ -89,40 +86,21 @@ public class AlarmHistoryListFragment extends DialogFragment {
                 try {
                     PersistManager manager = DbProvider.getTempHelper(getActivity());
                     RuntimeExceptionDao<HistoryEntry, Long> dao = manager.getHistoryDao();
-                    String dbAlarmMatcher = getString(R.string.alarm_db_matcher);
-                    String dbAlarmMatcherQaud = getString(R.string.alarm_db_matcher_qaud);
-                    String dbWarningMatcherQaud = getString(R.string.warning_db_matcher_qaud);
 
                     // put alarm to archive
-                    List<HistoryEntry> alarmEntries = dao.queryBuilder().where()
-                            .like("smsText", dbAlarmMatcher)
-                            .or()
-                            .like("smsText", dbAlarmMatcherQaud)
-                            .or()
-                            .like("smsText", dbWarningMatcherQaud)
+                    List<HistoryEntry> alarmEntries = dao.queryBuilder()
+                            .where().eq("status", Utils.DeviceStatus.ALARM)
+                            .and().eq("archived", false)
                             .query();
                     for(HistoryEntry alarm : alarmEntries) {
                         String originalText = alarm.getSmsText();
-                        String alarmText = dbAlarmMatcher.substring(1, dbAlarmMatcher.length() - 1); // remove percent signs
-                        String alarmTextQaud = dbAlarmMatcherQaud.substring(1, dbAlarmMatcherQaud.length() - 1);
-                        String warningTextQaud = dbWarningMatcherQaud.substring(1, dbWarningMatcherQaud.length() - 1);
-
-                        String maskedValue = originalText
-                                .replace(alarmText, getString(R.string.alarm_archive_mask)
-                                .replace(alarmTextQaud, getString(R.string.alarm_archive_mask_qaud)))
-                                .replace(warningTextQaud, getString(R.string.warning_archive_mask_qaud));
                         String archiveSuffix =  getString(R.string.archive_suffix);
 
-                        alarm.setSmsText(maskedValue + " " + archiveSuffix);
+                        alarm.setSmsText(originalText + " " + archiveSuffix);
+                        alarm.setArchived(true);
                         dao.update(alarm);
                     }
-
-                    /*
-                    // just delete all the alarms
-                    DeleteBuilder<HistoryEntry, Long> stmt = dao.deleteBuilder();
-                    stmt.where().like("smsText", getActivity().getString(R.string.alarm_db_matcher));
-                    dao.delete(stmt.prepare());
-                    */
+                    
                     DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
                     if(Utils.isTablet(getActivity())) {
                         getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();

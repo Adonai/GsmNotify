@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,6 +197,10 @@ public class SMSReceiveService extends Service implements Handler.Callback {
 
     private Map<String, String> retrieveContacts() {
         Cursor phones = getContentResolver().query(Phone.CONTENT_URI, null, null, null, null);
+        if(phones == null) {
+            return Collections.emptyMap();
+        }
+        
         Map<String, String> contacts = new HashMap<>(phones.getCount());
         while (phones.moveToNext()) {
             String name = phones.getString(phones.getColumnIndex(Phone.DISPLAY_NAME));
@@ -208,6 +213,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
     
     private void addHistoryEntry(String text, Device.CommonSettings deviceDetails) {
         String effectiveText = text;
+        DeviceStatus statusForSms = Utils.getStatusBySms(this, deviceDetails, effectiveText.toLowerCase());
 
         /* lookup number of who armed the device */
         
@@ -229,6 +235,7 @@ public class SMSReceiveService extends Service implements Handler.Callback {
         he.setDeviceName(deviceDetails.name);
         he.setEventDate(Calendar.getInstance().getTime());
         he.setSmsText(effectiveText);
+        he.setStatus(statusForSms);
         manager.getHistoryDao().create(he);
         DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
     }

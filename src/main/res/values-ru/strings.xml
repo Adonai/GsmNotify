@@ -129,12 +129,6 @@
     <string name="alarm_matcher_qaud">тревога!</string>
     <string name="warning_matcher_qaud">вскрыт</string>
     <string name="armed_bus_alarm_matcher">тревога</string>
-    <string name="alarm_db_matcher">%Внимaние%</string> <!-- note the special 'a' -->
-    <string name="alarm_db_matcher_qaud">%Тревога!%</string>
-    <string name="warning_db_matcher_qaud">%Вскрыт%</string>
-    <string name="alarm_archive_mask">Внимание</string> <!-- replace with usual 'a' -->
-    <string name="alarm_archive_mask_qaud">Трeвога!</string> <!-- this time, replace with unusual 'e' -->
-    <string name="warning_archive_mask_qaud">Вскpыт</string> <!-- this time, replace with unusual 'p' -->
     <string name="sms_wait_timeout">Превышено время ожидания для ответа устройства, продолжаем опрос</string>
     <string name="notify_with_sound">Звук при SMS</string>
     <string name="notify_alarm_with_sound">Звук при тревоге</string>

@@ -1,5 +1,7 @@
 package com.adonai.GsmNotify.entities;
 
+import com.adonai.GsmNotify.Utils;
+import com.adonai.GsmNotify.Utils.DeviceStatus;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -23,6 +25,12 @@ public class HistoryEntry {
 
     @DatabaseField(canBeNull = false)
     private String smsText;
+    
+    @DatabaseField(canBeNull = false)
+    private boolean archived = false;
+    
+    @DatabaseField(canBeNull = false, dataType = DataType.ENUM_INTEGER)
+    private DeviceStatus status = DeviceStatus.UNKNOWN;
 
     public long getId() {
         return id;
@@ -54,5 +62,21 @@ public class HistoryEntry {
 
     public void setSmsText(String smsText) {
         this.smsText = smsText;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public DeviceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DeviceStatus status) {
+        this.status = status;
     }
 }

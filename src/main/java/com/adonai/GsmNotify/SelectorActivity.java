@@ -49,12 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.widget.LinearLayout.LayoutParams;
-import static com.adonai.GsmNotify.Utils.DELIVERED;
-import static com.adonai.GsmNotify.Utils.DeviceStatus;
-import static com.adonai.GsmNotify.Utils.SENT;
-import static com.adonai.GsmNotify.Utils.SMS_ROUNDTRIP_TIMEOUT;
-import static com.adonai.GsmNotify.Utils.getStatusBySms;
-import static com.adonai.GsmNotify.Utils.isTablet;
+import static com.adonai.GsmNotify.Utils.*;
 
 @SuppressLint("CommitPrefEdits")
 public class SelectorActivity extends Activity implements View.OnClickListener {
@@ -367,10 +362,12 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                         Device.CommonSettings details = mDeviceSettingsMap.get(deviceId);
                         try {
                             List<HistoryEntry> entriesForDevice = manager.getHistoryDao().queryBuilder()
-                                    .orderBy("eventDate", false).where().eq("deviceName", details.name).query();
+                                    .orderBy("eventDate", false)
+                                    .where().eq("deviceName", details.name)
+                                    .and().eq("archived", false).query();
                             for(HistoryEntry he : entriesForDevice) {
                                 String lowercaseSms = he.getSmsText().toLowerCase();
-                                currentStatus = getStatusBySms(SelectorActivity.this, details, lowercaseSms);
+                                currentStatus = he.getStatus();
                                 if(currentStatus != DeviceStatus.UNKNOWN) { // stop if we've found status
                                     break;
                                 }
@@ -396,13 +393,13 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 Drawable newBackground = child.getBackground().mutate();
                 switch (status) {
                     case ARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.MULTIPLY);
                         break;
                     case DISARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.MULTIPLY);
                         break;
                     case ALARM:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.MULTIPLY);
                         break;
                     case UNKNOWN:
                         // leave the same

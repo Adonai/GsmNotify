@@ -16,10 +16,11 @@ public class Utils {
     final static int SMS_DEFAULT_TIMEOUT = 20000;
     final static int SMS_ROUNDTRIP_TIMEOUT = 90000;
 
-    enum DeviceStatus {
+    public enum DeviceStatus {
         ARMED,
         DISARMED,
         ALARM,
+        KEY,
         UNKNOWN
     }
 
@@ -82,7 +83,7 @@ public class Utils {
         return px / (metrics.densityDpi / 160f);
     }
 
-    static DeviceStatus getStatusBySms(Context context, Device.CommonSettings details, String lowercaseSms) {
+    public static DeviceStatus getStatusBySms(Context context, Device.CommonSettings details, String lowercaseSms) {
         // сначала проверка "на охране/снято с охраны", если "снято", 
         // то цвет ячейки зеленый (несмотря на тревоги по шлейфам), 
         // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога", 
