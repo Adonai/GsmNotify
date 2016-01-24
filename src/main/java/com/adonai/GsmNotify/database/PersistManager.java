@@ -40,8 +40,8 @@ public class PersistManager extends OrmLiteSqliteOpenHelper {
     private Dao<HistoryEntry, Long> historyDao = null;
     private final Context mContext;
 
-    public PersistManager(Context context){
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+    public PersistManager(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
 
@@ -63,8 +63,8 @@ public class PersistManager extends OrmLiteSqliteOpenHelper {
         
         switch (oldVer) {
             case 1:
-                db.execSQL("ALTER TABLE history ADD COLUMN archived");
-                db.execSQL("ALTER TABLE history ADD COLUMN status");
+                db.execSQL("ALTER TABLE history ADD COLUMN archived BOOLEAN");
+                db.execSQL("ALTER TABLE history ADD COLUMN status INTEGER");
                 
                 String[] IDs = preferences.getString("IDs", "").split(";");
                 for (String deviceNumber : IDs) {

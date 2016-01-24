@@ -139,4 +139,6 @@
     <string name="stop_query_devices">Остановить опрос</string>
     <string name="work_ongoing">Монтаж</string>
     <string name="is_gsm_qaud">GSM Qaud</string>
+    <string name="show_ibutton_history">Show iButton history</string>
+    <string name="ibutton_history">iButton history</string>
 </resources>

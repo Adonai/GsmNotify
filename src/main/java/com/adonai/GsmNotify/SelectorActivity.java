@@ -309,6 +309,10 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 AlarmHistoryListFragment hlf = AlarmHistoryListFragment.newInstance();
                 hlf.show(getFragmentManager(), "AlarmHistoryListDialog");
                 return true;
+            case R.id.show_ibutton_history:
+               KeyHistoryListFragment khlf = KeyHistoryListFragment.newInstance();
+                khlf.show(getFragmentManager(), "KeyHistoryListDialog");
+                return true;
             case R.id.clear_all_history:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(R.string.clear_all_history).setMessage(R.string.clear_all_history_confirm);
