@@ -122,7 +122,7 @@
     <string name="notify_on_sms">Notify on SMS</string>
     <string name="warning">Warning!</string>
     <string name="query_all_devices">Query all devices</string>
-    <string name="show_alarm_history">Show alarm history</string>
+    <string name="show_alarm_history">Alarm history</string>
     <string name="alarm_history">Alarm history</string>
     <string name="clear_all_history">Clear all history</string>
     <string name="clear_all_history_confirm">Are you sure to clear all history from all devices?</string>
@@ -143,6 +143,6 @@
     <string name="stop_query_devices">Stop device querying</string>
     <string name="work_ongoing">Work ongoing</string>
     <string name="is_gsm_qaud">GSM Qaud</string>
-    <string name="show_ibutton_history">Show iButton history</string>
+    <string name="show_ibutton_history">iButton history</string>
     <string name="ibutton_history">iButton history</string>
 </resources>
