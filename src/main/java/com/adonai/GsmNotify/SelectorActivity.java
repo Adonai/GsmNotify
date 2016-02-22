@@ -310,8 +310,12 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 hlf.show(getFragmentManager(), "AlarmHistoryListDialog");
                 return true;
             case R.id.show_ibutton_history:
-               KeyHistoryListFragment khlf = KeyHistoryListFragment.newInstance();
+                KeyHistoryListFragment khlf = KeyHistoryListFragment.newInstance();
                 khlf.show(getFragmentManager(), "KeyHistoryListDialog");
+                return true;
+            case R.id.show_power_history:
+                PowerHistoryListFragment phlf = PowerHistoryListFragment.newInstance();
+                phlf.show(getFragmentManager(), "PowerHistoryListDialog");
                 return true;
             case R.id.clear_all_history:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -370,7 +374,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                                     .where().eq("deviceName", details.name)
                                     .and().eq("archived", false).query();
                             for(HistoryEntry he : entriesForDevice) {
-                                String lowercaseSms = he.getSmsText().toLowerCase();
                                 currentStatus = he.getStatus();
                                 if(currentStatus != DeviceStatus.UNKNOWN) { // stop if we've found status
                                     break;
@@ -397,13 +400,13 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 Drawable newBackground = child.getBackground().mutate();
                 switch (status) {
                     case ARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.ADD);
                         break;
                     case DISARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.ADD);
                         break;
                     case ALARM:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.MULTIPLY);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.ADD);
                         break;
                     case UNKNOWN:
                         // leave the same

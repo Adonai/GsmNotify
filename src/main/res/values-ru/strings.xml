@@ -125,7 +125,10 @@
     <string name="status_matcher">шлейфы</string>
     <string name="armed_matcher">на\u0020</string>
     <string name="disarmed_matcher">\u0020с\u0020</string>
+    <string name="disarmed_power_matcher">Сетевое питание восстановлено</string>
     <string name="alarm_matcher">внимaние</string> <!-- note the special 'a' -->
+    <string name="alarm_power_matcher">Сетевое питание отключено</string>
+    <string name="power_matcher">Сетевое питание</string>
     <string name="alarm_matcher_qaud">тревога!</string>
     <string name="warning_matcher_qaud">вскрыт</string>
     <string name="armed_bus_alarm_matcher">тревога</string>
@@ -141,4 +144,5 @@
     <string name="is_gsm_qaud">GSM Qaud</string>
     <string name="show_ibutton_history">История iButton</string>
     <string name="ibutton_history">История iButton</string>
+    <string name="show_power_history">История эл-пит.</string>
 </resources>

@@ -145,4 +145,7 @@
     <string name="is_gsm_qaud">GSM Qaud</string>
     <string name="show_ibutton_history">iButton history</string>
     <string name="ibutton_history">iButton history</string>
+    <string name="disarmed_power_matcher">Power up</string>
+    <string name="alarm_power_matcher">Power down</string>
+    <string name="show_power_history">Power history</string>
 </resources>

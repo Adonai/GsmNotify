@@ -84,6 +84,13 @@ public class Utils {
     }
 
     public static DeviceStatus getStatusBySms(Context context, Device.CommonSettings details, String lowercaseSms) {
+        // тревоги по питанию
+        if (lowercaseSms.contains(context.getString(R.string.disarmed_power_matcher))) { // disable power alarm
+            return DeviceStatus.DISARMED;
+        } else if (lowercaseSms.contains(context.getString(R.string.alarm_power_matcher))) { // power alarm
+            return DeviceStatus.ALARM;
+        }
+        
         // сначала проверка "на охране/снято с охраны", если "снято", 
         // то цвет ячейки зеленый (несмотря на тревоги по шлейфам), 
         // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога", 
