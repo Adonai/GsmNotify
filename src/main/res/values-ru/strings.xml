@@ -118,7 +118,6 @@
     <string name="notify_on_sms">Открывать при SMS</string>
     <string name="warning">Внимание!</string>
     <string name="query_all_devices">Проверка статуса</string>
-    <string name="show_alarm_history">История тревог</string>
     <string name="alarm_history">История тревог</string>
     <string name="clear_all_history">Очистить всю историю</string>
     <string name="clear_all_history_confirm">Это действие удалит всю историю сообщений со всех устройств. Вы уверены?</string>
@@ -142,7 +141,6 @@
     <string name="stop_query_devices">Остановить опрос</string>
     <string name="work_ongoing">Монтаж</string>
     <string name="is_gsm_qaud">GSM Qaud</string>
-    <string name="show_ibutton_history">История iButton</string>
     <string name="ibutton_history">История iButton</string>
-    <string name="show_power_history">История эл-пит.</string>
+    <string name="power_history">История эл-пит.</string>
 </resources>

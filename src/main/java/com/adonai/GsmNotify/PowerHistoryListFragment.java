@@ -80,7 +80,7 @@ public class PowerHistoryListFragment extends DialogFragment {
 
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.history_dialog_header, null);
         TextView title = (TextView) header.findViewById(R.id.header_title);
-        title.setText(R.string.ibutton_history);
+        title.setText(R.string.power_history);
         ImageView deleteButton = (ImageView) header.findViewById(R.id.delete_history);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
