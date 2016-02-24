@@ -54,7 +54,7 @@ public class PowerHistoryListFragment extends DialogFragment {
             PersistManager manager = DbProvider.getTempHelper(getActivity());
             final List<HistoryEntry> keyEntries = manager.getHistoryDao().queryBuilder()
                     .orderBy("eventDate", false)
-                    .where().like("smsText", '%' + getString(R.string.power_matcher) + '%')
+                    .where().like("smsText", '%' + getString(R.string.power_matcher_db) + '%')
                     .and().eq("archived", false)
                     .query();
             DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
@@ -92,7 +92,7 @@ public class PowerHistoryListFragment extends DialogFragment {
 
                     // put key msgs to archive
                     List<HistoryEntry> keyRelatedEntries = dao.queryBuilder()
-                            .where().like("smsText", '%' + getString(R.string.power_matcher) + '%')
+                            .where().like("smsText", '%' + getString(R.string.power_matcher_db) + '%')
                             .and().eq("archived", false)
                             .query();
                     for(HistoryEntry keyHe : keyRelatedEntries) {

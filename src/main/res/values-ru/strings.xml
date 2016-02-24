@@ -124,10 +124,10 @@
     <string name="status_matcher">шлейфы</string>
     <string name="armed_matcher">на\u0020</string>
     <string name="disarmed_matcher">\u0020с\u0020</string>
-    <string name="disarmed_power_matcher">Сетевое питание восстановлено</string>
+    <string name="disarmed_power_matcher">сетевое питание восстановлено</string>
     <string name="alarm_matcher">внимaние</string> <!-- note the special 'a' -->
-    <string name="alarm_power_matcher">Сетевое питание отключено</string>
-    <string name="power_matcher">Сетевое питание</string>
+    <string name="alarm_power_matcher">сетевое питание отключено</string>
+    <string name="power_matcher_db">Cетевое питание</string> <!-- upper case because db stores actual sms text -->
     <string name="alarm_matcher_qaud">тревога!</string>
     <string name="warning_matcher_qaud">вскрыт</string>
     <string name="armed_bus_alarm_matcher">тревога</string>

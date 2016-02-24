@@ -143,8 +143,8 @@
     <string name="work_ongoing">Work ongoing</string>
     <string name="is_gsm_qaud">GSM Qaud</string>
     <string name="ibutton_history">iButton history</string>
-    <string name="disarmed_power_matcher">Power up</string>
-    <string name="alarm_power_matcher">Power down</string>
-    <string name="power_matcher">Power</string>
+    <string name="disarmed_power_matcher">power up</string>
+    <string name="alarm_power_matcher">power down</string>
+    <string name="power_matcher_db">Power</string>
     <string name="power_history">Power history</string>
 </resources>
