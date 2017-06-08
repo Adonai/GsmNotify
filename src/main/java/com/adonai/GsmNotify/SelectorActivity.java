@@ -39,11 +39,16 @@ import com.adonai.GsmNotify.misc.SentConfirmReceiver;
 import com.adonai.contrib.ButtonWithRedTriangle;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedDelete;
+import com.j256.ormlite.stmt.PreparedQuery;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -209,7 +214,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         Intent starter = new Intent(this, MainActivity.class).putExtra("ID", v.getTag().toString());
         startActivity(starter);
-        //finish();
     }
 
     @Override
@@ -326,7 +330,11 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                             public void onClick(DialogInterface dialog, int which) {
                                 PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
                                 try {
-                                    manager.getHistoryDao().deleteBuilder().delete();
+                                    Calendar prevMonth = Calendar.getInstance();
+                                    prevMonth.set(Calendar.MONTH, prevMonth.get(Calendar.MONTH) - 2);
+                                    DeleteBuilder<HistoryEntry, Long> db = manager.getHistoryDao().deleteBuilder();
+                                    db.where().lt("eventDate", prevMonth.getTime());
+                                    db.delete();
                                     getLoaderManager().getLoader(STATUS_LOADER).onContentChanged();
                                 } catch (SQLException e) {
                                     Toast.makeText(SelectorActivity.this, R.string.db_cant_delete_history, Toast.LENGTH_LONG).show();
@@ -339,7 +347,6 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
             case R.id.add_device:
                 Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                //finish();
                 return true;
         }
 
@@ -400,13 +407,13 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 Drawable newBackground = child.getBackground().mutate();
                 switch (status) {
                     case ARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_yellow), PorterDuff.Mode.MULTIPLY);
                         break;
                     case DISARMED:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_green), PorterDuff.Mode.MULTIPLY);
                         break;
                     case ALARM:
-                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.ADD);
+                        newBackground.setColorFilter(getResources().getColor(R.color.dark_red), PorterDuff.Mode.MULTIPLY);
                         break;
                     case UNKNOWN:
                         // leave the same

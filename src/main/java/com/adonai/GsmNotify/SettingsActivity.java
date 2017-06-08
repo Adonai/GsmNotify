@@ -265,7 +265,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                 String newPassword = mDevicePassword.getText().toString();
                 String newName = mDeviceName.getText().toString();
                 String newInfo = mDeviceInfo.getText().toString();
-                
+
                 boolean validPassword = !newPassword.isEmpty() || mIsGsmQaud.isChecked();
                 if (validPassword && !newNumber.isEmpty() && !newName.isEmpty()) { // all fields are filled in
                     List<String> IDStrings = new ArrayList<>();
@@ -291,7 +291,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     mDevice.details.number = newNumber;
                     mDevice.details.info = newInfo;
                     mDevice.details.isGsmQaud = mIsGsmQaud.isChecked();
-                    
+
                     mEditDevice.setEnabled(!mIsGsmQaud.isChecked());
 
                     IDStrings.add(mDevice.details.number);

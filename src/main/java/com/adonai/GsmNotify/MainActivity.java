@@ -53,8 +53,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     static boolean isRunning;
     static String deviceNumber;
-    
+
     static boolean isCalling;
+    static boolean isInOffProcess;
 
     // увеличиваем длительность нажатия до 500 мс
     private View.OnTouchListener pressHolder = new View.OnTouchListener() {
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if(mDeviceInfo != null && mDevice.details.info != null) {
                 mDeviceInfo.setText(mDevice.details.info);
             }
-            
+
             if(mDevice.details.isGsmQaud) { // no relay buttons
                 mRelay1Enable.setEnabled(false);
                 mRelay1Disable.setEnabled(false);
@@ -219,7 +220,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (intent.getStringExtra("number").equals(deviceNumber)) {
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
-                //mScroll.fling(10000);
+                if (isInOffProcess) {
+                    mRelay1Disable.performClick();
+                    isInOffProcess = false;
+                }
             } else { // it's another number, switch!
                 incMessages.clear();
                 incMessages.add(newMessage);
@@ -238,7 +242,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // prefill text from DB
         try {
             RuntimeExceptionDao<HistoryEntry, Long> dao = DbProvider.getHelper().getHistoryDao();
-            List<HistoryEntry> recentEntries = dao.queryBuilder().orderBy("eventDate", false).limit(5l)
+            List<HistoryEntry> recentEntries = dao.queryBuilder().orderBy("eventDate", false).limit(5L)
                     .where().eq("deviceName", mDevice.details.name).query();
             Collections.reverse(recentEntries);
             for(HistoryEntry entry : recentEntries) {
@@ -277,7 +281,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 // write to prefs
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putString(mDevice.details.number, new Gson().toJson(mDevice.details));
-                edit.commit();
+                edit.apply();
 
                 // update menu checked state
                 invalidateOptionsMenu();
@@ -313,7 +317,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 SharedPreferences.Editor edit = mPrefs.edit();
                                 edit.putString("IDs", Utils.join(IDStrings, ";"));
                                 edit.remove(deviceNumber);
-                                edit.commit();
+                                edit.apply();
 
                                 if (IDs.length != 1) { // если есть еще устройства, даем выбор
                                     Intent selector = new Intent(MainActivity.this, SelectorActivity.class);
@@ -359,7 +363,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
     }
-    
+
     @Override
     public void onClick(View view) {
         PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(Utils.SENT), 0);
@@ -402,6 +406,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_temp#", sentPI, deliveredPI);
                     break;
                 case R.id.signal_on_button:
+                    if (mDevice.details.workOngoing) {
+                        isInOffProcess = true; // send relay 1 off after receiving
+                    }
                     sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_on#", sentPI, deliveredPI);
                     break;
                 case R.id.signal_off_button:
