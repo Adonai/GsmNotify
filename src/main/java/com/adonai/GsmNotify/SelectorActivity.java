@@ -5,18 +5,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.Loader;
-import android.content.SharedPreferences;
+import android.content.*;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,10 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.adonai.GsmNotify.database.DbProvider;
 import com.adonai.GsmNotify.database.PersistManager;
@@ -39,25 +34,22 @@ import com.adonai.GsmNotify.misc.SentConfirmReceiver;
 import com.adonai.contrib.ButtonWithRedTriangle;
 import com.adonai.views.ColumnLinearLayout;
 import com.google.gson.Gson;
-import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.PreparedDelete;
-import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.*;
+import io.blackbox_vision.datetimepickeredittext.view.DatePickerEditText;
 
+import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.widget.LinearLayout.LayoutParams;
 import static com.adonai.GsmNotify.Utils.*;
 
 @SuppressLint("CommitPrefEdits")
-public class SelectorActivity extends Activity implements View.OnClickListener {
+public class SelectorActivity extends AppCompatActivity implements View.OnClickListener {
+
     private SharedPreferences mPrefs;
 
     public final static int STATUS_LOADER = 0;
@@ -348,10 +340,125 @@ public class SelectorActivity extends Activity implements View.OnClickListener {
                 Intent intent = new Intent(SelectorActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.export_csv_data:
+                if (!Utils.checkAndRequestPermissions(this, WRITE_EXTERNAL_STORAGE))
+                    return false;
+
+                View export = View.inflate(this, R.layout.export_alarms_dialog, null);
+
+                DateFormat ddMMyyyy = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Calendar minDate = Calendar.getInstance();
+                minDate.add(Calendar.YEAR, -2);
+
+                final DatePickerEditText dateFromPicker = (DatePickerEditText) export.findViewById(R.id.date_from);
+                dateFromPicker.setMinDate(ddMMyyyy.format(minDate.getTime())); // previous year
+                dateFromPicker.setManager(getSupportFragmentManager());
+                dateFromPicker.setDate(minDate);
+
+                final DatePickerEditText dateToPicker = (DatePickerEditText) export.findViewById(R.id.date_to);
+                dateToPicker.setMaxDate(ddMMyyyy.format(Calendar.getInstance().getTime())); // current date
+                dateToPicker.setManager(getSupportFragmentManager());
+                dateToPicker.setDate(Calendar.getInstance());
+
+                final EditText fileName = (EditText) export.findViewById(R.id.file_name);
+                fileName.setText("export.csv");
+
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.export_alarms)
+                        .setView(export)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                PersistManager manager = DbProvider.getTempHelper(SelectorActivity.this);
+                                try {
+                                    Calendar from = dateFromPicker.getDate();
+                                    from.set(Calendar.HOUR_OF_DAY, 0);
+                                    from.set(Calendar.MINUTE, 0);
+                                    from.set(Calendar.SECOND, 0);
+
+                                    Calendar to = dateToPicker.getDate();
+                                    to.set(Calendar.HOUR_OF_DAY, 23);
+                                    to.set(Calendar.MINUTE, 59);
+                                    to.set(Calendar.SECOND, 59);
+
+                                    QueryBuilder<HistoryEntry, Long> qb = manager.getHistoryDao().queryBuilder();
+                                    Where<HistoryEntry, Long> where = qb.where();
+                                    where.between("eventDate", from.getTime(), to.getTime());
+                                    List<HistoryEntry> exports = qb.orderBy("eventDate", true).query();
+                                    exportToCsv(fileName.getText().toString(), exports);
+                                } catch (SQLException e) {
+                                    Toast.makeText(SelectorActivity.this, R.string.db_cant_export_to_csv, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .show();
         }
 
         return false;
     }
+
+    /**
+     * If user declined our request, just close the activity entirely.
+     * @param requestCode request code that was entered in {@link Activity#requestPermissions(String[], int)}
+     * @param permissions permission array that was entered in {@link Activity#requestPermissions(String[], int)}
+     * @param grantResults results of permission request. Indexes of permissions array are linked with these
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode != PERMISSIONS_REQUEST_CODE) {
+            return;
+        }
+
+        for (int i = 0; i < permissions.length; ++i) {
+            if (TextUtils.equals(permissions[i], WRITE_EXTERNAL_STORAGE)
+                    && grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                finish(); // user denied our request, don't bother again on resume
+            }
+        }
+    }
+
+    private void exportToCsv(String name, List<HistoryEntry> exports) {
+        StringBuilder csv = new StringBuilder(exports.size() * 200); // 140 sms text + 40-50 date/status/address
+        csv.append(getString(R.string.csv_first_row)).append("\n");
+        for (HistoryEntry he : exports) {
+            DateFormat date = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            DateFormat time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            DateFormat zone = new SimpleDateFormat("zzzz", Locale.getDefault());
+            csv.append(date.format(he.getEventDate())).append(',')
+                    .append(time.format(he.getEventDate())).append(',')
+                    .append(zone.format(he.getEventDate())).append(',')
+                    .append(he.getDeviceName()).append(',')
+                    .append(he.getStatus()).append(',')
+                    .append('"').append(he.getSmsText()).append('"')
+                    .append('\n');
+        }
+
+        saveStringToSD(name, csv.toString());
+    }
+
+    private void saveStringToSD(String name, String csv) {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            return;
+
+        File SD = Environment.getExternalStorageDirectory();
+        File externalDir = new File(SD, "Signal");
+        if (!externalDir.exists())
+            externalDir.mkdirs();
+
+        File toFile = new File(externalDir, name);
+
+        try {
+            Writer writer = new FileWriter(toFile);
+            writer.write(csv);
+            writer.close();
+            Toast.makeText(this, getString(R.string.saved_to) + toFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, R.string.error_saving_csv, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private class StatusRetrieverCallback implements LoaderManager.LoaderCallbacks<List<DeviceStatus>> {
 

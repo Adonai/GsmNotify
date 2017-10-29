@@ -1,5 +1,6 @@
 package com.adonai.GsmNotify;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,8 +11,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
@@ -55,7 +58,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     static String deviceNumber;
 
     static boolean isCalling;
-    static boolean isInOffProcess;
 
     // увеличиваем длительность нажатия до 500 мс
     private View.OnTouchListener pressHolder = new View.OnTouchListener() {
@@ -83,14 +85,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DbProvider.setHelper(this);
-        if(Utils.isTablet(this)) {
+        if (Utils.isTablet(this)) {
             setContentView(R.layout.main_tablet);
         } else {
             setContentView(R.layout.main_phone);
         }
 
         QaudEndCallListener callListener = new QaudEndCallListener();
-        TelephonyManager mTM = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager mTM = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
 
         incMessages = new MessageQueue();
@@ -168,7 +170,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(hasFocus) {
+        if (hasFocus) {
             // stop ringing
             Intent broadcastIntent = new Intent(this, SMSReceiveService.class);
             broadcastIntent.putExtra("stop_alarm", true);
@@ -193,11 +195,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             setTitle(mDevice.details.name);
 
             // works for tablets, show additional info
-            if(mDeviceInfo != null && mDevice.details.info != null) {
+            if (mDeviceInfo != null && mDevice.details.info != null) {
                 mDeviceInfo.setText(mDevice.details.info);
             }
 
-            if(mDevice.details.isGsmQaud) { // no relay buttons
+            if (mDevice.details.isGsmQaud) { // no relay buttons
                 mRelay1Enable.setEnabled(false);
                 mRelay1Disable.setEnabled(false);
                 mRelay2Enable.setEnabled(false);
@@ -220,10 +222,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (intent.getStringExtra("number").equals(deviceNumber)) {
                 incMessages.add(newMessage);
                 mResultText.setTextKeepState(incMessages.toString());
-                if (isInOffProcess) {
-                    mRelay1Disable.performClick();
-                    isInOffProcess = false;
-                }
             } else { // it's another number, switch!
                 incMessages.clear();
                 incMessages.add(newMessage);
@@ -245,7 +243,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             List<HistoryEntry> recentEntries = dao.queryBuilder().orderBy("eventDate", false).limit(5L)
                     .where().eq("deviceName", mDevice.details.name).query();
             Collections.reverse(recentEntries);
-            for(HistoryEntry entry : recentEntries) {
+            for (HistoryEntry entry : recentEntries) {
                 incMessages.add(entry);
             }
             mResultText.setTextKeepState(incMessages.toString());
@@ -265,7 +263,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem smsOption = menu.findItem(R.id.work_ongoing);
-        if(mDevice != null) {
+        if (mDevice != null) {
             smsOption.setChecked(mDevice.details.workOngoing);
         }
 
@@ -382,6 +380,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.setData(Uri.parse("tel:" + mDevice.details.number));
                     isCalling = true;
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
                     startActivity(intent);
                     break;
             }
@@ -406,9 +407,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_temp#", sentPI, deliveredPI);
                     break;
                 case R.id.signal_on_button:
-                    if (mDevice.details.workOngoing) {
-                        isInOffProcess = true; // send relay 1 off after receiving
-                    }
                     sms.sendTextMessage(mDevice.details.number, null, "*" + mDevice.details.password + "#_on#", sentPI, deliveredPI);
                     break;
                 case R.id.signal_off_button:

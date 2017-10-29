@@ -2,13 +2,17 @@ package com.adonai.GsmNotify;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.DisplayMetrics;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 public class Utils {
+
+    static final int PERMISSIONS_REQUEST_CODE = 0;
 
     final static String SENT = "SMS_SENT_NOTIFY_MAIN";
     final static String DELIVERED = "SMS_DELIVERED_NOTIFY_MAIN";
@@ -44,17 +48,7 @@ public class Utils {
     }
 
     public static boolean isTablet(Activity context) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int widthPixels = metrics.widthPixels;
-        int heightPixels = metrics.heightPixels;
-
-        float widthDp = widthPixels / metrics.density;
-        float heightDp = heightPixels / metrics.density;
-        float smallestWidth = Math.min(widthDp, heightDp);
-
-        return  smallestWidth > 600;
+        return true;
     }
 
     /**
@@ -90,10 +84,10 @@ public class Utils {
         } else if (lowercaseSms.contains(context.getString(R.string.alarm_power_matcher))) { // power alarm
             return DeviceStatus.ALARM;
         }
-        
-        // сначала проверка "на охране/снято с охраны", если "снято", 
-        // то цвет ячейки зеленый (несмотря на тревоги по шлейфам), 
-        // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога", 
+
+        // сначала проверка "на охране/снято с охраны", если "снято",
+        // то цвет ячейки зеленый (несмотря на тревоги по шлейфам),
+        // если "на охране", то смотрим шлейфы, если по любому шлейфу "тревога",
         // то цвет ячейки красный, если "на охране" и нет тревог, то цвет ячейки желтый.
         if(details.isGsmQaud) { // GSM Qaud
             if (lowercaseSms.contains(context.getString(R.string.disarmed_matcher))) { // disarmed
@@ -119,5 +113,36 @@ public class Utils {
                 return DeviceStatus.UNKNOWN;
             }
         }
+    }
+
+    /**
+     * Checks for permission and requests it if needed.
+     * You should catch answer back in {@link Activity#onRequestPermissionsResult(int, String[], int[])}
+     * <br/>
+     * (Or don't. This way request will appear forever as {@link Activity#onResume()} will never end)
+     * @param perm permission to request
+     * @return true if this app had this permission prior to check, false otherwise.
+     */
+    public static boolean checkAndRequestPermissions(Activity ctx, String perm) {
+        if (!havePermissions(ctx, perm)  && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ctx.requestPermissions(new String[]{perm}, PERMISSIONS_REQUEST_CODE);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if all required permissions have been granted
+     *
+     * @param context The context to use
+     * @return boolean true if all permissions have been granded
+     */
+    public static boolean havePermissions(Context context, String perm) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(perm) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        } // else: granted during installation
+        return true;
     }
 }

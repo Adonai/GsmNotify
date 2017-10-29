@@ -219,7 +219,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
 
             mManageDevice.setVisibility(View.VISIBLE);
-            mEditDevice.setVisibility(View.VISIBLE);
+            //mEditDevice.setVisibility(View.VISIBLE);
         }
 
         mSettingsPages[0] = SettingsPage1.newInstance(mDevice);
@@ -302,7 +302,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
 
                     mManageDevice.setVisibility(View.VISIBLE);
-                    mEditDevice.setVisibility(View.VISIBLE);
+                    //mEditDevice.setVisibility(View.VISIBLE);
                 } else {
                     new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
                 }

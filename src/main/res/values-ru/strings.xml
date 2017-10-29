@@ -143,4 +143,12 @@
     <string name="is_gsm_qaud">GSM Qaud</string>
     <string name="ibutton_history">История iButton</string>
     <string name="power_history">История эл-пит.</string>
+    <string name="export_alarms">Выгрузка тревог</string>
+    <string name="db_cant_export_to_csv">Ошибка в БД: Экспорт не удался</string>
+    <string name="date_from">Начало периода</string>
+    <string name="date_to">Конец периода</string>
+    <string name="csv_first_row">Дата,Время,Таймзона,Адрес,Статус,Текст смс</string>
+    <string name="saved_to">Сохранено:</string>
+    <string name="error_saving_csv">Ошибка при сохранении CSV</string>
+    <string name="file_name">Имя файла</string>
 </resources>

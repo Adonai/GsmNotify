@@ -100,11 +100,9 @@ public class KeyHistoryListFragment extends DialogFragment {
                         keyHe.setArchived(true);
                         dao.update(keyHe);
                     }
-                    
+
                     DbProvider.releaseTempHelper(); // it's ref-counted thus will not close if activity uses it...
-                    if(Utils.isTablet(getActivity())) {
-                        getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();
-                    }
+                    getActivity().getLoaderManager().getLoader(SelectorActivity.STATUS_LOADER).onContentChanged();
                 } catch (SQLException e) {
                     Toast.makeText(getActivity(), R.string.db_cant_query_history, Toast.LENGTH_LONG).show();
                 }

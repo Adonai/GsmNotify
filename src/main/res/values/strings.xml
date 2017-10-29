@@ -147,4 +147,12 @@
     <string name="alarm_power_matcher">power down</string>
     <string name="power_matcher_db">Power</string>
     <string name="power_history">Power history</string>
+    <string name="export_alarms">Export alarms</string>
+    <string name="db_cant_export_to_csv">DB: Can\'t export to CSV!</string>
+    <string name="date_from">Date from</string>
+    <string name="date_to">Date to</string>
+    <string name="csv_first_row">Date,Time,TZ,Address,Status,Sms text</string>
+    <string name="saved_to">Saved to:</string>
+    <string name="error_saving_csv">Error saving CSV</string>
+    <string name="file_name">File name</string>
 </resources>
