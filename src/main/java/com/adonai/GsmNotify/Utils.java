@@ -48,7 +48,7 @@ public class Utils {
     }
 
     public static boolean isTablet(Activity context) {
-        return true;
+        return false;
     }
 
     /**

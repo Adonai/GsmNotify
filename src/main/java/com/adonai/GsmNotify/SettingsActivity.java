@@ -127,7 +127,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
         deliveryReceiver = new DeliveryConfirmReceiver();
         mFragmentManager = getSupportFragmentManager();
 
-        mPager = (ViewPager) findViewById(R.id.settings_page_holder);
+        mPager = findViewById(R.id.settings_page_holder);
         mPager.setOffscreenPageLimit(mSettingsPages.length);
         mPagerAdapter = new FragmentPagerAdapter(mFragmentManager) {
             @Override
@@ -166,21 +166,21 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
 
         mPager.setAdapter(mPagerAdapter);
 
-        mFlipper = (ViewFlipper) findViewById(R.id.settings_flipper);
-        mApply = (Button) findViewById(R.id.device_apply);
+        mFlipper = findViewById(R.id.settings_flipper);
+        mApply = findViewById(R.id.device_apply);
         mApply.setOnClickListener(this);
-        mEditDevice = (Button) findViewById(R.id.edit_device_button);
+        mEditDevice = findViewById(R.id.edit_device_button);
         mEditDevice.setOnClickListener(this);
-        mManageDevice = (Button) findViewById(R.id.manage_device_button);
+        mManageDevice = findViewById(R.id.manage_device_button);
         mManageDevice.setOnClickListener(this);
-        mApplyDevice = (Button) findViewById(R.id.device_apply_button);
+        mApplyDevice = findViewById(R.id.device_apply_button);
         mApplyDevice.setOnClickListener(this);
-        mDeviceName = (EditText) findViewById(R.id.device_name_text);
-        mDeviceNumber = (EditText) findViewById(R.id.device_number_text);
-        mPasswordLabel = (TextView) findViewById(R.id.device_password_label);
-        mDevicePassword = (EditText) findViewById(R.id.device_password_text);
-        mDeviceInfo = (EditText) findViewById(R.id.device_additional_info_text);
-        mIsGsmQaud = (CheckBox) findViewById(R.id.gsm_qaud_checkbox);
+        mDeviceName = findViewById(R.id.device_name_text);
+        mDeviceNumber = findViewById(R.id.device_number_text);
+        mPasswordLabel = findViewById(R.id.device_password_label);
+        mDevicePassword = findViewById(R.id.device_password_text);
+        mDeviceInfo = findViewById(R.id.device_additional_info_text);
+        mIsGsmQaud = findViewById(R.id.gsm_qaud_checkbox);
         mIsGsmQaud.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -219,7 +219,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
             }
 
             mManageDevice.setVisibility(View.VISIBLE);
-            //mEditDevice.setVisibility(View.VISIBLE);
+            mEditDevice.setVisibility(View.VISIBLE);
         }
 
         mSettingsPages[0] = SettingsPage1.newInstance(mDevice);
@@ -278,7 +278,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     }
 
                     // we assume we have all the views created
-                    EditText password = (EditText) mSettingsPages[0].getView().findViewById(R.id.new_password_edit);
+                    EditText password = mSettingsPages[0].getView().findViewById(R.id.new_password_edit);
                     password.setText(newPassword); // implicitly changes mDevice.details.password
 
                     SharedPreferences.Editor edit = mPrefs.edit();
@@ -302,7 +302,7 @@ public class SettingsActivity extends FragmentActivity implements View.OnClickLi
                     Toast.makeText(this, R.string.settings_applied, Toast.LENGTH_SHORT).show();
 
                     mManageDevice.setVisibility(View.VISIBLE);
-                    //mEditDevice.setVisibility(View.VISIBLE);
+                    mEditDevice.setVisibility(View.VISIBLE);
                 } else {
                     new AlertDialog.Builder(this).setMessage(R.string.data_not_full).create().show();
                 }

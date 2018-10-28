@@ -14,11 +14,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,8 +42,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.Manifest.permission.READ_SMS;
+import static android.Manifest.permission.RECEIVE_SMS;
+import static android.Manifest.permission.SEND_SMS;
+
 @SuppressLint("CommitPrefEdits")
 public class MainActivity extends Activity implements View.OnClickListener {
+
+    private static int SMS_PERMISSION_REQUEST_CODE = 0;
+
     MessageQueue incMessages;
 
     SharedPreferences mPrefs;
@@ -100,14 +108,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         deliveryReceiver = new DeliveryConfirmReceiver(this);
         mPrefs = getSharedPreferences(SMSReceiveService.PREFERENCES, MODE_PRIVATE);
 
-        mNotifyEnable = (Button) findViewById(R.id.signal_on_button);
-        mNotifyDisable = (Button) findViewById(R.id.signal_off_button);
-        mRelay1Enable = (Button) findViewById(R.id.relay1_on_button);
-        mRelay1Disable = (Button) findViewById(R.id.relay1_off_button);
-        mRelay2Enable = (Button) findViewById(R.id.relay2_on_button);
-        mRelay2Disable = (Button) findViewById(R.id.relay2_off_button);
-        mGetData = (Button) findViewById(R.id.get_data_button);
-        mGetTemperature = (Button) findViewById(R.id.get_temperature_button);
+        mNotifyEnable = findViewById(R.id.signal_on_button);
+        mNotifyDisable = findViewById(R.id.signal_off_button);
+        mRelay1Enable = findViewById(R.id.relay1_on_button);
+        mRelay1Disable = findViewById(R.id.relay1_off_button);
+        mRelay2Enable = findViewById(R.id.relay2_on_button);
+        mRelay2Disable = findViewById(R.id.relay2_off_button);
+        mGetData = findViewById(R.id.get_data_button);
+        mGetTemperature = findViewById(R.id.get_temperature_button);
 
         mNotifyEnable.setOnTouchListener(pressHolder);
         mNotifyDisable.setOnTouchListener(pressHolder);
@@ -118,8 +126,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mGetData.setOnTouchListener(pressHolder);
         mGetTemperature.setOnTouchListener(pressHolder);
 
-        mResultText = (EditText) findViewById(R.id.result_text);
-        mDeviceInfo = (EditText) findViewById(R.id.device_additional_info_text);
+        mResultText = findViewById(R.id.result_text);
+        mDeviceInfo = findViewById(R.id.device_additional_info_text);
 
 
         if (getIntent().hasExtra("ID")) { // запускаем из настроек
@@ -159,12 +167,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onStart() {
         super.onStart();
 
+        // request permissions for SMS
+        List<String> denied = checkPermissions(READ_SMS, SEND_SMS, RECEIVE_SMS);
+        if (!denied.isEmpty()) {
+            ActivityCompat.requestPermissions(this, denied.toArray(new String[0]), SMS_PERMISSION_REQUEST_CODE);
+        }
+
         //--- When the SMS has been sent ---
         registerReceiver(sentReceiver, new IntentFilter(Utils.SENT));
         //--- When the SMS has been delivered. ---
         registerReceiver(deliveryReceiver, new IntentFilter(Utils.DELIVERED));
 
         isRunning = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == SMS_PERMISSION_REQUEST_CODE) {
+            for (Integer res: grantResults) {
+                if (res != PermissionChecker.PERMISSION_GRANTED)
+                    finish();
+            }
+        }
     }
 
     @Override
@@ -185,6 +211,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         unregisterReceiver(deliveryReceiver);
 
         isRunning = false;
+    }
+
+    private List<String> checkPermissions(String... required) {
+        List<String> denied = new ArrayList<>();
+        for (String perm : required) {
+            if (PermissionChecker.checkSelfPermission(this, perm) != PermissionChecker.PERMISSION_GRANTED)
+                denied.add(perm);
+        }
+        return denied;
     }
 
     private void extractParams() {
